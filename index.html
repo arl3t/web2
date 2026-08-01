@@ -328,7 +328,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 <section id="defacement"><div class="wrap">
   <span class="kicker">Recorrido · Etapa 3¾ — Vigilancia de marca</span>
   <h2>Detección de defacement: si tu web amanece cambiada,<br>el caso ya está abierto.</h2>
-  <p class="sub">Los centinelas también miran hacia afuera. Así funciona: <b>1)</b> al dar de alta cada página pública se toma un <b>baseline</b> (hash del contenido renderizado, estructura del DOM, título y metadatos, cadena de certificados); <b>2)</b> un verificador la visita en <b>ciclo corto</b> y compara contra ese baseline — no contra firmas genéricas; <b>3)</b> si el diff estructural supera el umbral, o cambian título/certificado, se abre <b>caso CRÍTICO automático</b> con el antes y el después como evidencia y la respuesta ya propuesta. Los cambios legítimos (deploy del cliente) se absorben re-tomando baseline con un clic.</p>
+  <p class="sub">Los centinelas también miran hacia afuera: cada página pública del cliente se vigila de forma continua contra su propia normalidad — no contra firmas genéricas. Si el sitio cambia de forma inesperada, se abre un <b>caso CRÍTICO automático</b> con el antes y el después como evidencia y la respuesta ya propuesta. Los cambios legítimos del cliente se absorben sin generar ruido.</p>
   <div class="grid two" style="margin-top:36px;align-items:start">
     <div class="defmon rv">
       <div class="row"><span>www.cliente-retail.com</span><span class="ok">✔ íntegra · hash estable · TLS 74d</span></div>
