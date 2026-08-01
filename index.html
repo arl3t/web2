@@ -37,6 +37,9 @@ h2{font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:900;line-height:1.15;margin-
 .btn.primary:hover{background:#8DFF66;transform:translateY(-2px)}
 .btn.ghost{border:1px solid var(--border);color:var(--text)}
 .btn.ghost:hover{border-color:var(--lime);color:var(--lime)}
+/* Barra de progreso del recorrido */
+#journeybar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:60;transition:width .15s linear}
+nav ul a.now{color:var(--lime)}
 /* Nav */
 nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
@@ -122,15 +125,16 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 </style>
 </head>
 <body>
+<div id="journeybar"></div>
 
 <nav><div class="wrap">
   <div class="logo">Legacy<b>Hunt</b> <span class="chip lime" style="margin-left:8px">MDR</span></div>
   <ul>
-    <li><a href="#ciclo">El ciclo</a></li>
-    <li><a href="#demo">En vivo</a></li>
-    <li><a href="#modulos">Módulos</a></li>
-    <li><a href="#control">Control humano</a></li>
-    <li><a href="#despliegue">Despliegue</a></li>
+    <li><a href="#ciclo">1 · El ciclo</a></li>
+    <li><a href="#demo">2 · En vivo</a></li>
+    <li><a href="#modulos">3 · Módulos</a></li>
+    <li><a href="#control">4 · Analista al mando</a></li>
+    <li><a href="#despliegue">5 · Despliegue</a></li>
   </ul>
   <a class="btn primary" href="#cta" style="padding:9px 18px;font-size:.86rem">Pedir demo</a>
 </div></nav>
@@ -139,7 +143,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 <header class="hero"><div class="gridbg"></div><div class="wrap" style="position:relative">
   <span class="kicker">Detección · Triage IA · Respuesta — en una sola plataforma</span>
   <h1>El SOC que <em>decide solo lo obvio</em><br>y escala solo lo crítico.</h1>
-  <p class="sub">LegacyHunt convierte millones de eventos en <b>pocas decisiones humanas de alto valor</b>: detecta, agrupa oleadas en campañas, emite veredictos con IA local, propone la contención y cierra el ruido — con doble llave, auditoría completa y un humano siempre al mando de lo irreversible.</p>
+  <p class="sub">LegacyHunt convierte millones de eventos en <b>pocas decisiones de alto valor para el Analista SOC</b>: detecta, agrupa oleadas en campañas, emite veredictos con IA local, propone la contención y cierra el ruido — con doble llave, auditoría completa y un Analista SOC siempre al mando de lo irreversible.</p>
   <div style="display:flex;gap:14px;flex-wrap:wrap">
     <a class="btn primary" href="#cta">Ver la plataforma en acción</a>
     <a class="btn ghost" href="#ciclo">Cómo funciona ↓</a>
@@ -161,14 +165,14 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 
 <!-- ══ EL CICLO AUTÓNOMO ══ -->
 <section id="ciclo"><div class="wrap">
-  <span class="kicker">El ciclo autónomo</span>
+  <span class="kicker">Recorrido · Etapa 1 — El ciclo autónomo</span>
   <h2>De millones de eventos a una decisión —<br>sin que nadie tenga que mirar el 95% del ruido.</h2>
   <p class="sub">Cada etapa alimenta la siguiente. Lo que se puede decidir con evidencia, se decide solo. Lo que requiere criterio, llega a tu equipo ya investigado, correlacionado y con recomendación.</p>
   <div class="pipe" id="pipe">
     <div class="line"><i></i></div>
     <div class="node"><div class="dot">📡</div><div class="t">Detectar</div><div class="d">13 patrones de caza + scoring v4 multi-fuente</div></div>
     <div class="node"><div class="dot">🧩</div><div class="t">Correlacionar</div><div class="d">175 IPs contra el mismo activo = 1 campaña, no 232 casos</div></div>
-    <div class="node"><div class="dot">🤖</div><div class="t">Veredicto IA</div><div class="d">CLAUDIO triage cada caso y cada campaña con intel del día</div></div>
+    <div class="node"><div class="dot">🤖</div><div class="t">Veredicto IA</div><div class="d">CLAUDIO triage cada caso y cada campaña con inteligencia del día</div></div>
     <div class="node"><div class="dot">🛡️</div><div class="t">Proponer</div><div class="d">Contención y cierres entran a la cola con evidencia</div></div>
     <div class="node"><div class="dot">⚙️</div><div class="t">Autopiloto</div><div class="d">Lo de bajo riesgo se ejecuta solo, con doble llave</div></div>
     <div class="node"><div class="dot">📊</div><div class="t">Informar</div><div class="d">Informe ejecutivo por campaña, redactado por la IA</div></div>
@@ -177,7 +181,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 
 <!-- ══ DEMO ANIMADA ══ -->
 <section id="demo" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
-  <span class="kicker">Secuencia real — así se ve por dentro</span>
+  <span class="kicker">Recorrido · Etapa 2 — Así se ve por dentro</span>
   <h2>Una oleada de phishing, resuelta de punta a punta.</h2>
   <p class="sub">Basado en un caso real de la plataforma: 150 clientes internos marcados como phishing por el firewall. Un SOC tradicional habría triado 150 tickets. Así lo resuelve LegacyHunt:</p>
   <div class="flowdemo" style="margin-top:42px">
@@ -186,7 +190,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
       <div class="stage"><div class="ic">🤖</div><div><b>CLAUDIO muestrea y sentencia</b><span>Triage LLM de 8 casos de muestra: 8/8 benignos (destino = infraestructura Meta, categoría social). Veredicto de campaña: benign 93%.</span></div></div>
       <div class="stage"><div class="ic">📋</div><div><b>La propuesta entra a la cola</b><span>"Cerrar campaña #226 con cascada a 150 casos" — visible en Aprobaciones con toda la evidencia. Nadie tiene que redactar nada.</span></div></div>
       <div class="stage"><div class="ic">🔍</div><div><b>El refutador da la segunda llave</b><span>Un segundo modelo IA —de otra generación— intenta refutar el veredicto. No encuentra amenaza. Doble llave superada.</span></div></div>
-      <div class="stage"><div class="ic">⚙️</div><div><b>El autopiloto ejecuta</b><span>Pasadas 24h sin veto humano: 150 casos cerrados con timeline, tareas completadas, supresión 60 días y webhooks al portal del cliente.</span></div></div>
+      <div class="stage"><div class="ic">⚙️</div><div><b>El autopiloto ejecuta</b><span>Pasadas 24h sin veto del Analista SOC: 150 casos cerrados con timeline, tareas completadas, supresión 60 días y webhooks al portal del cliente.</span></div></div>
       <div class="stage"><div class="ic">🎯</div><div><b>Tu equipo, en lo que importa</b><span>Mientras tanto, la campaña #396 (C2 real, 97 IPs) fue marcada MALICIOSA, con la contención de sus 97 IPs propuesta a un clic.</span></div></div>
     </div>
     <div class="term rv"><div class="bar"><i></i><i></i><i></i><span>CLAUDIO · triage en vivo</span></div><pre id="termout"></pre></div>
@@ -195,20 +199,20 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 
 <!-- ══ MÓDULOS ══ -->
 <section id="modulos" class="feat"><div class="wrap">
-  <span class="kicker">Módulos</span>
+  <span class="kicker">Recorrido · Etapa 3 — Los seis motores</span>
   <h2>Seis motores, un solo cerebro.</h2>
   <div class="grid" style="margin-top:36px">
     <div class="card rv"><span class="chip cyan">Detección</span><h3>Cazador proactivo 24/7</h3><p>13 patrones de caza (fuerza bruta, C2, DNS tunneling, persistencia, replay de credenciales, accesos fuera de hora…) sobre firewall, endpoint y correo — más centinelas que avisan si un carril de detección se rompe en silencio.</p>
       <div class="ej"><b>Ejemplo real:</b> un burst de instalación de servicios en 50 hosts a la vez se reporta como <i>un</i> evento de flota (¿GPO o despliegue lateral?) — no como 50 falsas alarmas.</div></div>
     <div class="card rv"><span class="chip orange">Correlación</span><h3>Campañas: la oleada es una sola</h3><p>Los atacantes rotan IPs; LegacyHunt agrupa por técnica × objetivo × ventana. La bandeja del analista muestra amenazas, no paquetes. Crecimiento anómalo → alerta de oleada en curso.</p>
       <div class="ej"><b>Ejemplo real:</b> 97 IPs de C2 contra la red = campaña #396, veredicto MALICIOSO 86%, contención de las 97 IPs propuesta en una sola tarjeta.</div></div>
-    <div class="card rv"><span class="chip lime">Triage IA</span><h3>CLAUDIO — analista LLM local</h3><p>Cada caso recibe veredicto con intel del día, riesgo de la entidad (UEBA), historial de la técnica en TU red y las correcciones recientes de tus analistas. Todo on-premise: tus datos nunca salen.</p>
+    <div class="card rv"><span class="chip lime">Triage IA</span><h3>CLAUDIO — analista LLM local</h3><p>Cada caso recibe veredicto con inteligencia del día, riesgo de la entidad (UEBA), historial de la técnica en TU red y las correcciones recientes de tus analistas. Todo on-premise: tus datos nunca salen.</p>
       <div class="ej"><b>Ejemplo real:</b> "benign 92% — el destino es infraestructura Meta; 94% de esta técnica cerró como FP en esta red" — en 9 segundos.</div></div>
-    <div class="card rv"><span class="chip red">Respuesta</span><h3>Contención a un clic</h3><p>Campaña maliciosa → bloqueo de todas sus IPs públicas en el feed del firewall, propuesto automáticamente. Cuentas comprometidas → deshabilitación vía EDR/Wazuh. La ejecución siempre pasa por un humano.</p>
+    <div class="card rv"><span class="chip red">Respuesta</span><h3>Contención a un clic</h3><p>Campaña maliciosa → bloqueo de todas sus IPs públicas en el feed del firewall, propuesto automáticamente. Cuentas comprometidas → deshabilitación vía EDR/Wazuh. La ejecución siempre pasa por un Analista SOC.</p>
       <div class="ej"><b>Ejemplo real:</b> feed de bloqueo actualizado en el perímetro a los 10 minutos de la aprobación, con TTL y remoción durable.</div></div>
-    <div class="card rv"><span class="chip purple" style="color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent)">Autonomía</span><h3>Autopiloto con doble llave</h3><p>Cierres de bajo riesgo se ejecutan solos tras una ventana de veto humano — pero solo si un <b>segundo modelo IA</b> no logra refutar el veredicto. El 20% de la cola queda siempre reservado a decisión humana: la IA nunca se queda sin supervisión.</p>
+    <div class="card rv"><span class="chip purple" style="color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent)">Autonomía</span><h3>Autopiloto con doble llave</h3><p>Cierres de bajo riesgo se ejecutan solos tras una ventana de veto del Analista SOC — pero solo si un <b>segundo modelo IA</b> no logra refutar el veredicto. El 20% de la cola queda siempre reservado a decisión del Analista SOC: la IA nunca se queda sin supervisión.</p>
       <div class="ej"><b>Ejemplo real:</b> 36 cierres benignos ejecutados en un ciclo nocturno; 0 intervenciones necesarias; digest completo al jefe de turno al despertar.</div></div>
-    <div class="card rv"><span class="chip">Reportes</span><h3>Informes que se escriben solos</h3><p>Resumen ejecutivo, evaluación de amenaza, contención y recomendaciones por campaña — redactados por la IA sobre la evidencia real, exportables en un clic. KPIs NIST (MTTD, MTTC, acuerdo humano↔IA) en vivo.</p>
+    <div class="card rv"><span class="chip">Reportes</span><h3>Informes que se escriben solos</h3><p>Resumen ejecutivo, evaluación de amenaza, contención y recomendaciones por campaña — redactados por la IA sobre la evidencia real, exportables en un clic. KPIs NIST (MTTD, MTTC, acuerdo Analista SOC ↔ IA) en vivo.</p>
       <div class="ej"><b>Ejemplo real:</b> informe de la campaña C2 listo en 40 segundos, con las 3 recomendaciones de mitigación para ese vector.</div></div>
   </div>
 </div></section>
@@ -231,7 +235,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <circle cx="72" cy="150" r="3" fill="#14E9C8"/>
   </svg>
   <div>
-    <span class="kicker">Vigilancia que no duerme</span>
+    <span class="kicker">Recorrido · Etapa 3½ — Vigilancia que no duerme</span>
     <h2>Centinelas para todo lo que puede fallar en silencio.</h2>
     <p class="sub">Fuentes que dejan de enviar, carriles de detección que se rompen, campañas que resurgen tras cerrarse, supresiones que envejecen mal, la propia IA caída — cada punto ciego conocido tiene su vigilante. Si algo se apaga, tu equipo lo sabe antes que el atacante.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
@@ -241,22 +245,22 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   </div>
 </div></section>
 
-<!-- ══ CONTROL HUMANO ══ -->
+<!-- ══ ANALISTA SOC AL MANDO ══ -->
 <section id="control"><div class="wrap">
-  <span class="kicker">Human-on-the-loop</span>
+  <span class="kicker">Recorrido · Etapa 4 — El Analista SOC al mando</span>
   <h2>Automatizamos decisiones, no responsabilidades.</h2>
   <p class="sub">La diferencia entre un SOC autónomo confiable y una caja negra está en los frenos. LegacyHunt trae los frenos de fábrica:</p>
   <div class="hitl">
     <div class="card rv"><b>Doble llave IA</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Ningún cierre automático sin que un segundo modelo —de otra generación— intente refutarlo y falle.</p></div>
-    <div class="card rv"><b>Cuota humana garantizada</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">El 20% de la cola se reserva SIEMPRE a decisión humana: la calibración de la IA nunca pierde su patrón de verdad.</p></div>
-    <div class="card rv"><b>Lo irreversible es humano</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Bloqueos, cuentas y aperturas siempre exigen un clic humano. El autopiloto ni los mira.</p></div>
-    <div class="card rv"><b>Auditoría de punta a punta</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Cada decisión —humana o IA— queda en el timeline con evidencia, modelo y versión de prompt. Kill-switch por automatismo.</p></div>
+    <div class="card rv"><b>Cuota del Analista SOC garantizada</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">El 20% de la cola se reserva SIEMPRE a decisión del Analista SOC: la calibración de la IA nunca pierde su patrón de verdad.</p></div>
+    <div class="card rv"><b>Lo irreversible es del Analista SOC</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Bloqueos, cuentas y aperturas siempre exigen un clic del Analista SOC. El autopiloto ni los mira.</p></div>
+    <div class="card rv"><b>Auditoría de punta a punta</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Cada decisión —del Analista SOC o de la IA— queda en el timeline con evidencia, modelo y versión de prompt. Kill-switch por automatismo.</p></div>
   </div>
 </div></section>
 
 <!-- ══ COMPARATIVA ══ -->
 <section style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
-  <span class="kicker">El antes y el después</span>
+  <span class="kicker">Recorrido · Etapa 4½ — El antes y el después</span>
   <h2>Mismo equipo. Diez veces menos ruido.</h2>
   <div class="tbl rv" style="margin-top:34px"><table>
     <tr><th>Situación</th><th>SOC tradicional</th><th>Con LegacyHunt</th></tr>
@@ -265,19 +269,19 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <tr><td>C2 confirmado con 97 IPs</td><td>Bloqueos uno a uno, a mano</td><td>Contención completa propuesta a un clic</td></tr>
     <tr><td>Informe para el cliente</td><td>Horas de redacción</td><td>40 segundos, redactado por la IA local</td></tr>
     <tr><td>Detección rota en silencio</td><td>Se descubre semanas después</td><td>Centinela avisa en 24 horas</td></tr>
-    <tr><td>¿La IA sigue acertando?</td><td>Nadie lo mide</td><td>KPI de acuerdo humano↔IA en el panel</td></tr>
+    <tr><td>¿La IA sigue acertando?</td><td>Nadie lo mide</td><td>KPI de acuerdo Analista SOC ↔ IA en el panel</td></tr>
   </table></div>
 </div></section>
 
 <!-- ══ DESPLIEGUE ══ -->
 <section id="despliegue"><div class="wrap">
-  <span class="kicker">Despliegue</span>
+  <span class="kicker">Recorrido · Etapa 5 — Despliegue por etapas</span>
   <h2>Autonomía graduada: la confianza se gana por etapas.</h2>
   <div class="grid steps" style="margin-top:36px">
     <div class="card rv"><div class="num">01</div><b>Conectar</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Firewall, endpoint, correo y syslog al lake. Sin agentes nuevos: usamos lo que ya tenés.</p></div>
     <div class="card rv"><div class="num">02</div><b>Aprender</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Dos semanas de baseline: normalidad por técnica, por entidad y por fuente — en TU red, no en un dataset genérico.</p></div>
     <div class="card rv"><div class="num">03</div><b>Modo sombra</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">La IA propone todo y no ejecuta nada. Tu equipo valida las propuestas y el KPI de acuerdo mide la calidad.</p></div>
-    <div class="card rv"><div class="num">04</div><b>Autonomía</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Se enciende el autopiloto para lo de bajo riesgo — con doble llave, cuota humana y kill-switch por automatismo.</p></div>
+    <div class="card rv"><div class="num">04</div><b>Autonomía</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Se enciende el autopiloto para lo de bajo riesgo — con doble llave, cuota del Analista SOC y kill-switch por automatismo.</p></div>
   </div>
 </div></section>
 
@@ -298,6 +302,16 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 </div></footer>
 
 <script>
+/* Barra de progreso + scrollspy del recorrido */
+const jb=document.getElementById('journeybar');
+const secs=[...document.querySelectorAll('section[id]')];
+const navA=[...document.querySelectorAll('nav ul a')];
+addEventListener('scroll',()=>{
+ const h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+ jb.style.width=(p*100).toFixed(1)+'%';
+ let cur=null;for(const s of secs){if(s.offsetTop-120<=h.scrollTop)cur=s.id}
+ navA.forEach(a=>a.classList.toggle('now',!!cur&&a.getAttribute('href')==='#'+cur));
+},{passive:true});
 /* Reveal on scroll */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
@@ -317,7 +331,7 @@ setInterval(()=>{stages.forEach(s=>s.classList.remove('on'));stages[si%stages.le
 const LINES=[
  ['c','$ claudio triage --campaña 226'],
  ['','⟳ muestreando 8 de 150 casos…'],
- ['','⟳ intel del día: destino = <b>Meta (social)</b> · sin listar'],
+ ['','⟳ inteligencia del día: destino = <b>Meta (social)</b> · sin listar'],
  ['','⟳ histórico T1566 en esta red: 94% cerró FP (n=1.2k)'],
  ['g','{ "verdict": "benign", "confidence": 93,'],
  ['g','  "narrative": "Navegación a infraestructura Meta,'],
@@ -325,12 +339,12 @@ const LINES=[
  ['p','→ propuesta: FALSO_POSITIVO + cascada (150 casos)'],
  ['c','$ claudio refute --segunda-opinión qwen3:8b'],
  ['g','{ "refuted": false — sin señal de amenaza real }'],
- ['o','⏲ ventana de veto humano: 24h · cuota humana 20%'],
+ ['o','⏲ ventana de veto del Analista SOC: 24h · cuota 20%'],
  ['g','✔ autopiloto: 150 casos cerrados · flujo completo'],
  ['','────────────────────────────────'],
  ['c','$ claudio triage --campaña 396'],
  ['r','{ "verdict": "MALICIOUS", "confidence": 86 } · C2 T1071'],
- ['r','⚠ contención propuesta: bloquear 97 IPs → 1 clic humano'],
+ ['r','⚠ contención propuesta: bloquear 97 IPs → 1 clic del Analista SOC'],
 ];
 const out=document.getElementById('termout');let li=0,ci=0,buf='';
 function type(){
