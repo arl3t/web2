@@ -1,9 +1,15 @@
 # LegacyHunt — Landing comercial (web2)
 
 Sitio estático de una sola página. `index.html` es **autocontenido**: todo el
-CSS y JS van inline; las únicas referencias externas son Google Fonts
-(`fonts.googleapis.com`) y enlaces `mailto:`. No hay build, dependencias ni
-backend — funciona en cualquier servidor web tal cual.
+CSS y JS van inline y las fuentes son self-hosted en `fonts/` (sin llamadas a
+Google Fonts ni a ningún tercero); las únicas referencias externas son enlaces
+`mailto:`. No hay build, dependencias ni backend — funciona en cualquier
+servidor web tal cual. Copiar `index.html` **junto con `fonts/`**.
+
+**KPIs vivos (opcional):** si en el docroot se publica un `kpis.json` con
+`{"iocs_day":10400,"triage_hour":48,"wave_cases":150,"verdict_seconds":10}`,
+los contadores del hero usan esos valores; si el archivo no existe, quedan los
+números estáticos. Sirve para actualizar la página a diario sin tocar el HTML.
 
 ## Montaje
 

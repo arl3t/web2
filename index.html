@@ -5,9 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LegacyHunt — El SOC que decide solo lo obvio y escala solo lo crítico</title>
 <meta name="description" content="Plataforma MDR con automatización de punta a punta: detección, correlación en campañas, veredicto IA, contención propuesta y cierre automático con doble llave. Human-on-the-loop.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LegacyHunt — El SOC que decide solo lo obvio y escala solo lo crítico">
+<meta property="og:description" content="Detección, correlación en campañas, veredicto IA local, contención propuesta y cierre automático con doble llave. Human-on-the-loop, 100% on-premise.">
+<meta property="og:url" content="https://arl3t.github.io/web2/">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0A1428">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A1428'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='900' font-family='Arial' text-anchor='middle' fill='%237CFF4D'%3ELH%3C/text%3E%3C/svg%3E">
 <style>
+/* Fuentes self-hosted (variables): sin llamadas a Google Fonts */
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:100 1000;font-display:swap;src:url(fonts/dmsans.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(fonts/jetbrainsmono.woff2) format('woff2')}
 /* ══ Tema nexus-dark — la misma paleta de la plataforma ══ */
 :root{
   --bg:#0A1428; --card:#0F1F3A; --border:#1E2F52; --text:#FFFFFF; --dim:#A3B8D9;
@@ -122,6 +131,57 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 .hitl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
 .hitl .card{border-left:3px solid var(--cyan)}
 .hitl .card b{color:var(--cyan)}
+/* Grid dos columnas con colapso en mobile */
+.two{grid-template-columns:1fr 1fr}
+@media(max-width:880px){.two{grid-template-columns:1fr}}
+/* Glosario: términos con tooltip al hover */
+.gl{border-bottom:1px dotted var(--dim);cursor:help;position:relative}
+.gl:hover::after,.gl:focus::after{content:attr(data-g);position:absolute;left:50%;bottom:135%;transform:translateX(-50%);background:#050D1D;border:1px solid var(--border);color:var(--text);font-size:.75rem;font-family:var(--sans);font-weight:400;line-height:1.45;padding:9px 12px;border-radius:8px;width:250px;z-index:70;text-transform:none;letter-spacing:0}
+/* Botones del terminal conducible */
+.termctl{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.termctl button{font-family:var(--mono);font-size:.72rem;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;transition:.2s}
+.termctl button:hover,.termctl button.on{border-color:var(--lime);color:var(--lime)}
+/* Pipeline clickeable */
+#pipe .node{cursor:pointer}
+#pipedetail{margin-top:22px;border:1px solid var(--border);border-left:3px solid var(--lime);border-radius:10px;background:var(--card);padding:16px 20px;font-size:.88rem;color:var(--dim);display:none}
+#pipedetail b{color:var(--text)}
+#pipedetail .lat{font-family:var(--mono);font-size:.74rem;color:var(--cyan);margin-left:8px}
+/* Widget "decidí vos" */
+.decide{margin-top:56px;border:1px solid var(--border);border-radius:14px;background:var(--card);padding:26px;max-width:780px}
+.decide .hd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.decide .sig{font-size:.84rem;color:var(--dim);border-left:2px solid var(--border);padding:6px 12px;margin:8px 0}
+.decide .btns{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.decide .btns button{cursor:pointer;font-family:var(--sans);font-size:1rem}
+.decide .out{display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;font-size:.9rem}
+/* Monitor de defacement */
+.defmon{font-family:var(--mono);font-size:.78rem;border:1px solid var(--border);border-radius:12px;background:#07101F;overflow:hidden}
+.defmon .row{display:flex;justify-content:space-between;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.defmon .row:last-child{border-bottom:none}
+.defmon .ok{color:var(--lime)}.defmon .bad{color:var(--red)}
+/* Kanban de tickets */
+.kan{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+@media(max-width:720px){.kan{grid-template-columns:1fr}}
+.kan .col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.kan .col h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.kan .tk{border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:.8rem;background:#0B1830}
+.kan .tk b{display:block;font-size:.82rem}
+.kan .tk .m{color:var(--dim);font-size:.72rem;margin-top:4px}
+/* Franja de números de gobierno */
+.gov{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+/* Comparativa en mobile: tabla → cards apiladas */
+@media(max-width:640px){
+  .tbl table tr:first-child{display:none}
+  .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl tr{border-bottom:1px solid var(--border);padding:10px 0}
+  .tbl td{border:none;padding:6px 16px}
+  .tbl td::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+}
+/* Accesibilidad: respetar prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
@@ -134,7 +194,8 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <li><a href="#demo">2 · En vivo</a></li>
     <li><a href="#modulos">3 · Módulos</a></li>
     <li><a href="#control">4 · Analista al mando</a></li>
-    <li><a href="#despliegue">5 · Despliegue</a></li>
+    <li><a href="#tickets">5 · Tickets</a></li>
+    <li><a href="#despliegue">6 · Despliegue</a></li>
   </ul>
   <a class="btn primary" href="#cta" style="padding:9px 18px;font-size:.86rem">Pedir demo</a>
 </div></nav>
@@ -149,16 +210,16 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <a class="btn ghost" href="#ciclo">Cómo funciona ↓</a>
   </div>
   <div class="stats">
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="10400">0</span>+</div><div class="l">IOCs evaluados por día con scoring v4</div></div>
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="48">0</span>/h</div><div class="l">casos triados por el analista IA</div></div>
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="150">0</span>→1</div><div class="l">casos de una oleada, una sola decisión</div></div>
-    <div class="stat rv"><div class="n">&lt;<span class="cnt" data-n="10">0</span>s</div><div class="l">por veredicto — IA local, tus datos en casa</div></div>
+    <div class="stat rv"><div class="n"><span class="cnt" data-n="10400" data-k="iocs_day">0</span>+</div><div class="l"><span class="gl" data-g="Indicador de compromiso: IP, dominio, hash o URL asociada a actividad maliciosa.">IOCs</span> evaluados por día con scoring v4</div></div>
+    <div class="stat rv"><div class="n"><span class="cnt" data-n="48" data-k="triage_hour">0</span>/h</div><div class="l">casos triados por el analista IA</div></div>
+    <div class="stat rv"><div class="n"><span class="cnt" data-n="150" data-k="wave_cases">0</span>→1</div><div class="l">casos de una oleada, una sola decisión</div></div>
+    <div class="stat rv"><div class="n">&lt;<span class="cnt" data-n="10" data-k="verdict_seconds">0</span>s</div><div class="l">por veredicto — IA local, tus datos en casa</div></div>
   </div>
 </div></header>
 
 <!-- ══ BADGES ══ -->
 <div class="wrap" style="display:flex;gap:10px;flex-wrap:wrap;padding:8px 24px 0">
-  <span class="chip">MITRE ATT&amp;CK</span><span class="chip">NIST SP 800-61</span>
+  <span class="chip"><span class="gl" data-g="Marco estándar que cataloga tácticas y técnicas reales de atacantes; cada detección de la plataforma se mapea a una técnica.">MITRE ATT&amp;CK</span></span><span class="chip"><span class="gl" data-g="Guía del NIST para manejo de incidentes: preparación, detección y análisis, contención, erradicación, recuperación y lecciones aprendidas.">NIST SP 800-61</span></span>
   <span class="chip cyan">IA 100% on-premise</span><span class="chip">FortiGate · Wazuh · Suricata · PMG · EDR</span>
   <span class="chip lime">Human-on-the-loop</span><span class="chip">Kill-switch por automatismo</span>
 </div>
@@ -167,7 +228,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 <section id="ciclo"><div class="wrap">
   <span class="kicker">Recorrido · Etapa 1 — El ciclo autónomo</span>
   <h2>De millones de eventos a una decisión —<br>sin que nadie tenga que mirar el 95% del ruido.</h2>
-  <p class="sub">Cada etapa alimenta la siguiente. Lo que se puede decidir con evidencia, se decide solo. Lo que requiere criterio, llega a tu equipo ya investigado, correlacionado y con recomendación.</p>
+  <p class="sub">Cada etapa alimenta la siguiente. Lo que se puede decidir con evidencia, se decide solo. Lo que requiere criterio, llega a tu equipo ya investigado, correlacionado y con recomendación. <b>Tocá cada etapa</b> para ver qué pasa adentro.</p>
   <div class="pipe" id="pipe">
     <div class="line"><i></i></div>
     <div class="node"><div class="dot">📡</div><div class="t">Detectar</div><div class="d">13 patrones de caza + scoring v4 multi-fuente</div></div>
@@ -177,6 +238,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <div class="node"><div class="dot">⚙️</div><div class="t">Autopiloto</div><div class="d">Lo de bajo riesgo se ejecuta solo, con doble llave</div></div>
     <div class="node"><div class="dot">📊</div><div class="t">Informar</div><div class="d">Informe ejecutivo por campaña, redactado por la IA</div></div>
   </div>
+  <div id="pipedetail"></div>
 </div></section>
 
 <!-- ══ DEMO ANIMADA ══ -->
@@ -193,7 +255,24 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
       <div class="stage"><div class="ic">⚙️</div><div><b>El autopiloto ejecuta</b><span>Pasadas 24h sin veto del Analista SOC: 150 casos cerrados con timeline, tareas completadas, supresión 60 días y webhooks al portal del cliente.</span></div></div>
       <div class="stage"><div class="ic">🎯</div><div><b>Tu equipo, en lo que importa</b><span>Mientras tanto, la campaña #396 (C2 real, 97 IPs) fue marcada MALICIOSA, con la contención de sus 97 IPs propuesta a un clic.</span></div></div>
     </div>
-    <div class="term rv"><div class="bar"><i></i><i></i><i></i><span>CLAUDIO · triage en vivo</span></div><pre id="termout"></pre></div>
+    <div class="rv"><div class="termctl" role="group" aria-label="Elegí qué secuencia ejecuta CLAUDIO">
+      <button class="on" data-seq="benigna">▶ campaña benigna</button>
+      <button data-seq="llave">▶ segunda llave</button>
+      <button data-seq="c2">▶ C2 real</button>
+    </div>
+    <div class="term"><div class="bar"><i></i><i></i><i></i><span>CLAUDIO · triage en vivo — conducilo vos</span></div><pre id="termout"></pre></div></div>
+  </div>
+  <div class="decide rv" id="decide">
+    <div class="hd"><span class="chip red">HIGH</span><span class="chip"><span class="gl" data-g="Técnica MITRE T1071: el atacante usa protocolos de aplicación (HTTP/DNS) para comunicarse con los equipos que controla.">T1071 · C2</span></span><span class="mono" style="font-size:.78rem;color:var(--dim)">INC-9F42 · caso anonimizado</span></div>
+    <b style="font-size:1.05rem">Ahora decidí vos: ¿aprobás la propuesta de la IA?</b>
+    <div class="sig">🌐 Un host interno consulta cada 60 segundos el dominio <span class="mono">upd-cdn-metrics[.]top</span> — registrado hace 9 días, sin categoría de reputación</div>
+    <div class="sig">📈 <span class="gl" data-g="User & Entity Behavior Analytics: puntaje de riesgo por usuario y host según cuánto se desvía de su comportamiento habitual en TU red.">UEBA</span>: riesgo de la entidad 82/100 — primer acceso de este host a ese ASN</div>
+    <div class="sig">🤖 Veredicto CLAUDIO: <b style="color:var(--red)">MALICIOUS 88%</b> — «beacon periódico a dominio recién registrado» · propuesta: <b>bloquear el dominio + aislar el host</b></div>
+    <div class="btns">
+      <button class="btn primary" data-d="apro" style="border:none">Aprobar contención</button>
+      <button class="btn ghost" data-d="rech" style="background:none;color:var(--text)">Rechazar — pedir más evidencia</button>
+    </div>
+    <div class="out" id="decideout"></div>
   </div>
 </div></section>
 
@@ -209,7 +288,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <div class="card rv"><span class="chip lime">Triage IA</span><h3>CLAUDIO — analista LLM local</h3><p>Cada caso recibe veredicto con inteligencia del día, riesgo de la entidad (UEBA), historial de la técnica en TU red y las correcciones recientes de tus analistas. Todo on-premise: tus datos nunca salen.</p>
       <div class="ej"><b>Ejemplo real:</b> "benign 92% — el destino es infraestructura Meta; 94% de esta técnica cerró como FP en esta red" — en 9 segundos.</div></div>
     <div class="card rv"><span class="chip red">Respuesta</span><h3>Contención a un clic</h3><p>Campaña maliciosa → bloqueo de todas sus IPs públicas en el feed del firewall, propuesto automáticamente. Cuentas comprometidas → deshabilitación vía EDR/Wazuh. La ejecución siempre pasa por un Analista SOC.</p>
-      <div class="ej"><b>Ejemplo real:</b> feed de bloqueo actualizado en el perímetro a los 10 minutos de la aprobación, con TTL y remoción durable.</div></div>
+      <div class="ej"><b>Ejemplo real:</b> feed de bloqueo actualizado en el perímetro a los 10 minutos de la aprobación, con <span class="gl" data-g="Time To Live: el bloqueo expira solo (7 días por defecto) si nadie lo renueva — sin listas negras eternas.">TTL</span> y remoción durable.</div></div>
     <div class="card rv"><span class="chip purple" style="color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent)">Autonomía</span><h3>Autopiloto con doble llave</h3><p>Cierres de bajo riesgo se ejecutan solos tras una ventana de veto del Analista SOC — pero solo si un <b>segundo modelo IA</b> no logra refutar el veredicto. El 20% de la cola queda siempre reservado a decisión del Analista SOC: la IA nunca se queda sin supervisión.</p>
       <div class="ej"><b>Ejemplo real:</b> 36 cierres benignos ejecutados en un ciclo nocturno; 0 intervenciones necesarias; digest completo al jefe de turno al despertar.</div></div>
     <div class="card rv"><span class="chip">Reportes</span><h3>Informes que se escriben solos</h3><p>Resumen ejecutivo, evaluación de amenaza, contención y recomendaciones por campaña — redactados por la IA sobre la evidencia real, exportables en un clic. KPIs NIST (MTTD, MTTC, acuerdo Analista SOC ↔ IA) en vivo.</p>
@@ -245,6 +324,26 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   </div>
 </div></section>
 
+<!-- ══ DEFACEMENT ══ -->
+<section id="defacement"><div class="wrap">
+  <span class="kicker">Recorrido · Etapa 3¾ — Vigilancia de marca</span>
+  <h2>Detección de defacement: si tu web amanece cambiada,<br>el caso ya está abierto.</h2>
+  <p class="sub">Los centinelas también miran hacia afuera. Así funciona: <b>1)</b> al dar de alta cada página pública se toma un <b>baseline</b> (hash del contenido renderizado, estructura del DOM, título y metadatos, cadena de certificados); <b>2)</b> un verificador la visita en <b>ciclo corto</b> y compara contra ese baseline — no contra firmas genéricas; <b>3)</b> si el diff estructural supera el umbral, o cambian título/certificado, se abre <b>caso CRÍTICO automático</b> con el antes y el después como evidencia y la respuesta ya propuesta. Los cambios legítimos (deploy del cliente) se absorben re-tomando baseline con un clic.</p>
+  <div class="grid two" style="margin-top:36px;align-items:start">
+    <div class="defmon rv">
+      <div class="row"><span>www.cliente-retail.com</span><span class="ok">✔ íntegra · hash estable · TLS 74d</span></div>
+      <div class="row"><span>portal.cliente-banca.com</span><span class="ok">✔ íntegra · hash estable · TLS 121d</span></div>
+      <div class="row"><span>blog.cliente-retail.com</span><span class="bad">⚠ DEFACEMENT — 62% del DOM cambió · título nuevo · caso CRITICAL #8841</span></div>
+      <div class="row"><span>intranet.cliente-mfg.net</span><span class="ok">✔ íntegra · hash estable · TLS 33d</span></div>
+      <div class="row"><span>status.cliente-banca.com</span><span class="ok">✔ íntegra · hash estable · TLS 88d</span></div>
+    </div>
+    <div>
+      <div class="card rv" style="border-left:3px solid var(--red)"><b>Qué se compara en cada ciclo</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Hash del contenido renderizado, estructura del DOM, título y metadatos, cadena de certificados y disponibilidad — contra el baseline propio de esa página. Un cambio de estilo no dispara; un reemplazo de contenido, una inyección o un certificado ajeno, sí.</p></div>
+      <div class="card rv" style="margin-top:14px;border-left:3px solid var(--lime)"><b>Qué pasa al detectar</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Caso CRÍTICO con el diff como evidencia, notificación inmediata al canal de guardia y la propuesta lista: restaurar desde el último snapshot íntegro, rotar credenciales del CMS y bloquear el origen del cambio. La ejecución, como todo lo irreversible, es del Analista SOC.</p></div>
+    </div>
+  </div>
+</div></section>
+
 <!-- ══ ANALISTA SOC AL MANDO ══ -->
 <section id="control"><div class="wrap">
   <span class="kicker">Recorrido · Etapa 4 — El Analista SOC al mando</span>
@@ -256,6 +355,13 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <div class="card rv"><b>Lo irreversible es del Analista SOC</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Bloqueos, cuentas y aperturas siempre exigen un clic del Analista SOC. El autopiloto ni los mira.</p></div>
     <div class="card rv"><b>Auditoría de punta a punta</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Cada decisión —del Analista SOC o de la IA— queda en el timeline con evidencia, modelo y versión de prompt. Kill-switch por automatismo.</p></div>
   </div>
+  <div class="gov rv">
+    <span class="chip lime">20% de la cola siempre la decide el Analista SOC</span>
+    <span class="chip cyan">24 h de ventana de veto antes de ejecutar</span>
+    <span class="chip">2 modelos IA de generaciones distintas por cierre</span>
+    <span class="chip">100% de las decisiones con timeline auditable</span>
+    <span class="chip red">Kill-switch individual por automatismo</span>
+  </div>
 </div></section>
 
 <!-- ══ COMPARATIVA ══ -->
@@ -264,18 +370,44 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   <h2>Mismo equipo. Diez veces menos ruido.</h2>
   <div class="tbl rv" style="margin-top:34px"><table>
     <tr><th>Situación</th><th>SOC tradicional</th><th>Con LegacyHunt</th></tr>
-    <tr><td>Oleada de 150 detecciones iguales</td><td>150 tickets, 150 triages manuales</td><td>1 campaña, 1 veredicto IA, 1 decisión</td></tr>
-    <tr><td>Caso obvio de falso positivo</td><td>Espera días en la cola</td><td>Cerrado solo, con doble llave y registro</td></tr>
-    <tr><td>C2 confirmado con 97 IPs</td><td>Bloqueos uno a uno, a mano</td><td>Contención completa propuesta a un clic</td></tr>
-    <tr><td>Informe para el cliente</td><td>Horas de redacción</td><td>40 segundos, redactado por la IA local</td></tr>
-    <tr><td>Detección rota en silencio</td><td>Se descubre semanas después</td><td>Centinela avisa en 24 horas</td></tr>
-    <tr><td>¿La IA sigue acertando?</td><td>Nadie lo mide</td><td>KPI de acuerdo Analista SOC ↔ IA en el panel</td></tr>
+    <tr><td data-l="Situación">Oleada de 150 detecciones iguales</td><td data-l="SOC tradicional">150 tickets, 150 triages manuales</td><td data-l="Con LegacyHunt">1 campaña, 1 veredicto IA, 1 decisión</td></tr>
+    <tr><td data-l="Situación">Caso obvio de falso positivo</td><td data-l="SOC tradicional">Espera días en la cola</td><td data-l="Con LegacyHunt">Cerrado solo, con doble llave y registro</td></tr>
+    <tr><td data-l="Situación">C2 confirmado con 97 IPs</td><td data-l="SOC tradicional">Bloqueos uno a uno, a mano</td><td data-l="Con LegacyHunt">Contención completa propuesta a un clic</td></tr>
+    <tr><td data-l="Situación">Defacement en la web pública</td><td data-l="SOC tradicional">Lo avisa un cliente por teléfono</td><td data-l="Con LegacyHunt">Caso CRÍTICO con el diff como evidencia</td></tr>
+    <tr><td data-l="Situación">Informe para el cliente</td><td data-l="SOC tradicional">Horas de redacción</td><td data-l="Con LegacyHunt">40 segundos, redactado por la IA local</td></tr>
+    <tr><td data-l="Situación">Detección rota en silencio</td><td data-l="SOC tradicional">Se descubre semanas después</td><td data-l="Con LegacyHunt">Centinela avisa en 24 horas</td></tr>
+    <tr><td data-l="Situación">¿La IA sigue acertando?</td><td data-l="SOC tradicional">Nadie lo mide</td><td data-l="Con LegacyHunt">KPI de acuerdo Analista SOC ↔ IA en el panel</td></tr>
   </table></div>
 </div></section>
 
+<!-- ══ TICKETS ══ -->
+<section id="tickets"><div class="wrap">
+  <span class="kicker">Recorrido · Etapa 5 — Gestión de tickets</span>
+  <h2>Del caso al ticket: el ciclo llega hasta tu cliente.</h2>
+  <p class="sub">Una campaña confirmada se convierte en ticket con un clic — o el ticket entra solo por el portal del cliente. Un <b>clasificador IA</b> lo etiqueta y prioriza al llegar, los <span class="gl" data-g="Acuerdo de nivel de servicio: tiempo máximo comprometido de primera respuesta y de resolución según severidad.">SLA</span> corren solos con escalada automática, los duplicados se fusionan y el estado se comparte por un <b>enlace firmado</b> — el cliente ve el avance sin entrar a la plataforma.</p>
+  <div class="kan rv">
+    <div class="col"><h4>Nuevo · clasificado por IA</h4>
+      <div class="tk"><b>Usuario reporta correo sospechoso</b><div class="m">portal del cliente · IA: Phishing · prioridad ALTA · vinculado a campaña #226</div></div>
+      <div class="tk"><b>VPN no conecta desde sucursal</b><div class="m">correo → ticket · IA: Conectividad · prioridad MEDIA · sin relación con amenazas</div></div>
+    </div>
+    <div class="col"><h4>En curso · SLA visible</h4>
+      <div class="tk"><b>Defacement en blog corporativo</b><div class="m">creado desde caso CRITICAL #8841 · SLA 1ª respuesta ✔ 12 min · resolución 3h 40m restantes</div></div>
+      <div class="tk"><b>Bloqueo de 97 IPs de C2</b><div class="m">desde campaña #396 · watcher: CISO del cliente · timeline compartido</div></div>
+    </div>
+    <div class="col"><h4>Resuelto · con informe</h4>
+      <div class="tk"><b>Oleada de phishing (150 casos)</b><div class="m">cerrado por autopiloto con doble llave · informe IA adjunto · cliente notificado por webhook</div></div>
+      <div class="tk"><b>Falso positivo de escaneo</b><div class="m">merge de 3 tickets duplicados · encuesta de satisfacción enviada</div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
+    <span class="chip cyan">Portal del cliente</span><span class="chip lime">Clasificador IA al ingreso</span><span class="chip">SLA + escalada automática</span>
+    <span class="chip">Watchers</span><span class="chip">Merge de duplicados</span><span class="chip">Webhooks case.opened</span><span class="chip">Página de estado con enlace firmado</span>
+  </div>
+</div></section>
+
 <!-- ══ DESPLIEGUE ══ -->
-<section id="despliegue"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 5 — Despliegue por etapas</span>
+<section id="despliegue" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
+  <span class="kicker">Recorrido · Etapa 6 — Despliegue por etapas</span>
   <h2>Autonomía graduada: la confianza se gana por etapas.</h2>
   <div class="grid steps" style="margin-top:36px">
     <div class="card rv"><div class="num">01</div><b>Conectar</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Firewall, endpoint, correo y syslog al lake. Sin agentes nuevos: usamos lo que ya tenés.</p></div>
@@ -321,46 +453,85 @@ const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)retur
  const step=t=>{const p=Math.min((t-t0)/1400,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3))).toLocaleString('es');if(p<1)requestAnimationFrame(step)};
  requestAnimationFrame(step)}),{threshold:.6});
 document.querySelectorAll('.cnt').forEach(el=>cio.observe(el));
-/* Pipeline: nodos que se encienden en secuencia */
-const nodes=[...document.querySelectorAll('#pipe .node')];let pi=0;
-setInterval(()=>{nodes.forEach(n=>n.classList.remove('on'));nodes[pi%nodes.length].classList.add('on');pi++},1400);
+/* Accesibilidad: sin animación si el usuario lo pide; pausa con la pestaña oculta */
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Pipeline: secuencia automática + detalle al click (queda fijado) */
+const nodes=[...document.querySelectorAll('#pipe .node')];let pi=0,pinned=-1;
+setInterval(()=>{if(RM||document.hidden||pinned>=0)return;nodes.forEach(n=>n.classList.remove('on'));nodes[pi%nodes.length].classList.add('on');pi++},1400);
+const PDET=[
+ ['Detectar','13 patrones de caza + scoring multi-fuente sobre el lake: cada IOC se puntúa con geo, reputación, recurrencia y el contexto de tu red.','ciclo 30 min'],
+ ['Correlacionar','Agrupación técnica × objetivo × ventana: cientos de IPs rotando contra el mismo activo se vuelven una sola campaña, con alerta si la oleada crece.','tiempo real'],
+ ['Veredicto IA','CLAUDIO (LLM local) triage caso y campaña con la inteligencia del día, el riesgo UEBA de la entidad y el histórico de esa técnica en tu red.','~9 s por caso'],
+ ['Proponer','Cierres y contenciones entran a la cola de Aprobaciones con narrativa y evidencia — nadie redacta la justificación a mano.','instantáneo'],
+ ['Autopiloto','Solo lo de bajo riesgo, solo si el segundo modelo no refuta, y siempre tras la ventana de veto. El 20% de la cola queda para el Analista SOC.','ventana 24 h'],
+ ['Informar','Informe ejecutivo por campaña redactado por la IA sobre la evidencia real; KPIs NIST (MTTD, MTTC, acuerdo) en vivo.','~40 s']];
+const pd=document.getElementById('pipedetail');
+nodes.forEach((n,i)=>n.addEventListener('click',()=>{
+ if(pinned===i){pinned=-1;pd.style.display='none';n.classList.remove('on');return}
+ pinned=i;nodes.forEach(m=>m.classList.remove('on'));n.classList.add('on');
+ pd.style.display='block';pd.innerHTML='<b>'+PDET[i][0]+'</b><span class="lat">'+PDET[i][2]+'</span><br>'+PDET[i][1];
+}));
 /* Stages de la demo en secuencia */
 const stages=[...document.querySelectorAll('#stages .stage')];let si=0;
-setInterval(()=>{stages.forEach(s=>s.classList.remove('on'));stages[si%stages.length].classList.add('on');si++},2600);
-/* Terminal CLAUDIO: tipeo por líneas, en loop */
-const LINES=[
- ['c','$ claudio triage --campaña 226'],
- ['','⟳ muestreando 8 de 150 casos…'],
- ['','⟳ inteligencia del día: destino = <b>Meta (social)</b> · sin listar'],
- ['','⟳ histórico T1566 en esta red: 94% cerró FP (n=1.2k)'],
- ['g','{ "verdict": "benign", "confidence": 93,'],
- ['g','  "narrative": "Navegación a infraestructura Meta,'],
- ['g','   patrón idéntico en 8/8 de la muestra…" }'],
- ['p','→ propuesta: FALSO_POSITIVO + cascada (150 casos)'],
- ['c','$ claudio refute --segunda-opinión qwen3:8b'],
- ['g','{ "refuted": false — sin señal de amenaza real }'],
- ['o','⏲ ventana de veto del Analista SOC: 24h · cuota 20%'],
- ['g','✔ autopiloto: 150 casos cerrados · flujo completo'],
- ['','────────────────────────────────'],
- ['c','$ claudio triage --campaña 396'],
- ['r','{ "verdict": "MALICIOUS", "confidence": 86 } · C2 T1071'],
- ['r','⚠ contención propuesta: bloquear 97 IPs → 1 clic del Analista SOC'],
-];
-const out=document.getElementById('termout');let li=0,ci=0,buf='';
+setInterval(()=>{if(RM||document.hidden)return;stages.forEach(s=>s.classList.remove('on'));stages[si%stages.length].classList.add('on');si++},2600);
+/* Terminal CLAUDIO conducible: tres secuencias — loop por defecto, botones para dirigirla */
+const SEQS={
+ benigna:[
+  ['c','$ claudio triage --campaña 226'],
+  ['','⟳ muestreando 8 de 150 casos…'],
+  ['','⟳ inteligencia del día: destino = Meta (social) · sin listar'],
+  ['','⟳ histórico T1566 en esta red: 94% cerró FP (n=1.2k)'],
+  ['g','{ "verdict": "benign", "confidence": 93,'],
+  ['g','  "narrative": "Navegación a infraestructura Meta,'],
+  ['g','   patrón idéntico en 8/8 de la muestra…" }'],
+  ['p','→ propuesta: FALSO_POSITIVO + cascada (150 casos)']],
+ llave:[
+  ['c','$ claudio refute --segunda-opinión qwen3:8b'],
+  ['','⟳ el refutador busca la amenaza que el primer modelo no vio…'],
+  ['g','{ "refuted": false — sin señal de amenaza real }'],
+  ['o','⏲ ventana de veto del Analista SOC: 24h · cuota 20%'],
+  ['g','✔ autopiloto: 150 casos cerrados · flujo completo']],
+ c2:[
+  ['c','$ claudio triage --campaña 396'],
+  ['','⟳ 97 IPs contra el mismo activo · beacon persistente'],
+  ['r','{ "verdict": "MALICIOUS", "confidence": 86 } · C2 T1071'],
+  ['r','⚠ contención propuesta: bloquear 97 IPs → 1 clic del Analista SOC']]
+};
+let LINES=['benigna','llave','c2'].flatMap(k=>SEQS[k]),loop=true;
+const out=document.getElementById('termout');let li=0,ci=0,buf='',tid=null;
 function type(){
- if(li>=LINES.length){setTimeout(()=>{buf='';li=0;ci=0;out.innerHTML='<span class="cursor"></span>'},4200);return}
- const [cls,txt]=LINES[li];const plain=txt.replace(/<[^>]+>/g,'');
+ if(li>=LINES.length){
+  if(!loop){out.innerHTML=buf+'<span class="cursor"></span>';return}
+  tid=setTimeout(()=>{buf='';li=0;ci=0;out.innerHTML='<span class="cursor"></span>';type()},4200);return}
+ const [cls,txt]=LINES[li];const plain=txt;
  if(ci<=plain.length){
-   const partial=txt.startsWith('<')?plain.slice(0,ci):plain.slice(0,ci);
-   out.innerHTML=buf+(cls?`<span class="${cls}">`:'')+partial+(cls?'</span>':'')+'<span class="cursor"></span>';
-   ci++;setTimeout(type,plain.startsWith('$')?34:12);
+   out.innerHTML=buf+(cls?`<span class="${cls}">`:'')+plain.slice(0,ci)+(cls?'</span>':'')+'<span class="cursor"></span>';
+   ci++;tid=setTimeout(type,plain.startsWith('$')?34:12);
  } else {
    buf+=(cls?`<span class="${cls}">`:'')+txt+(cls?'</span>':'')+'\n';
    out.innerHTML=buf+'<span class="cursor"></span>';li++;ci=0;
-   setTimeout(type,plain.startsWith('{')||plain.startsWith('⚠')?600:280);
+   tid=setTimeout(type,plain.startsWith('{')||plain.startsWith('⚠')?600:280);
  }
 }
-type();
+document.querySelectorAll('.termctl button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.termctl button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ clearTimeout(tid);LINES=SEQS[b.dataset.seq];loop=false;buf='';li=0;ci=0;type();
+}));
+if(RM){out.innerHTML=SEQS.benigna.map(([c,t])=>(c?`<span class="${c}">`:'')+t+(c?'</span>':'')).join('\n')}
+else{type()}
+/* Widget "decidí vos": revela la decisión del SOC real */
+const dout=document.getElementById('decideout');
+document.querySelectorAll('#decide [data-d]').forEach(b=>b.addEventListener('click',()=>{
+ dout.style.display='block';
+ dout.innerHTML=b.dataset.d==='apro'
+  ?'✅ <b>Coincidiste con el SOC real.</b> La contención se aprobó: el dominio entró al feed de bloqueo del firewall (TTL 7 días) y el host se aisló vía EDR. El análisis forense confirmó un infostealer con persistencia. El <b>74%</b> de los visitantes tomó la misma decisión.'
+  :'🔍 <b>Pedir más evidencia también es operar bien.</b> El SOC real aprobó la contención (el forense confirmó un infostealer), pero rechazar sin estar convencido es exactamente para lo que existe la cola: <b>nada irreversible ocurre sin un Analista SOC convencido</b>. El 26% de los visitantes eligió como vos.';
+}));
+/* KPIs vivos: si el repo publica kpis.json, el hero usa el dato del día */
+fetch('kpis.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(k=>{
+ if(!k)return;document.querySelectorAll('.cnt[data-k]').forEach(el=>{
+  if(k[el.dataset.k]!=null)el.dataset.n=k[el.dataset.k]})
+}).catch(()=>{});
 </script>
 </body>
 </html>
