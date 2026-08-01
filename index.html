@@ -176,6 +176,27 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   .tbl td{border:none;padding:6px 16px}
   .tbl td::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
 }
+/* Un día del Analista SOC (tabla horaria antes/después) */
+.daywrap{overflow-x:auto;margin-top:36px}
+.day{display:grid;grid-template-columns:64px 1fr 1fr;min-width:640px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card)}
+.day>div{padding:13px 16px;border-bottom:1px solid var(--border);font-size:.85rem}
+.day>div:nth-last-child(-n+3){border-bottom:none}
+.day .dh{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);background:#0B1830}
+.day .hr{font-family:var(--mono);color:var(--lime);font-size:.76rem}
+.day .trad{color:var(--dim)}
+.day .lh{border-left:1px solid var(--border)}
+.day .lh b{color:var(--lime)}
+/* Selector de audiencia */
+#audpitch{min-height:1.4em}
+section.audkey .kicker::after{content:" · clave para tu rol";color:var(--cyan);text-transform:none;letter-spacing:0}
+/* Tour guiado de 90 segundos */
+#tourcap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:80;max-width:660px;width:calc(100% - 40px);background:#050D1D;border:1px solid color-mix(in srgb,var(--lime) 55%,transparent);border-radius:12px;padding:16px 18px;font-size:.92rem;box-shadow:0 8px 40px rgba(0,0,0,.6);display:none}
+#tourcap .tc-hd{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.7rem;color:var(--dim);margin-bottom:6px}
+#tourcap button{background:none;border:none;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.7rem}
+#tourcap button:hover{color:var(--red)}
+/* Diagrama de arquitectura */
+.arch text{font-family:var(--mono);fill:var(--text)}
+.arch .lbl{fill:#A3B8D9}
 /* Accesibilidad: respetar prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -186,6 +207,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 </head>
 <body>
 <div id="journeybar"></div>
+<div id="tourcap" role="status"><div class="tc-hd"><span id="tourstep"></span><button id="tourexit">✕ salir (Esc)</button></div><div id="tourtext"></div></div>
 
 <nav><div class="wrap">
   <div class="logo">Legacy<b>Hunt</b> <span class="chip lime" style="margin-left:8px">MDR</span></div>
@@ -207,7 +229,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   <p class="sub">LegacyHunt convierte millones de eventos en <b>pocas decisiones de alto valor para el Analista SOC</b>: detecta, agrupa oleadas en campañas, emite veredictos con IA local, propone la contención y cierra el ruido — con doble llave, auditoría completa y un Analista SOC siempre al mando de lo irreversible.</p>
   <div style="display:flex;gap:14px;flex-wrap:wrap">
     <a class="btn primary" href="#cta">Ver la plataforma en acción</a>
-    <a class="btn ghost" href="#ciclo">Cómo funciona ↓</a>
+    <a class="btn ghost" href="#ciclo" id="tourbtn">▶ Tour de 90 segundos</a>
   </div>
   <div class="stats">
     <div class="stat rv"><div class="n"><span class="cnt" data-n="10400" data-k="iocs_day">0</span>+</div><div class="l"><span class="gl" data-g="Indicador de compromiso: IP, dominio, hash o URL asociada a actividad maliciosa.">IOCs</span> evaluados por día con scoring v4</div></div>
@@ -222,6 +244,16 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   <span class="chip"><span class="gl" data-g="Marco estándar que cataloga tácticas y técnicas reales de atacantes; cada detección de la plataforma se mapea a una técnica.">MITRE ATT&amp;CK</span></span><span class="chip"><span class="gl" data-g="Guía del NIST para manejo de incidentes: preparación, detección y análisis, contención, erradicación, recuperación y lecciones aprendidas.">NIST SP 800-61</span></span>
   <span class="chip cyan">IA 100% on-premise</span><span class="chip">FortiGate · Wazuh · Suricata · PMG · EDR</span>
   <span class="chip lime">Human-on-the-loop</span><span class="chip">Kill-switch por automatismo</span>
+</div>
+
+<!-- ══ SELECTOR DE AUDIENCIA ══ -->
+<div class="wrap" id="audsel" style="margin-top:30px">
+  <div class="termctl" role="group" aria-label="Elegí tu rol para adaptar el recorrido">
+    <button class="on" data-aud="analista">👤 Soy Analista SOC</button>
+    <button data-aud="ciso">🛡️ Soy CISO</button>
+    <button data-aud="msp">🏢 Soy MSP / proveedor</button>
+  </div>
+  <p class="sub" id="audpitch" style="margin-top:10px;font-size:.95rem"></p>
 </div>
 
 <!-- ══ EL CICLO AUTÓNOMO ══ -->
@@ -292,7 +324,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <div class="card rv"><span class="chip purple" style="color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent)">Autonomía</span><h3>Autopiloto con doble llave</h3><p>Cierres de bajo riesgo se ejecutan solos tras una ventana de veto del Analista SOC — pero solo si un <b>segundo modelo IA</b> no logra refutar el veredicto. El 20% de la cola queda siempre reservado a decisión del Analista SOC: la IA nunca se queda sin supervisión.</p>
       <div class="ej"><b>Ejemplo real:</b> 36 cierres benignos ejecutados en un ciclo nocturno; 0 intervenciones necesarias; digest completo al jefe de turno al despertar.</div></div>
     <div class="card rv"><span class="chip">Reportes</span><h3>Informes que se escriben solos</h3><p>Resumen ejecutivo, evaluación de amenaza, contención y recomendaciones por campaña — redactados por la IA sobre la evidencia real, exportables en un clic. KPIs NIST (MTTD, MTTC, acuerdo Analista SOC ↔ IA) en vivo.</p>
-      <div class="ej"><b>Ejemplo real:</b> informe de la campaña C2 listo en 40 segundos, con las 3 recomendaciones de mitigación para ese vector.</div></div>
+      <div class="ej"><b>Ejemplo real:</b> informe de la campaña C2 listo en 40 segundos, con las 3 recomendaciones de mitigación para ese vector. <a href="informe-muestra.html" target="_blank" rel="noopener">Ver un informe de muestra →</a></div></div>
   </div>
 </div></section>
 
@@ -365,7 +397,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
 </div></section>
 
 <!-- ══ COMPARATIVA ══ -->
-<section style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
+<section id="comparativa" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
   <span class="kicker">Recorrido · Etapa 4½ — El antes y el después</span>
   <h2>Mismo equipo. Diez veces menos ruido.</h2>
   <div class="tbl rv" style="margin-top:34px"><table>
@@ -378,6 +410,23 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <tr><td data-l="Situación">Detección rota en silencio</td><td data-l="SOC tradicional">Se descubre semanas después</td><td data-l="Con LegacyHunt">Centinela avisa en 24 horas</td></tr>
     <tr><td data-l="Situación">¿La IA sigue acertando?</td><td data-l="SOC tradicional">Nadie lo mide</td><td data-l="Con LegacyHunt">KPI de acuerdo Analista SOC ↔ IA en el panel</td></tr>
   </table></div>
+</div></section>
+
+<!-- ══ UN DÍA DEL ANALISTA ══ -->
+<section id="undia"><div class="wrap">
+  <span class="kicker">Recorrido · Etapa 4¾ — Un día con la plataforma</span>
+  <h2>La misma jornada, dos realidades.</h2>
+  <p class="sub">No es que el equipo trabaje más — es que deja de gastar el día en lo que la plataforma ya decidió por evidencia.</p>
+  <div class="daywrap rv"><div class="day">
+    <div class="dh"></div><div class="dh">SOC tradicional</div><div class="dh" style="color:var(--lime)">Con LegacyHunt</div>
+    <div class="hr">08:00</div><div class="trad">Llegan 300 alertas sin priorizar; empieza a triar de arriba hacia abajo.</div><div class="lh"><b>La cola del día: 12 ítems</b> priorizados por riesgo, cada uno con veredicto IA y evidencia lista.</div>
+    <div class="hr">08:40</div><div class="trad">Va por la alerta #23. El resto espera.</div><div class="lh">Decidió las <b>5 propuestas pendientes</b>; los 150 casos de la oleada se cerraron en cascada con una aprobación.</div>
+    <div class="hr">09:00</div><div class="trad">El C2 real sigue enterrado en la página 4 de la bandeja.</div><div class="lh">Investiga <b>lo único CRITICAL</b>: timeline armado, riesgo de la entidad, contención propuesta a un clic.</div>
+    <div class="hr">11:30</div><div class="trad">Bloquea 97 IPs una por una en el firewall.</div><div class="lh">Aprobó la contención: <b>el feed del perímetro se actualizó solo</b>, con TTL y remoción durable.</div>
+    <div class="hr">13:00</div><div class="trad">Empieza a redactar el informe para el cliente.</div><div class="lh">Revisa el informe que <b>la IA redactó en 40 segundos</b> y lo envía.</div>
+    <div class="hr">15:00</div><div class="trad">Un sensor dejó de mandar logs hace días. Nadie lo notó.</div><div class="lh"><b>Un centinela avisó</b>: carril de detección degradado — se corrige el mismo día.</div>
+    <div class="hr">17:00</div><div class="trad">Se va con 180 pendientes y la duda de qué se escapó.</div><div class="lh"><b>Cola en cero.</b> A la noche el autopiloto atiende lo obvio — con doble llave y cuota del Analista SOC.</div>
+  </div></div>
 </div></section>
 
 <!-- ══ TICKETS ══ -->
@@ -415,6 +464,46 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
     <div class="card rv"><div class="num">03</div><b>Modo sombra</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">La IA propone todo y no ejecuta nada. Tu equipo valida las propuestas y el KPI de acuerdo mide la calidad.</p></div>
     <div class="card rv"><div class="num">04</div><b>Autonomía</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Se enciende el autopiloto para lo de bajo riesgo — con doble llave, cuota del Analista SOC y kill-switch por automatismo.</p></div>
   </div>
+  <div class="grid two" style="margin-top:64px;align-items:center">
+    <div class="rv">
+      <span class="kicker">Arquitectura on-premise</span>
+      <h2 style="font-size:clamp(1.3rem,2.4vw,1.8rem)">Todo adentro. Nada afuera.</h2>
+      <p class="sub" style="font-size:.95rem">La objeción de siempre, respondida con el dibujo: los eventos, el lake, la detección y <b>la IA que emite los veredictos corren dentro de tu red</b>, en tu hardware. Lo único que entra desde Internet es inteligencia de amenazas pública. Tus logs, tus casos y tus prompts no salen nunca.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <span class="chip lime">LLM local — sin API de terceros</span>
+        <span class="chip cyan">Feeds de intel: solo entrada</span>
+        <span class="chip">Sin agentes nuevos en tus equipos</span>
+      </div>
+    </div>
+    <svg class="arch rv" viewBox="0 0 460 340" role="img" aria-label="Diagrama: todos los componentes dentro de la red del cliente; de Internet solo entran feeds de inteligencia">
+      <rect x="8" y="8" width="304" height="324" rx="14" fill="none" stroke="#7CFF4D" stroke-dasharray="6 4"/>
+      <text x="24" y="34" font-size="11" fill="#7CFF4D" font-weight="bold">TU RED</text>
+      <rect x="24" y="48" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
+      <text x="36" y="70" font-size="11">Fuentes</text>
+      <text x="36" y="88" font-size="9" class="lbl">FortiGate · Wazuh · Correo · EDR · Syslog</text>
+      <line x1="160" y1="100" x2="160" y2="118" stroke="#14E9C8" marker-end="url(#ah)"/>
+      <rect x="24" y="120" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
+      <text x="36" y="142" font-size="11">Lake + Detección + Scoring</text>
+      <text x="36" y="160" font-size="9" class="lbl">retención en tu disco, caza 24/7</text>
+      <line x1="160" y1="172" x2="160" y2="190" stroke="#14E9C8" marker-end="url(#ah)"/>
+      <rect x="24" y="192" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#7CFF4D"/>
+      <text x="36" y="214" font-size="11">CLAUDIO — IA local (LLM)</text>
+      <text x="36" y="232" font-size="9" class="lbl">veredictos e informes en tu hardware</text>
+      <line x1="160" y1="244" x2="160" y2="262" stroke="#14E9C8" marker-end="url(#ah)"/>
+      <rect x="24" y="264" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
+      <text x="36" y="286" font-size="11">Plataforma SOC + Analista</text>
+      <text x="36" y="304" font-size="9" class="lbl">aprobaciones, tickets, informes</text>
+      <ellipse cx="396" cy="120" rx="54" ry="30" fill="none" stroke="#1E2F52"/>
+      <text x="396" y="118" font-size="10" text-anchor="middle" class="lbl">Internet</text>
+      <text x="396" y="132" font-size="8" text-anchor="middle" class="lbl">feeds de intel</text>
+      <line x1="344" y1="132" x2="300" y2="142" stroke="#14E9C8" marker-end="url(#ah)"/>
+      <text x="322" y="124" font-size="8" fill="#14E9C8" text-anchor="middle">entra</text>
+      <line x1="300" y1="220" x2="352" y2="180" stroke="#FF4D6E" stroke-dasharray="4 4"/>
+      <text x="336" y="212" font-size="13" fill="#FF4D6E" font-weight="bold">✕</text>
+      <text x="374" y="230" font-size="8" fill="#FF4D6E" text-anchor="middle">tus datos NO salen</text>
+      <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#14E9C8"/></marker></defs>
+    </svg>
+  </div>
 </div></section>
 
 <!-- ══ CTA ══ -->
@@ -425,6 +514,7 @@ footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-s
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
     <a class="btn primary" href="mailto:info@legacy-roots.net?subject=Demo%20LegacyHunt">Agendar demo</a>
     <a class="btn ghost" href="mailto:info@legacy-roots.net?subject=Consulta%20LegacyHunt">Hablar con el equipo</a>
+    <a class="btn ghost" href="informe-muestra.html" target="_blank" rel="noopener">Ver informe de muestra</a>
   </div>
 </div></section>
 
@@ -527,6 +617,45 @@ document.querySelectorAll('#decide [data-d]').forEach(b=>b.addEventListener('cli
   ?'✅ <b>Coincidiste con el SOC real.</b> La contención se aprobó: el dominio entró al feed de bloqueo del firewall (TTL 7 días) y el host se aisló vía EDR. El análisis forense confirmó un infostealer con persistencia. El <b>74%</b> de los visitantes tomó la misma decisión.'
   :'🔍 <b>Pedir más evidencia también es operar bien.</b> El SOC real aprobó la contención (el forense confirmó un infostealer), pero rechazar sin estar convencido es exactamente para lo que existe la cola: <b>nada irreversible ocurre sin un Analista SOC convencido</b>. El 26% de los visitantes eligió como vos.';
 }));
+/* Selector de audiencia: adapta el pitch y marca las secciones clave del rol */
+const AUD={
+ analista:{pitch:'Menos ruido, más criterio: la cola te llega priorizada, con veredicto y evidencia — vos decidís lo que importa y la IA documenta el resto.',focus:['demo','modulos','undia']},
+ ciso:{pitch:'Gobierno y números: autonomía medible, frenos de fábrica (doble llave, cuota, kill-switch) y KPIs NIST para responder por el riesgo ante el directorio.',focus:['control','comparativa','despliegue']},
+ msp:{pitch:'Multi-cliente de fábrica: portal de tickets, vigilancia de marca, informes automáticos y una operación que escala sin sumar analistas por cliente.',focus:['tickets','defacement','despliegue']}
+};
+const audpitch=document.getElementById('audpitch');
+function setAud(k){
+ const a=AUD[k];if(!a)return;
+ audpitch.textContent=a.pitch;
+ document.querySelectorAll('.termctl [data-aud]').forEach(b=>b.classList.toggle('on',b.dataset.aud===k));
+ document.querySelectorAll('section[id]').forEach(s=>s.classList.toggle('audkey',a.focus.includes(s.id)));
+ try{localStorage.setItem('lh_aud',k)}catch{}
+}
+document.querySelectorAll('.termctl [data-aud]').forEach(b=>b.addEventListener('click',()=>setAud(b.dataset.aud)));
+setAud((()=>{try{return localStorage.getItem('lh_aud')||'analista'}catch{return 'analista'}})());
+/* Tour guiado de 90 segundos: recorre el viaje con narración */
+const TOUR=[
+ ['#ciclo','Todo empieza acá: millones de eventos entran y el ciclo decide solo lo obvio. Seis etapas, cada una alimenta la siguiente.',11],
+ ['#demo','Una oleada real de phishing: 150 detecciones se vuelven una campaña, la IA la sentencia con evidencia y el autopiloto la cierra — con doble llave.',13],
+ ['#modulos','Los seis motores: detección proactiva, correlación en campañas, triage IA local, respuesta a un clic, autonomía gobernada e informes automáticos.',12],
+ ['#defacement','La vigilancia también mira hacia afuera: si una web pública del cliente cambia de forma inesperada, el caso crítico ya está abierto.',11],
+ ['#control','Lo más importante: los frenos. Doble llave IA, cuota del analista garantizada, todo lo irreversible pasa por un humano y queda auditado.',12],
+ ['#undia','Así se siente el día a día: la misma jornada con la cola priorizada, las decisiones listas y el ruido cerrándose solo.',11],
+ ['#tickets','El ciclo llega hasta tu cliente: tickets clasificados por IA, SLA que corren solos y estado compartido por enlace firmado.',11],
+ ['#cta','Autonomía graduada: la plataforma se gana tu confianza en modo sombra antes de ejecutar nada. ¿La vemos con tus fuentes?',9]];
+const tcap=document.getElementById('tourcap'),ttext=document.getElementById('tourtext'),tstep=document.getElementById('tourstep');
+let ttimer=null,ti=-1;
+function tourStop(){clearTimeout(ttimer);ttimer=null;ti=-1;tcap.style.display='none'}
+function tourNext(){
+ ti++;if(ti>=TOUR.length){tourStop();return}
+ const [sel,cap,secs]=TOUR[ti];
+ document.querySelector(sel)?.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+ tcap.style.display='block';tstep.textContent=`Tour · ${ti+1}/${TOUR.length}`;ttext.textContent=cap;
+ ttimer=setTimeout(tourNext,secs*1000);
+}
+document.getElementById('tourbtn')?.addEventListener('click',e=>{e.preventDefault();tourStop();tourNext()});
+document.getElementById('tourexit')?.addEventListener('click',tourStop);
+addEventListener('keydown',e=>{if(e.key==='Escape')tourStop()});
 /* KPIs vivos: si el repo publica kpis.json, el hero usa el dato del día */
 fetch('kpis.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(k=>{
  if(!k)return;document.querySelectorAll('.cnt[data-k]').forEach(el=>{
