@@ -3,664 +3,419 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LegacyHunt — El SOC que decide solo lo obvio y escala solo lo crítico</title>
-<meta name="description" content="Plataforma MDR con automatización de punta a punta: detección, correlación en campañas, veredicto IA, contención propuesta y cierre automático con doble llave. Human-on-the-loop.">
+<title>LegacyHunt — SOC que caza, decide y aprende</title>
+<meta name="description" content="Plataforma SOC on-premise sobre lakehouse: deteccion multi-fuente, priorizacion con un motor de scoring que se calibra solo, threat hunting con hipotesis, memoria de casos en grafo, analistas IA locales y respuesta gobernada. Human-on-the-loop.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LegacyHunt — El SOC que decide solo lo obvio y escala solo lo crítico">
-<meta property="og:description" content="Detección, correlación en campañas, veredicto IA local, contención propuesta y cierre automático con doble llave. Human-on-the-loop, 100% on-premise.">
+<meta property="og:title" content="LegacyHunt — SOC que caza, decide y aprende">
+<meta property="og:description" content="Deteccion, priorizacion que se auto-calibra, threat hunting con hipotesis, memoria de casos en grafo, IA local y respuesta gobernada. 100% on-premise, human-on-the-loop.">
 <meta property="og:url" content="https://arl3t.github.io/web2/">
 <meta property="og:locale" content="es_ES">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#0A1428">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A1428'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='900' font-family='Arial' text-anchor='middle' fill='%237CFF4D'%3ELH%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A1428'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%231E2F52' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%2314E9C8' stroke-width='1.4'/%3E%3Cpath d='M16 3v6M16 23v6M3 16h6M23 16h6' stroke='%231E2F52' stroke-width='1.4'/%3E%3Ccircle cx='16' cy='16' r='2.1' fill='%237CFF4D'/%3E%3C/svg%3E">
 <style>
-/* Fuentes self-hosted (variables): sin llamadas a Google Fonts */
+/* ═══ Fuentes self-hosted (sin llamadas externas) ═══ */
 @font-face{font-family:'DM Sans';font-style:normal;font-weight:100 1000;font-display:swap;src:url(fonts/dmsans.woff2) format('woff2')}
 @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(fonts/jetbrainsmono.woff2) format('woff2')}
-/* ══ Tema nexus-dark — la misma paleta de la plataforma ══ */
+
+/* ═══ MARCA CORPORATIVA LegacyHunt — tema nexus-dark (paleta de la plataforma) ═══ */
 :root{
-  --bg:#0A1428; --card:#0F1F3A; --border:#1E2F52; --text:#FFFFFF; --dim:#A3B8D9;
-  --red:#FF4D6E; --orange:#FFB74D; --cyan:#14E9C8; --lime:#7CFF4D; --blue:#6FA8FF; --purple:#BFA3FF;
+  --bg:#0A1428; --bg2:#07101F; --card:#0F1F3A; --card2:#0B1830; --border:#1E2F52;
+  --text:#FFFFFF; --dim:#A3B8D9;
+  --lime:#7CFF4D;   /* primario — caza / confirmado */
+  --cyan:#14E9C8;   /* analisis / hunting */
+  --blue:#6FA8FF;   /* datos / enlaces */
+  --purple:#BFA3FF; /* IA */
+  --red:#FF4D6E;    /* amenaza / critico */
+  --orange:#FFB74D; /* atencion */
   --sans:"DM Sans",ui-sans-serif,system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:var(--blue);text-decoration:none}
 .mono{font-family:var(--mono)}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-section{padding:88px 0}
-h2{font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:900;line-height:1.15;margin-bottom:14px}
-.kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;display:block}
-.sub{color:var(--dim);font-size:1.05rem;max-width:720px}
-.grid{display:grid;gap:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px}
-.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:3px 10px;border-radius:99px;border:1px solid var(--border);color:var(--dim)}
-.chip.lime{color:var(--lime);border-color:color-mix(in srgb,var(--lime) 40%,transparent);background:color-mix(in srgb,var(--lime) 10%,transparent)}
-.chip.red{color:var(--red);border-color:color-mix(in srgb,var(--red) 40%,transparent);background:color-mix(in srgb,var(--red) 10%,transparent)}
-.chip.cyan{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 40%,transparent);background:color-mix(in srgb,var(--cyan) 10%,transparent)}
-.chip.orange{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 40%,transparent);background:color-mix(in srgb,var(--orange) 12%,transparent)}
-.btn{display:inline-block;font-weight:700;padding:13px 26px;border-radius:10px;transition:.2s}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{padding:92px 0;position:relative}
+h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:900;line-height:1.14;letter-spacing:-.02em;margin-bottom:14px}
+h3{font-size:1.06rem;font-weight:800;letter-spacing:-.01em}
+.kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.kicker::before{content:"";width:22px;height:1px;background:var(--lime);display:inline-block}
+.sub{color:var(--dim);font-size:1.06rem;max-width:740px}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:26px;transition:.22s}
+.card:hover{border-color:color-mix(in srgb,var(--cyan) 45%,var(--border));transform:translateY(-3px)}
+.card .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;margin-bottom:16px;font-size:1.2rem;background:color-mix(in srgb,var(--cyan) 12%,transparent);border:1px solid color-mix(in srgb,var(--cyan) 30%,transparent)}
+.card p{color:var(--dim);margin-top:9px;font-size:.96rem}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;padding:4px 11px;border-radius:99px;border:1px solid var(--border);color:var(--dim)}
+.chip.lime{color:var(--lime);border-color:color-mix(in srgb,var(--lime) 40%,transparent);background:color-mix(in srgb,var(--lime) 9%,transparent)}
+.chip.cyan{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 40%,transparent);background:color-mix(in srgb,var(--cyan) 9%,transparent)}
+.chip.purple{color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent);background:color-mix(in srgb,var(--purple) 9%,transparent)}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:.95rem;padding:13px 26px;border-radius:11px;transition:.2s;cursor:pointer;border:1px solid transparent}
 .btn.primary{background:var(--lime);color:#06210A}
-.btn.primary:hover{background:#8DFF66;transform:translateY(-2px)}
-.btn.ghost{border:1px solid var(--border);color:var(--text)}
-.btn.ghost:hover{border-color:var(--lime);color:var(--lime)}
-/* Barra de progreso del recorrido */
-#journeybar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:60;transition:width .15s linear}
-nav ul a.now{color:var(--lime)}
-/* Nav */
-nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
-.logo b{color:var(--lime)}
-nav ul{display:flex;gap:26px;list-style:none}
-nav ul a{color:var(--dim);font-size:.9rem}
-nav ul a:hover{color:var(--text)}
-/* Hero */
-.hero{padding:110px 0 70px;position:relative}
-.hero::before{content:"";position:absolute;inset:0;background:
- radial-gradient(600px 300px at 75% 10%,color-mix(in srgb,var(--lime) 7%,transparent),transparent),
- radial-gradient(500px 260px at 15% 80%,color-mix(in srgb,var(--blue) 8%,transparent),transparent);pointer-events:none}
-.hero h1{font-size:clamp(2.2rem,5.2vw,3.9rem);font-weight:900;line-height:1.08;letter-spacing:-.02em;max-width:820px}
+.btn.primary:hover{background:#8DFF66;transform:translateY(-2px);box-shadow:0 10px 30px -12px var(--lime)}
+.btn.ghost{border-color:var(--border);color:var(--text)}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+#journeybar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:60;transition:width .12s linear}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:1.16rem;letter-spacing:-.02em;color:var(--text)}
+.brand svg{width:30px;height:30px;flex:none}
+.brand b{color:var(--lime)}
+nav ul{display:flex;gap:28px;list-style:none;align-items:center}
+nav ul a{color:var(--dim);font-size:.9rem;font-weight:600}
+nav ul a:hover,nav ul a.now{color:var(--lime)}
+.navcta{padding:9px 18px!important;font-size:.86rem!important}
+.menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:9px;color:var(--text);width:40px;height:38px;font-size:1.2rem;cursor:pointer}
+
+/* ── Hero ── */
+.hero{padding:118px 0 78px;position:relative;overflow:hidden}
+.gridbg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:46px 46px;opacity:.13;-webkit-mask-image:radial-gradient(ellipse 78% 62% at 50% 26%,#000,transparent);mask-image:radial-gradient(ellipse 78% 62% at 50% 26%,#000,transparent);pointer-events:none}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+ radial-gradient(620px 320px at 78% 6%,color-mix(in srgb,var(--lime) 8%,transparent),transparent),
+ radial-gradient(520px 280px at 12% 82%,color-mix(in srgb,var(--cyan) 9%,transparent),transparent)}
+.hero .in{position:relative;z-index:2;max-width:900px}
+.hero .tag{margin-bottom:22px}
+.hero h1{font-size:clamp(2.3rem,5.4vw,4.1rem);font-weight:900;line-height:1.06;letter-spacing:-.025em}
 .hero h1 em{font-style:normal;color:var(--lime)}
-.hero .sub{margin:22px 0 30px}
-/* Grid de fondo animado */
-.gridbg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:.14;mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000,transparent)}
-/* Contadores */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:52px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-.stat .n{font-family:var(--mono);font-size:1.9rem;font-weight:700;color:var(--lime)}
-.stat .l{font-size:.82rem;color:var(--dim);margin-top:4px}
-/* Pipeline animado */
-.pipe{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:46px}
-.pipe .node{position:relative;text-align:center;padding:0 8px}
-.pipe .dot{width:52px;height:52px;margin:0 auto 12px;border-radius:14px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:1.3rem;position:relative;transition:.4s}
-.pipe .node.on .dot{border-color:var(--lime);box-shadow:0 0 24px color-mix(in srgb,var(--lime) 35%,transparent);transform:scale(1.08)}
-.pipe .node .t{font-weight:700;font-size:.88rem}
-.pipe .node .d{font-size:.74rem;color:var(--dim);line-height:1.35;margin-top:3px}
-.pipe .node.on .t{color:var(--lime)}
-.pipe .line{position:absolute;top:26px;left:calc(8.33% + 26px);right:calc(8.33% + 26px);height:2px;background:var(--border);z-index:-1;overflow:hidden}
-.pipe .line i{position:absolute;top:0;left:-15%;width:15%;height:100%;background:linear-gradient(90deg,transparent,var(--lime),transparent);animation:flow 3.6s linear infinite}
-@keyframes flow{to{left:105%}}
-/* Terminal CLAUDIO */
-.term{background:#07101F;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.8rem}
-.term .bar{display:flex;gap:7px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center}
-.term .bar i{width:11px;height:11px;border-radius:50%;background:var(--border)}
-.term .bar i:nth-child(1){background:var(--red)}.term .bar i:nth-child(2){background:var(--orange)}.term .bar i:nth-child(3){background:var(--lime)}
-.term .bar span{margin-left:8px;color:var(--dim);font-size:.72rem}
-.term pre{padding:18px;white-space:pre-wrap;color:var(--dim);min-height:300px}
-.term .g{color:var(--lime)}.term .c{color:var(--cyan)}.term .r{color:var(--red)}.term .o{color:var(--orange)}.term .b{color:var(--blue)}.term .p{color:var(--purple)}
-.cursor{display:inline-block;width:8px;height:15px;background:var(--lime);vertical-align:-2px;animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-/* Caso viajando (secuencia animada) */
-.flowdemo{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
-@media(max-width:880px){.flowdemo{grid-template-columns:1fr}.pipe{grid-template-columns:repeat(3,1fr);row-gap:26px}.pipe .line{display:none}}
-.stages{display:flex;flex-direction:column;gap:12px}
-.stage{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--card);opacity:.42;transition:.5s}
-.stage.on{opacity:1;border-color:color-mix(in srgb,var(--lime) 45%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--lime) 12%,transparent)}
-.stage .ic{font-size:1.2rem;margin-top:2px}
-.stage b{display:block;font-size:.92rem}
-.stage span{font-size:.78rem;color:var(--dim)}
-/* Features */
-.feat .grid{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-.feat .card h3{font-size:1.05rem;margin:10px 0 8px}
-.feat .card p{font-size:.88rem;color:var(--dim)}
-.feat .ej{margin-top:14px;padding:11px 13px;border-left:2px solid var(--lime);background:color-mix(in srgb,var(--lime) 5%,transparent);font-size:.8rem;border-radius:0 8px 8px 0}
-.feat .ej b{color:var(--lime)}
-/* Pasos */
-.steps{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.steps .card{position:relative;padding-top:56px}
-.steps .num{position:absolute;top:18px;left:22px;font-family:var(--mono);font-weight:700;font-size:1.5rem;color:var(--lime)}
-/* Tabla comparativa */
-table{width:100%;border-collapse:collapse;font-size:.9rem}
-th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--border)}
-th{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-td:nth-child(2){color:var(--dim)}
-td:nth-child(3){color:var(--lime);font-weight:500}
-.tbl{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
-/* Reveal on scroll */
-.rv{opacity:0;transform:translateY(24px);transition:.7s ease}
-.rv.in{opacity:1;transform:none}
-/* Radar SVG */
-.radar-sweep{transform-origin:110px 110px;animation:sweep 4s linear infinite}
-@keyframes sweep{to{transform:rotate(360deg)}}
-.pingdot{animation:ping 2.4s ease-out infinite}
-@keyframes ping{0%{r:3;opacity:1}70%{r:14;opacity:0}100%{r:14;opacity:0}}
-footer{border-top:1px solid var(--border);padding:36px 0;color:var(--dim);font-size:.84rem}
-.hitl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
-.hitl .card{border-left:3px solid var(--cyan)}
-.hitl .card b{color:var(--cyan)}
-/* Grid dos columnas con colapso en mobile */
-.two{grid-template-columns:1fr 1fr}
-@media(max-width:880px){.two{grid-template-columns:1fr}}
-/* Glosario: términos con tooltip al hover */
-.gl{border-bottom:1px dotted var(--dim);cursor:help;position:relative}
-.gl:hover::after,.gl:focus::after{content:attr(data-g);position:absolute;left:50%;bottom:135%;transform:translateX(-50%);background:#050D1D;border:1px solid var(--border);color:var(--text);font-size:.75rem;font-family:var(--sans);font-weight:400;line-height:1.45;padding:9px 12px;border-radius:8px;width:250px;z-index:70;text-transform:none;letter-spacing:0}
-/* Botones del terminal conducible */
-.termctl{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
-.termctl button{font-family:var(--mono);font-size:.72rem;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;transition:.2s}
-.termctl button:hover,.termctl button.on{border-color:var(--lime);color:var(--lime)}
-/* Pipeline clickeable */
-#pipe .node{cursor:pointer}
-#pipedetail{margin-top:22px;border:1px solid var(--border);border-left:3px solid var(--lime);border-radius:10px;background:var(--card);padding:16px 20px;font-size:.88rem;color:var(--dim);display:none}
-#pipedetail b{color:var(--text)}
-#pipedetail .lat{font-family:var(--mono);font-size:.74rem;color:var(--cyan);margin-left:8px}
-/* Widget "decidí vos" */
-.decide{margin-top:56px;border:1px solid var(--border);border-radius:14px;background:var(--card);padding:26px;max-width:780px}
-.decide .hd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-.decide .sig{font-size:.84rem;color:var(--dim);border-left:2px solid var(--border);padding:6px 12px;margin:8px 0}
-.decide .btns{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
-.decide .btns button{cursor:pointer;font-family:var(--sans);font-size:1rem}
-.decide .out{display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;font-size:.9rem}
-/* Monitor de defacement */
-.defmon{font-family:var(--mono);font-size:.78rem;border:1px solid var(--border);border-radius:12px;background:#07101F;overflow:hidden}
-.defmon .row{display:flex;justify-content:space-between;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.defmon .row:last-child{border-bottom:none}
-.defmon .ok{color:var(--lime)}.defmon .bad{color:var(--red)}
-/* Kanban de tickets */
-.kan{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-@media(max-width:720px){.kan{grid-template-columns:1fr}}
-.kan .col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-.kan .col h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-.kan .tk{border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:.8rem;background:#0B1830}
-.kan .tk b{display:block;font-size:.82rem}
-.kan .tk .m{color:var(--dim);font-size:.72rem;margin-top:4px}
-/* Franja de números de gobierno */
-.gov{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-/* Comparativa en mobile: tabla → cards apiladas */
-@media(max-width:640px){
-  .tbl table tr:first-child{display:none}
-  .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
-  .tbl tr{border-bottom:1px solid var(--border);padding:10px 0}
-  .tbl td{border:none;padding:6px 16px}
-  .tbl td::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+.hero h1 u{text-decoration:none;color:var(--cyan)}
+.hero .sub{margin:24px 0 32px;font-size:1.16rem}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+
+/* ── Contadores ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:56px}
+.stats .s{background:var(--card2);padding:26px 20px;text-align:center}
+.stats .n{font-family:var(--mono);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:var(--lime)}
+.stats .l{color:var(--dim);font-size:.82rem;margin-top:4px}
+
+/* ── Pilares ── */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pillar{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.pillar .step{font-family:var(--mono);font-size:.72rem;color:var(--cyan);letter-spacing:.1em}
+.pillar h3{margin:10px 0 8px}
+.pillar p{color:var(--dim);font-size:.92rem}
+.pillar .bar{position:absolute;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));opacity:.7}
+
+/* ── Pipeline ── */
+.flow{display:flex;align-items:stretch;flex-wrap:wrap;margin:0 -6px}
+.flow .node{flex:1;min-width:150px;background:var(--card2);border:1px solid var(--border);border-radius:13px;padding:18px 16px;margin:6px;position:relative}
+.flow .node .num{font-family:var(--mono);font-size:.7rem;color:var(--lime)}
+.flow .node b{display:block;margin:6px 0 4px;font-size:.98rem}
+.flow .node span{color:var(--dim);font-size:.82rem}
+
+/* ── Capacidades ── */
+.caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.caps .card h3 .t{font-family:var(--mono);font-size:.64rem;color:var(--cyan);display:block;letter-spacing:.12em;margin-bottom:3px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+
+/* ── Integraciones ── */
+.integ{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.integ .i{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600;transition:.2s}
+.integ .i:hover{border-color:color-mix(in srgb,var(--lime) 40%,transparent)}
+.integ .i .d{width:8px;height:8px;border-radius:99px;flex:none}
+.integ .i small{color:var(--dim);font-weight:400;font-size:.72rem;display:block}
+
+/* ── Arquitectura ── */
+.arch{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:center}
+.arch .layers{display:grid;gap:10px}
+.arch .layer{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.arch .layer b{font-size:.95rem}
+.arch .layer p{color:var(--dim);font-size:.85rem;margin-top:3px}
+.arch .layer.hl{border-color:color-mix(in srgb,var(--lime) 45%,transparent);background:color-mix(in srgb,var(--lime) 6%,var(--card2))}
+
+/* ── Callout / gobernanza ── */
+.gov{background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 8%,var(--card2)),var(--card2));border:1px solid var(--border);border-radius:20px;padding:44px}
+.gov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
+.gov-grid .g h3{color:var(--lime);font-size:.98rem;margin-bottom:6px}
+.gov-grid .g p{color:var(--dim);font-size:.9rem}
+
+/* ── CTA final ── */
+.final{text-align:center;background:radial-gradient(700px 300px at 50% 0%,color-mix(in srgb,var(--lime) 8%,transparent),transparent)}
+.final h2{max-width:760px;margin:0 auto 16px}
+.final .cta{justify-content:center;display:flex;gap:14px;flex-wrap:wrap}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:44px 0 30px;background:var(--bg2)}
+footer .cols{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer .brand{margin-bottom:12px}
+footer p{color:var(--dim);font-size:.86rem;max-width:340px}
+footer .fnav{display:flex;gap:40px;flex-wrap:wrap}
+footer .fnav div b{display:block;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+footer .fnav div a{display:block;color:var(--text);font-size:.9rem;margin-bottom:7px;opacity:.85}
+footer .fnav div a:hover{color:var(--lime);opacity:1}
+footer .base{margin-top:34px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--dim);font-size:.82rem}
+
+/* ── reveal ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+@media(max-width:900px){
+  .stats,.pillars,.gov-grid{grid-template-columns:repeat(2,1fr)}
+  .arch{grid-template-columns:1fr}
+  nav ul{display:none;position:absolute;top:66px;left:0;right:0;flex-direction:column;background:var(--card);border-bottom:1px solid var(--border);padding:16px 24px;gap:16px}
+  nav ul.open{display:flex}
+  .menu-toggle{display:block}
 }
-/* Un día del Analista SOC (tabla horaria antes/después) */
-.daywrap{overflow-x:auto;margin-top:36px}
-.day{display:grid;grid-template-columns:64px 1fr 1fr;min-width:640px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card)}
-.day>div{padding:13px 16px;border-bottom:1px solid var(--border);font-size:.85rem}
-.day>div:nth-last-child(-n+3){border-bottom:none}
-.day .dh{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);background:#0B1830}
-.day .hr{font-family:var(--mono);color:var(--lime);font-size:.76rem}
-.day .trad{color:var(--dim)}
-.day .lh{border-left:1px solid var(--border)}
-.day .lh b{color:var(--lime)}
-/* Selector de audiencia */
-#audpitch{min-height:1.4em}
-section.audkey .kicker::after{content:" · clave para tu rol";color:var(--cyan);text-transform:none;letter-spacing:0}
-/* Tour guiado de 90 segundos */
-#tourcap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:80;max-width:660px;width:calc(100% - 40px);background:#050D1D;border:1px solid color-mix(in srgb,var(--lime) 55%,transparent);border-radius:12px;padding:16px 18px;font-size:.92rem;box-shadow:0 8px 40px rgba(0,0,0,.6);display:none}
-#tourcap .tc-hd{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.7rem;color:var(--dim);margin-bottom:6px}
-#tourcap button{background:none;border:none;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.7rem}
-#tourcap button:hover{color:var(--red)}
-/* Diagrama de arquitectura */
-.arch text{font-family:var(--mono);fill:var(--text)}
-.arch .lbl{fill:#A3B8D9}
-/* Accesibilidad: respetar prefers-reduced-motion */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  html{scroll-behavior:auto}
-  .rv{opacity:1;transform:none}
-}
+@media(max-width:560px){ .stats,.pillars,.gov-grid{grid-template-columns:1fr} section{padding:66px 0} }
 </style>
 </head>
 <body>
 <div id="journeybar"></div>
-<div id="tourcap" role="status"><div class="tc-hd"><span id="tourstep"></span><button id="tourexit">✕ salir (Esc)</button></div><div id="tourtext"></div></div>
 
-<nav><div class="wrap">
-  <div class="logo">Legacy<b>Hunt</b> <span class="chip lime" style="margin-left:8px">MDR</span></div>
-  <ul>
-    <li><a href="#ciclo">1 · El ciclo</a></li>
-    <li><a href="#demo">2 · En vivo</a></li>
-    <li><a href="#modulos">3 · Módulos</a></li>
-    <li><a href="#control">4 · Analista al mando</a></li>
-    <li><a href="#tickets">5 · Tickets</a></li>
-    <li><a href="#despliegue">6 · Despliegue</a></li>
-  </ul>
-  <a class="btn primary" href="#cta" style="padding:9px 18px;font-size:.86rem">Pedir demo</a>
-</div></nav>
-
-<!-- ══ HERO ══ -->
-<header class="hero"><div class="gridbg"></div><div class="wrap" style="position:relative">
-  <span class="kicker">Detección · Triage IA · Respuesta — en una sola plataforma</span>
-  <h1>El SOC que <em>decide solo lo obvio</em><br>y escala solo lo crítico.</h1>
-  <p class="sub">LegacyHunt convierte millones de eventos en <b>pocas decisiones de alto valor para el Analista SOC</b>: detecta, agrupa oleadas en campañas, emite veredictos con IA local, propone la contención y cierra el ruido — con doble llave, auditoría completa y un Analista SOC siempre al mando de lo irreversible.</p>
-  <div style="display:flex;gap:14px;flex-wrap:wrap">
-    <a class="btn primary" href="#cta">Ver la plataforma en acción</a>
-    <a class="btn ghost" href="#ciclo" id="tourbtn">▶ Tour de 90 segundos</a>
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand" aria-label="LegacyHunt">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="7" fill="none" stroke="#14E9C8" stroke-width="1.4"/><path d="M16 1v7M16 24v7M1 16h7M24 16h7" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="2.6" fill="#7CFF4D"/></svg>
+      <span>Legacy<b>Hunt</b></span>
+    </a>
+    <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul id="nav">
+      <li><a href="#plataforma">Plataforma</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#capacidades">Capacidades</a></li>
+      <li><a href="#integraciones">Integraciones</a></li>
+      <li><a href="#arquitectura">Arquitectura</a></li>
+      <li><a href="informe-muestra.html" class="btn primary navcta">Ver informe ↗</a></li>
+    </ul>
   </div>
-  <div class="stats">
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="10400" data-k="iocs_day">0</span>+</div><div class="l"><span class="gl" data-g="Indicador de compromiso: IP, dominio, hash o URL asociada a actividad maliciosa.">IOCs</span> evaluados por día con scoring v4</div></div>
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="48" data-k="triage_hour">0</span>/h</div><div class="l">casos triados por el analista IA</div></div>
-    <div class="stat rv"><div class="n"><span class="cnt" data-n="150" data-k="wave_cases">0</span>→1</div><div class="l">casos de una oleada, una sola decisión</div></div>
-    <div class="stat rv"><div class="n">&lt;<span class="cnt" data-n="10" data-k="verdict_seconds">0</span>s</div><div class="l">por veredicto — IA local, tus datos en casa</div></div>
-  </div>
-</div></header>
+</nav>
 
-<!-- ══ BADGES ══ -->
-<div class="wrap" style="display:flex;gap:10px;flex-wrap:wrap;padding:8px 24px 0">
-  <span class="chip"><span class="gl" data-g="Marco estándar que cataloga tácticas y técnicas reales de atacantes; cada detección de la plataforma se mapea a una técnica.">MITRE ATT&amp;CK</span></span><span class="chip"><span class="gl" data-g="Guía del NIST para manejo de incidentes: preparación, detección y análisis, contención, erradicación, recuperación y lecciones aprendidas.">NIST SP 800-61</span></span>
-  <span class="chip cyan">IA 100% on-premise</span><span class="chip">FortiGate · Wazuh · Suricata · PMG · EDR</span>
-  <span class="chip lime">Human-on-the-loop</span><span class="chip">Kill-switch por automatismo</span>
-</div>
-
-<!-- ══ SELECTOR DE AUDIENCIA ══ -->
-<div class="wrap" id="audsel" style="margin-top:30px">
-  <div class="termctl" role="group" aria-label="Elegí tu rol para adaptar el recorrido">
-    <button class="on" data-aud="analista">👤 Soy Analista SOC</button>
-    <button data-aud="ciso">🛡️ Soy CISO</button>
-    <button data-aud="msp">🏢 Soy MSP / proveedor</button>
-  </div>
-  <p class="sub" id="audpitch" style="margin-top:10px;font-size:.95rem"></p>
-</div>
-
-<!-- ══ EL CICLO AUTÓNOMO ══ -->
-<section id="ciclo"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 1 — El ciclo autónomo</span>
-  <h2>De millones de eventos a una decisión —<br>sin que nadie tenga que mirar el 95% del ruido.</h2>
-  <p class="sub">Cada etapa alimenta la siguiente. Lo que se puede decidir con evidencia, se decide solo. Lo que requiere criterio, llega a tu equipo ya investigado, correlacionado y con recomendación. <b>Tocá cada etapa</b> para ver qué pasa adentro.</p>
-  <div class="pipe" id="pipe">
-    <div class="line"><i></i></div>
-    <div class="node"><div class="dot">📡</div><div class="t">Detectar</div><div class="d">13 patrones de caza + scoring v4 multi-fuente</div></div>
-    <div class="node"><div class="dot">🧩</div><div class="t">Correlacionar</div><div class="d">175 IPs contra el mismo activo = 1 campaña, no 232 casos</div></div>
-    <div class="node"><div class="dot">🤖</div><div class="t">Veredicto IA</div><div class="d">CLAUDIO triage cada caso y cada campaña con inteligencia del día</div></div>
-    <div class="node"><div class="dot">🛡️</div><div class="t">Proponer</div><div class="d">Contención y cierres entran a la cola con evidencia</div></div>
-    <div class="node"><div class="dot">⚙️</div><div class="t">Autopiloto</div><div class="d">Lo de bajo riesgo se ejecuta solo, con doble llave</div></div>
-    <div class="node"><div class="dot">📊</div><div class="t">Informar</div><div class="d">Informe ejecutivo por campaña, redactado por la IA</div></div>
-  </div>
-  <div id="pipedetail"></div>
-</div></section>
-
-<!-- ══ DEMO ANIMADA ══ -->
-<section id="demo" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 2 — Así se ve por dentro</span>
-  <h2>Una oleada de phishing, resuelta de punta a punta.</h2>
-  <p class="sub">Basado en un caso real de la plataforma: 150 clientes internos marcados como phishing por el firewall. Un SOC tradicional habría triado 150 tickets. Así lo resuelve LegacyHunt:</p>
-  <div class="flowdemo" style="margin-top:42px">
-    <div class="stages" id="stages">
-      <div class="stage"><div class="ic">🧩</div><div><b>El correlador agrupa</b><span>150 casos de la técnica T1566 contra el mismo objetivo → campaña #226. La bandeja muestra 1 fila, no 150.</span></div></div>
-      <div class="stage"><div class="ic">🤖</div><div><b>CLAUDIO muestrea y sentencia</b><span>Triage LLM de 8 casos de muestra: 8/8 benignos (destino = infraestructura Meta, categoría social). Veredicto de campaña: benign 93%.</span></div></div>
-      <div class="stage"><div class="ic">📋</div><div><b>La propuesta entra a la cola</b><span>"Cerrar campaña #226 con cascada a 150 casos" — visible en Aprobaciones con toda la evidencia. Nadie tiene que redactar nada.</span></div></div>
-      <div class="stage"><div class="ic">🔍</div><div><b>El refutador da la segunda llave</b><span>Un segundo modelo IA —de otra generación— intenta refutar el veredicto. No encuentra amenaza. Doble llave superada.</span></div></div>
-      <div class="stage"><div class="ic">⚙️</div><div><b>El autopiloto ejecuta</b><span>Pasadas 24h sin veto del Analista SOC: 150 casos cerrados con timeline, tareas completadas, supresión 60 días y webhooks al portal del cliente.</span></div></div>
-      <div class="stage"><div class="ic">🎯</div><div><b>Tu equipo, en lo que importa</b><span>Mientras tanto, la campaña #396 (C2 real, 97 IPs) fue marcada MALICIOSA, con la contención de sus 97 IPs propuesta a un clic.</span></div></div>
+<!-- ═══ HERO ═══ -->
+<header class="hero" id="top">
+  <div class="gridbg"></div>
+  <div class="wrap in">
+    <div class="tag"><span class="chip lime">● SOC · MDR · on-premise</span></div>
+    <h1>El SOC que <em>caza</em>, <u>decide</u> y <em>aprende</em> de cada caso.</h1>
+    <p class="sub">LegacyHunt detecta a traves de todas tus fuentes, prioriza con un motor de scoring que <b>se calibra solo</b>, caza amenazas sobre tu propio lakehouse y propone la respuesta — con la IA corriendo local y el humano siempre en el lazo.</p>
+    <div class="cta">
+      <a href="#plataforma" class="btn primary">Ver la plataforma →</a>
+      <a href="informe-muestra.html" class="btn ghost">Informe de muestra</a>
     </div>
-    <div class="rv"><div class="termctl" role="group" aria-label="Elegí qué secuencia ejecuta CLAUDIO">
-      <button class="on" data-seq="benigna">▶ campaña benigna</button>
-      <button data-seq="llave">▶ segunda llave</button>
-      <button data-seq="c2">▶ C2 real</button>
+    <div class="pill-row">
+      <span class="chip">100% on-premise</span>
+      <span class="chip cyan">Lakehouse propio</span>
+      <span class="chip purple">IA local (sin nube)</span>
+      <span class="chip">Human-on-the-loop</span>
+      <span class="chip">Gobernanza CSF 2.0</span>
     </div>
-    <div class="term"><div class="bar"><i></i><i></i><i></i><span>CLAUDIO · triage en vivo — conducilo vos</span></div><pre id="termout"></pre></div></div>
-  </div>
-  <div class="decide rv" id="decide">
-    <div class="hd"><span class="chip red">HIGH</span><span class="chip"><span class="gl" data-g="Técnica MITRE T1071: el atacante usa protocolos de aplicación (HTTP/DNS) para comunicarse con los equipos que controla.">T1071 · C2</span></span><span class="mono" style="font-size:.78rem;color:var(--dim)">INC-9F42 · caso anonimizado</span></div>
-    <b style="font-size:1.05rem">Ahora decidí vos: ¿aprobás la propuesta de la IA?</b>
-    <div class="sig">🌐 Un host interno consulta cada 60 segundos el dominio <span class="mono">upd-cdn-metrics[.]top</span> — registrado hace 9 días, sin categoría de reputación</div>
-    <div class="sig">📈 <span class="gl" data-g="User & Entity Behavior Analytics: puntaje de riesgo por usuario y host según cuánto se desvía de su comportamiento habitual en TU red.">UEBA</span>: riesgo de la entidad 82/100 — primer acceso de este host a ese ASN</div>
-    <div class="sig">🤖 Veredicto CLAUDIO: <b style="color:var(--red)">MALICIOUS 88%</b> — «beacon periódico a dominio recién registrado» · propuesta: <b>bloquear el dominio + aislar el host</b></div>
-    <div class="btns">
-      <button class="btn primary" data-d="apro" style="border:none">Aprobar contención</button>
-      <button class="btn ghost" data-d="rech" style="background:none;color:var(--text)">Rechazar — pedir más evidencia</button>
-    </div>
-    <div class="out" id="decideout"></div>
-  </div>
-</div></section>
 
-<!-- ══ MÓDULOS ══ -->
-<section id="modulos" class="feat"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 3 — Los seis motores</span>
-  <h2>Seis motores, un solo cerebro.</h2>
-  <div class="grid" style="margin-top:36px">
-    <div class="card rv"><span class="chip cyan">Detección</span><h3>Cazador proactivo 24/7</h3><p>13 patrones de caza (fuerza bruta, C2, DNS tunneling, persistencia, replay de credenciales, accesos fuera de hora…) sobre firewall, endpoint y correo — más centinelas que avisan si un carril de detección se rompe en silencio.</p>
-      <div class="ej"><b>Ejemplo real:</b> un burst de instalación de servicios en 50 hosts a la vez se reporta como <i>un</i> evento de flota (¿GPO o despliegue lateral?) — no como 50 falsas alarmas.</div></div>
-    <div class="card rv"><span class="chip orange">Correlación</span><h3>Campañas: la oleada es una sola</h3><p>Los atacantes rotan IPs; LegacyHunt agrupa por técnica × objetivo × ventana. La bandeja del analista muestra amenazas, no paquetes. Crecimiento anómalo → alerta de oleada en curso.</p>
-      <div class="ej"><b>Ejemplo real:</b> 97 IPs de C2 contra la red = campaña #396, veredicto MALICIOSO 86%, contención de las 97 IPs propuesta en una sola tarjeta.</div></div>
-    <div class="card rv"><span class="chip lime">Triage IA</span><h3>CLAUDIO — analista LLM local</h3><p>Cada caso recibe veredicto con inteligencia del día, riesgo de la entidad (UEBA), historial de la técnica en TU red y las correcciones recientes de tus analistas. Todo on-premise: tus datos nunca salen.</p>
-      <div class="ej"><b>Ejemplo real:</b> "benign 92% — el destino es infraestructura Meta; 94% de esta técnica cerró como FP en esta red" — en 9 segundos.</div></div>
-    <div class="card rv"><span class="chip red">Respuesta</span><h3>Contención a un clic</h3><p>Campaña maliciosa → bloqueo de todas sus IPs públicas en el feed del firewall, propuesto automáticamente. Cuentas comprometidas → deshabilitación vía EDR/Wazuh. La ejecución siempre pasa por un Analista SOC.</p>
-      <div class="ej"><b>Ejemplo real:</b> feed de bloqueo actualizado en el perímetro a los 10 minutos de la aprobación, con <span class="gl" data-g="Time To Live: el bloqueo expira solo (7 días por defecto) si nadie lo renueva — sin listas negras eternas.">TTL</span> y remoción durable.</div></div>
-    <div class="card rv"><span class="chip purple" style="color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent)">Autonomía</span><h3>Autopiloto con doble llave</h3><p>Cierres de bajo riesgo se ejecutan solos tras una ventana de veto del Analista SOC — pero solo si un <b>segundo modelo IA</b> no logra refutar el veredicto. El 20% de la cola queda siempre reservado a decisión del Analista SOC: la IA nunca se queda sin supervisión.</p>
-      <div class="ej"><b>Ejemplo real:</b> 36 cierres benignos ejecutados en un ciclo nocturno; 0 intervenciones necesarias; digest completo al jefe de turno al despertar.</div></div>
-    <div class="card rv"><span class="chip">Reportes</span><h3>Informes que se escriben solos</h3><p>Resumen ejecutivo, evaluación de amenaza, contención y recomendaciones por campaña — redactados por la IA sobre la evidencia real, exportables en un clic. KPIs NIST (MTTD, MTTC, acuerdo Analista SOC ↔ IA) en vivo.</p>
-      <div class="ej"><b>Ejemplo real:</b> informe de la campaña C2 listo en 40 segundos, con las 3 recomendaciones de mitigación para ese vector. <a href="informe-muestra.html" target="_blank" rel="noopener">Ver un informe de muestra →</a></div></div>
-  </div>
-</div></section>
-
-<!-- ══ RADAR + NÚMEROS ══ -->
-<section style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap" style="display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:center">
-  <svg viewBox="0 0 220 220" width="220" height="220" class="rv">
-    <circle cx="110" cy="110" r="100" fill="none" stroke="#1E2F52"/>
-    <circle cx="110" cy="110" r="66" fill="none" stroke="#1E2F52"/>
-    <circle cx="110" cy="110" r="33" fill="none" stroke="#1E2F52"/>
-    <line x1="10" y1="110" x2="210" y2="110" stroke="#1E2F52"/>
-    <line x1="110" y1="10" x2="110" y2="210" stroke="#1E2F52"/>
-    <path class="radar-sweep" d="M110 110 L110 10 A100 100 0 0 1 187 47 Z" fill="url(#g)"/>
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7CFF4D" stop-opacity=".5"/><stop offset="1" stop-color="#7CFF4D" stop-opacity="0"/>
-    </linearGradient></defs>
-    <circle class="pingdot" cx="150" cy="70" r="3" fill="none" stroke="#FF4D6E" stroke-width="2"/>
-    <circle cx="150" cy="70" r="3" fill="#FF4D6E"/>
-    <circle class="pingdot" cx="72" cy="150" r="3" fill="none" stroke="#14E9C8" stroke-width="2" style="animation-delay:1.2s"/>
-    <circle cx="72" cy="150" r="3" fill="#14E9C8"/>
-  </svg>
-  <div>
-    <span class="kicker">Recorrido · Etapa 3½ — Vigilancia que no duerme</span>
-    <h2>Centinelas para todo lo que puede fallar en silencio.</h2>
-    <p class="sub">Fuentes que dejan de enviar, carriles de detección que se rompen, campañas que resurgen tras cerrarse, supresiones que envejecen mal, la propia IA caída — cada punto ciego conocido tiene su vigilante. Si algo se apaga, tu equipo lo sabe antes que el atacante.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-      <span class="chip">Volumen por fuente</span><span class="chip">Carriles muertos</span><span class="chip">Oleada en curso</span>
-      <span class="chip">Resurgimiento</span><span class="chip">Re-validación de supresiones</span><span class="chip">Salud del LLM</span><span class="chip">Muestreo del auto-cierre</span>
+    <div class="stats">
+      <div class="s"><div class="n" data-c="360">360+</div><div class="l">tests de deriva y paridad en verde</div></div>
+      <div class="s"><div class="n" data-c="35">35</div><div class="l">DAGs de ingesta y enriquecimiento</div></div>
+      <div class="s"><div class="n">v4</div><div class="l">motor de scoring multiplicativo versionado</div></div>
+      <div class="s"><div class="n">24/7</div><div class="l">deteccion → caso → respuesta</div></div>
     </div>
   </div>
-</div></section>
+</header>
 
-<!-- ══ DEFACEMENT ══ -->
-<section id="defacement"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 3¾ — Vigilancia de marca</span>
-  <h2>Detección de defacement: si tu web amanece cambiada,<br>el caso ya está abierto.</h2>
-  <p class="sub">Los centinelas también miran hacia afuera: cada página pública del cliente se vigila de forma continua contra su propia normalidad — no contra firmas genéricas. Si el sitio cambia de forma inesperada, se abre un <b>caso CRÍTICO automático</b> con el antes y el después como evidencia y la respuesta ya propuesta. Los cambios legítimos del cliente se absorben sin generar ruido.</p>
-  <div class="grid two" style="margin-top:36px;align-items:start">
-    <div class="defmon rv">
-      <div class="row"><span>www.cliente-retail.com</span><span class="ok">✔ íntegra · hash estable · TLS 74d</span></div>
-      <div class="row"><span>portal.cliente-banca.com</span><span class="ok">✔ íntegra · hash estable · TLS 121d</span></div>
-      <div class="row"><span>blog.cliente-retail.com</span><span class="bad">⚠ DEFACEMENT — 62% del DOM cambió · título nuevo · caso CRITICAL #8841</span></div>
-      <div class="row"><span>intranet.cliente-mfg.net</span><span class="ok">✔ íntegra · hash estable · TLS 33d</span></div>
-      <div class="row"><span>status.cliente-banca.com</span><span class="ok">✔ íntegra · hash estable · TLS 88d</span></div>
-    </div>
-    <div>
-      <div class="card rv" style="border-left:3px solid var(--red)"><b>Qué se compara en cada ciclo</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Hash del contenido renderizado, estructura del DOM, título y metadatos, cadena de certificados y disponibilidad — contra el baseline propio de esa página. Un cambio de estilo no dispara; un reemplazo de contenido, una inyección o un certificado ajeno, sí.</p></div>
-      <div class="card rv" style="margin-top:14px;border-left:3px solid var(--lime)"><b>Qué pasa al detectar</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Caso CRÍTICO con el diff como evidencia, notificación inmediata al canal de guardia y la propuesta lista: restaurar desde el último snapshot íntegro, rotar credenciales del CMS y bloquear el origen del cambio. La ejecución, como todo lo irreversible, es del Analista SOC.</p></div>
+<!-- ═══ PLATAFORMA / PILARES ═══ -->
+<section id="plataforma">
+  <div class="wrap">
+    <span class="kicker">Que hace</span>
+    <h2>Un SOC completo, del log crudo al caso cerrado.</h2>
+    <p class="sub" style="margin-bottom:38px">Cuatro disciplinas sobre una sola plataforma — y un lazo de aprendizaje que las hace mejores con cada caso etiquetado.</p>
+    <div class="pillars reveal">
+      <div class="pillar"><div class="bar"></div><div class="step">01 · SENSAR</div><h3>Deteccion</h3><p>Correlacion multi-fuente (firewall, EDR, SIEM, IDS, correo) con extraccion de IOCs y enriquecimiento automatico.</p></div>
+      <div class="pillar"><div class="bar"></div><div class="step">02 · DECIDIR</div><h3>Priorizacion</h3><p>Motor de scoring multiplicativo que pondera evidencia, MITRE, contexto e intel — y se auto-calibra con los veredictos del analista.</p></div>
+      <div class="pillar"><div class="bar"></div><div class="step">03 · CAZAR</div><h3>Threat Hunting</h3><p>Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y grafo de investigacion.</p></div>
+      <div class="pillar"><div class="bar"></div><div class="step">04 · RESPONDER</div><h3>Respuesta</h3><p>Contencion propuesta sobre el host real (EDR/red), cierre automatico de lo obvio con doble llave, y todo auditado.</p></div>
     </div>
   </div>
-</div></section>
+</section>
 
-<!-- ══ ANALISTA SOC AL MANDO ══ -->
-<section id="control"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 4 — El Analista SOC al mando</span>
-  <h2>Automatizamos decisiones, no responsabilidades.</h2>
-  <p class="sub">La diferencia entre un SOC autónomo confiable y una caja negra está en los frenos. LegacyHunt trae los frenos de fábrica:</p>
-  <div class="hitl">
-    <div class="card rv"><b>Doble llave IA</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Ningún cierre automático sin que un segundo modelo —de otra generación— intente refutarlo y falle.</p></div>
-    <div class="card rv"><b>Cuota del Analista SOC garantizada</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">El 20% de la cola se reserva SIEMPRE a decisión del Analista SOC: la calibración de la IA nunca pierde su patrón de verdad.</p></div>
-    <div class="card rv"><b>Lo irreversible es del Analista SOC</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Bloqueos, cuentas y aperturas siempre exigen un clic del Analista SOC. El autopiloto ni los mira.</p></div>
-    <div class="card rv"><b>Auditoría de punta a punta</b><p style="font-size:.85rem;color:var(--dim);margin-top:6px">Cada decisión —del Analista SOC o de la IA— queda en el timeline con evidencia, modelo y versión de prompt. Kill-switch por automatismo.</p></div>
-  </div>
-  <div class="gov rv">
-    <span class="chip lime">20% de la cola siempre la decide el Analista SOC</span>
-    <span class="chip cyan">24 h de ventana de veto antes de ejecutar</span>
-    <span class="chip">2 modelos IA de generaciones distintas por cierre</span>
-    <span class="chip">100% de las decisiones con timeline auditable</span>
-    <span class="chip red">Kill-switch individual por automatismo</span>
-  </div>
-</div></section>
-
-<!-- ══ COMPARATIVA ══ -->
-<section id="comparativa" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 4½ — El antes y el después</span>
-  <h2>Mismo equipo. Diez veces menos ruido.</h2>
-  <div class="tbl rv" style="margin-top:34px"><table>
-    <tr><th>Situación</th><th>SOC tradicional</th><th>Con LegacyHunt</th></tr>
-    <tr><td data-l="Situación">Oleada de 150 detecciones iguales</td><td data-l="SOC tradicional">150 tickets, 150 triages manuales</td><td data-l="Con LegacyHunt">1 campaña, 1 veredicto IA, 1 decisión</td></tr>
-    <tr><td data-l="Situación">Caso obvio de falso positivo</td><td data-l="SOC tradicional">Espera días en la cola</td><td data-l="Con LegacyHunt">Cerrado solo, con doble llave y registro</td></tr>
-    <tr><td data-l="Situación">C2 confirmado con 97 IPs</td><td data-l="SOC tradicional">Bloqueos uno a uno, a mano</td><td data-l="Con LegacyHunt">Contención completa propuesta a un clic</td></tr>
-    <tr><td data-l="Situación">Defacement en la web pública</td><td data-l="SOC tradicional">Lo avisa un cliente por teléfono</td><td data-l="Con LegacyHunt">Caso CRÍTICO con el diff como evidencia</td></tr>
-    <tr><td data-l="Situación">Informe para el cliente</td><td data-l="SOC tradicional">Horas de redacción</td><td data-l="Con LegacyHunt">40 segundos, redactado por la IA local</td></tr>
-    <tr><td data-l="Situación">Detección rota en silencio</td><td data-l="SOC tradicional">Se descubre semanas después</td><td data-l="Con LegacyHunt">Centinela avisa en 24 horas</td></tr>
-    <tr><td data-l="Situación">¿La IA sigue acertando?</td><td data-l="SOC tradicional">Nadie lo mide</td><td data-l="Con LegacyHunt">KPI de acuerdo Analista SOC ↔ IA en el panel</td></tr>
-  </table></div>
-</div></section>
-
-<!-- ══ UN DÍA DEL ANALISTA ══ -->
-<section id="undia"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 4¾ — Un día con la plataforma</span>
-  <h2>La misma jornada, dos realidades.</h2>
-  <p class="sub">No es que el equipo trabaje más — es que deja de gastar el día en lo que la plataforma ya decidió por evidencia.</p>
-  <div class="daywrap rv"><div class="day">
-    <div class="dh"></div><div class="dh">SOC tradicional</div><div class="dh" style="color:var(--lime)">Con LegacyHunt</div>
-    <div class="hr">08:00</div><div class="trad">Llegan 300 alertas sin priorizar; empieza a triar de arriba hacia abajo.</div><div class="lh"><b>La cola del día: 12 ítems</b> priorizados por riesgo, cada uno con veredicto IA y evidencia lista.</div>
-    <div class="hr">08:40</div><div class="trad">Va por la alerta #23. El resto espera.</div><div class="lh">Decidió las <b>5 propuestas pendientes</b>; los 150 casos de la oleada se cerraron en cascada con una aprobación.</div>
-    <div class="hr">09:00</div><div class="trad">El C2 real sigue enterrado en la página 4 de la bandeja.</div><div class="lh">Investiga <b>lo único CRITICAL</b>: timeline armado, riesgo de la entidad, contención propuesta a un clic.</div>
-    <div class="hr">11:30</div><div class="trad">Bloquea 97 IPs una por una en el firewall.</div><div class="lh">Aprobó la contención: <b>el feed del perímetro se actualizó solo</b>, con TTL y remoción durable.</div>
-    <div class="hr">13:00</div><div class="trad">Empieza a redactar el informe para el cliente.</div><div class="lh">Revisa el informe que <b>la IA redactó en 40 segundos</b> y lo envía.</div>
-    <div class="hr">15:00</div><div class="trad">Un sensor dejó de mandar logs hace días. Nadie lo notó.</div><div class="lh"><b>Un centinela avisó</b>: carril de detección degradado — se corrige el mismo día.</div>
-    <div class="hr">17:00</div><div class="trad">Se va con 180 pendientes y la duda de qué se escapó.</div><div class="lh"><b>Cola en cero.</b> A la noche el autopiloto atiende lo obvio — con doble llave y cuota del Analista SOC.</div>
-  </div></div>
-</div></section>
-
-<!-- ══ TICKETS ══ -->
-<section id="tickets"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 5 — Gestión de tickets</span>
-  <h2>Del caso al ticket: el ciclo llega hasta tu cliente.</h2>
-  <p class="sub">Una campaña confirmada se convierte en ticket con un clic — o el ticket entra solo por el portal del cliente. Un <b>clasificador IA</b> lo etiqueta y prioriza al llegar, los <span class="gl" data-g="Acuerdo de nivel de servicio: tiempo máximo comprometido de primera respuesta y de resolución según severidad.">SLA</span> corren solos con escalada automática, los duplicados se fusionan y el estado se comparte por un <b>enlace firmado</b> — el cliente ve el avance sin entrar a la plataforma.</p>
-  <div class="kan rv">
-    <div class="col"><h4>Nuevo · clasificado por IA</h4>
-      <div class="tk"><b>Usuario reporta correo sospechoso</b><div class="m">portal del cliente · IA: Phishing · prioridad ALTA · vinculado a campaña #226</div></div>
-      <div class="tk"><b>VPN no conecta desde sucursal</b><div class="m">correo → ticket · IA: Conectividad · prioridad MEDIA · sin relación con amenazas</div></div>
-    </div>
-    <div class="col"><h4>En curso · SLA visible</h4>
-      <div class="tk"><b>Defacement en blog corporativo</b><div class="m">creado desde caso CRITICAL #8841 · SLA 1ª respuesta ✔ 12 min · resolución 3h 40m restantes</div></div>
-      <div class="tk"><b>Bloqueo de 97 IPs de C2</b><div class="m">desde campaña #396 · watcher: CISO del cliente · timeline compartido</div></div>
-    </div>
-    <div class="col"><h4>Resuelto · con informe</h4>
-      <div class="tk"><b>Oleada de phishing (150 casos)</b><div class="m">cerrado por autopiloto con doble llave · informe IA adjunto · cliente notificado por webhook</div></div>
-      <div class="tk"><b>Falso positivo de escaneo</b><div class="m">merge de 3 tickets duplicados · encuesta de satisfacción enviada</div></div>
+<!-- ═══ PIPELINE ═══ -->
+<section id="pipeline" style="background:var(--bg2)">
+  <div class="wrap">
+    <span class="kicker">De punta a punta</span>
+    <h2>El pipeline de deteccion.</h2>
+    <p class="sub" style="margin-bottom:34px">Del perimetro al caso priorizado, sobre un lakehouse propio. Cada eslabon es observable y versionado.</p>
+    <div class="flow reveal">
+      <div class="node"><div class="num">01</div><b>Perimetro</b><span>OPNsense · FortiGate · Wazuh · Suricata · PMG → Vector</span></div>
+      <div class="node"><div class="num">02</div><b>Lake</b><span>S3/MinIO · Iceberg · Trino — crudos e IOCs</span></div>
+      <div class="node"><div class="num">03</div><b>Enriquecer</b><span>VirusTotal · Shodan · AbuseIPDB · MISP · Tor · NVD/KEV</span></div>
+      <div class="node"><div class="num">04</div><b>Scoring</b><span>vistas v2→v4, multiplicativo por dimensiones</span></div>
+      <div class="node"><div class="num">05</div><b>Casos</b><span>dedup por SHA-256 · apertura gobernada</span></div>
+      <div class="node"><div class="num">06</div><b>Respuesta</b><span>veredicto IA · contencion · cierre auditado</span></div>
     </div>
   </div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
-    <span class="chip cyan">Portal del cliente</span><span class="chip lime">Clasificador IA al ingreso</span><span class="chip">SLA + escalada automática</span>
-    <span class="chip">Watchers</span><span class="chip">Merge de duplicados</span><span class="chip">Webhooks case.opened</span><span class="chip">Página de estado con enlace firmado</span>
-  </div>
-</div></section>
+</section>
 
-<!-- ══ DESPLIEGUE ══ -->
-<section id="despliegue" style="background:color-mix(in srgb,var(--card) 55%,transparent)"><div class="wrap">
-  <span class="kicker">Recorrido · Etapa 6 — Despliegue por etapas</span>
-  <h2>Autonomía graduada: la confianza se gana por etapas.</h2>
-  <div class="grid steps" style="margin-top:36px">
-    <div class="card rv"><div class="num">01</div><b>Conectar</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Firewall, endpoint, correo y syslog al lake. Sin agentes nuevos: usamos lo que ya tenés.</p></div>
-    <div class="card rv"><div class="num">02</div><b>Aprender</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Dos semanas de baseline: normalidad por técnica, por entidad y por fuente — en TU red, no en un dataset genérico.</p></div>
-    <div class="card rv"><div class="num">03</div><b>Modo sombra</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">La IA propone todo y no ejecuta nada. Tu equipo valida las propuestas y el KPI de acuerdo mide la calidad.</p></div>
-    <div class="card rv"><div class="num">04</div><b>Autonomía</b><p style="font-size:.86rem;color:var(--dim);margin-top:6px">Se enciende el autopiloto para lo de bajo riesgo — con doble llave, cuota del Analista SOC y kill-switch por automatismo.</p></div>
+<!-- ═══ CAPACIDADES ═══ -->
+<section id="capacidades">
+  <div class="wrap">
+    <span class="kicker">Capacidades</span>
+    <h2>Todo lo que hace la plataforma.</h2>
+    <p class="sub" style="margin-bottom:38px">Cada capacidad esta gobernada: apagada por defecto, medible, y con el humano decidiendo lo que importa.</p>
+    <div class="caps reveal">
+
+      <div class="card"><div class="ic">🎯</div><h3><span class="t">PRIORIZACION</span>Motor de scoring versionado</h3><p>Combinacion ponderada por fuente (Wazuh, evidencia, MITRE, contexto, MISP, Tor) con bonos y umbrales de severidad. Versionado (v2→v4) y publicable con doble llave de attestation.</p><div class="tags"><span class="chip">multiplicativo</span><span class="chip">por fuente</span></div></div>
+
+      <div class="card"><div class="ic">🧠</div><h3><span class="t">APRENDIZAJE</span>Calibrador que aprende</h3><p>Lee los veredictos humanos por fuente y regla, premia lo que confirma incidentes reales (recompensa por valor), explora reglas poco cubiertas (UCB) y propone recalibrar los pesos. Determinista y en modo sombra hasta que un humano aprueba.</p><div class="tags"><span class="chip lime">nuevo</span><span class="chip">human-in-the-loop</span></div></div>
+
+      <div class="card"><div class="ic">🔭</div><h3><span class="t">CAZA</span>Threat hunting + hipotesis</h3><p>Cazas sobre Trino con baseline de novedad, pivotes y kill-chain. El generador de hipotesis convierte los puntos ciegos del calibrador en cazas accionables (patron LOCK: aprender, observar, comprobar, guardar).</p><div class="tags"><span class="chip cyan">Trino/Iceberg</span><span class="chip">MITRE ATT&CK</span></div></div>
+
+      <div class="card"><div class="ic">🕸️</div><h3><span class="t">CONTEXTO</span>Memoria de casos en grafo</h3><p>Grafo Neo4j de casos, IOCs, activos, actores y campanas con relaciones idempotentes. Cada investigacion se dibuja y reconoce cuando dos casos son el mismo equipo.</p><div class="tags"><span class="chip">Neo4j</span><span class="chip">grafo de investigacion</span></div></div>
+
+      <div class="card"><div class="ic">🧩</div><h3><span class="t">CORRELACION</span>Campanas</h3><p>Agrupa cientos de casos sueltos en pocas campanas: la bandeja por la que entra el analista. Veredicto automatico de campana y acciones de contencion coordinadas.</p><div class="tags"><span class="chip">dedup</span><span class="chip">bandeja unica</span></div></div>
+
+      <div class="card"><div class="ic">🤖</div><h3><span class="t">IA LOCAL</span>Analistas ArletLLM</h3><p>Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local (Ollama y compatibles), elegible desde Ajustes. La IA propone; nunca cierra sola.</p><div class="tags"><span class="chip purple">sin nube</span><span class="chip">selector de modelo</span></div></div>
+
+      <div class="card"><div class="ic">🛡️</div><h3><span class="t">RESPUESTA</span>Contencion gobernada</h3><p>Aisla, escanea y contiene en el host real via EDR (Bitdefender, Falcon, Vicarius) y red (CrowdSec). Playbooks automaticos con doble llave; nada se ejecuta sin autorizacion y sin traza.</p><div class="tags"><span class="chip">EDR + red</span><span class="chip">doble llave</span></div></div>
+
+      <div class="card"><div class="ic">🏛️</div><h3><span class="t">GOBERNANZA</span>CSF 2.0 + auditoria</h3><p>Interruptores de automatizacion por capacidad (apagados por defecto, maestro global), badge de actor (autonomo · analista · IA), y auditoria de fuente unica. Cada accion queda registrada.</p><div class="tags"><span class="chip">NIST CSF</span><span class="chip">RBAC</span></div></div>
+
+      <div class="card"><div class="ic">🌐</div><h3><span class="t">EXPOSICION</span>Vigilancia digital</h3><p>Monitoreo continuo de terceros, credenciales filtradas, typosquatting y defacement (.gov y activos propios) con connectors, persistencia y alertas accionables.</p><div class="tags"><span class="chip">OSINT</span><span class="chip">defacement</span></div></div>
+
+      <div class="card"><div class="ic">🎫</div><h3><span class="t">OPERACION</span>Tickets + portal de cliente</h3><p>Ciclo de tickets, base de conocimiento y un portal donde el administrador del cliente asigna casos a su organizacion — sin exponer la consola del SOC.</p><div class="tags"><span class="chip">multi-tenant</span><span class="chip">KB</span></div></div>
+
+      <div class="card"><div class="ic">💽</div><h3><span class="t">DFIR</span>Activos & respuesta</h3><p>Collector de inventario por agente, registro de activos y canal de comandos a los endpoints (parar/suspender procesos) — la respuesta que si toca el host, no un feed muerto.</p><div class="tags"><span class="chip">inventario</span><span class="chip">collector</span></div></div>
+
+      <div class="card"><div class="ic">🛰️</div><h3><span class="t">ESCALA</span>Multi-cluster</h3><p>Federacion de varios clusteres bajo un gateway, con la caza, el scoring y la memoria compartidos y calibracion por cluster + global.</p><div class="tags"><span class="chip">gateway</span><span class="chip">federado</span></div></div>
+
+    </div>
   </div>
-  <div class="grid two" style="margin-top:64px;align-items:center">
-    <div class="rv">
-      <span class="kicker">Arquitectura on-premise</span>
-      <h2 style="font-size:clamp(1.3rem,2.4vw,1.8rem)">Todo adentro. Nada afuera.</h2>
-      <p class="sub" style="font-size:.95rem">La objeción de siempre, respondida con el dibujo: los eventos, el lake, la detección y <b>la IA que emite los veredictos corren dentro de tu red</b>, en tu hardware. Lo único que entra desde Internet es inteligencia de amenazas pública. Tus logs, tus casos y tus prompts no salen nunca.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-        <span class="chip lime">LLM local — sin API de terceros</span>
-        <span class="chip cyan">Feeds de intel: solo entrada</span>
-        <span class="chip">Sin agentes nuevos en tus equipos</span>
+</section>
+
+<!-- ═══ INTEGRACIONES ═══ -->
+<section id="integraciones" style="background:var(--bg2)">
+  <div class="wrap">
+    <span class="kicker">Integraciones</span>
+    <h2>Habla con tu stack tal cual esta.</h2>
+    <p class="sub" style="margin-bottom:34px">Fuentes de perimetro y endpoint, feeds de inteligencia y EDR — con un catalogo de fuentes canonico y agnostico.</p>
+    <div class="integ reveal">
+      <div class="i"><span class="d" style="background:var(--red)"></span><span>FortiGate<small>firewall</small></span></div>
+      <div class="i"><span class="d" style="background:var(--orange)"></span><span>OPNsense<small>firewall/IDS</small></span></div>
+      <div class="i"><span class="d" style="background:var(--lime)"></span><span>Wazuh<small>SIEM</small></span></div>
+      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>Suricata<small>IDS/IPS</small></span></div>
+      <div class="i"><span class="d" style="background:var(--blue)"></span><span>Proxmox Mail<small>correo</small></span></div>
+      <div class="i"><span class="d" style="background:var(--purple)"></span><span>CrowdStrike Falcon<small>EDR</small></span></div>
+      <div class="i"><span class="d" style="background:var(--red)"></span><span>Bitdefender GZ<small>EDR</small></span></div>
+      <div class="i"><span class="d" style="background:var(--orange)"></span><span>Vicarius<small>EDR/patch</small></span></div>
+      <div class="i"><span class="d" style="background:var(--lime)"></span><span>CrowdSec<small>respuesta red</small></span></div>
+      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>MISP<small>intel</small></span></div>
+      <div class="i"><span class="d" style="background:var(--blue)"></span><span>VirusTotal<small>intel</small></span></div>
+      <div class="i"><span class="d" style="background:var(--purple)"></span><span>Shodan<small>exposicion</small></span></div>
+      <div class="i"><span class="d" style="background:var(--red)"></span><span>AbuseIPDB<small>reputacion</small></span></div>
+      <div class="i"><span class="d" style="background:var(--orange)"></span><span>NVD / KEV<small>CVE</small></span></div>
+      <div class="i"><span class="d" style="background:var(--lime)"></span><span>Tor exit nodes<small>anonimato</small></span></div>
+      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>Keycloak<small>OIDC/SSO</small></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARQUITECTURA ═══ -->
+<section id="arquitectura">
+  <div class="wrap">
+    <span class="kicker">Arquitectura</span>
+    <h2>Un lakehouse propio, no una caja negra en la nube.</h2>
+    <div class="arch reveal" style="margin-top:30px">
+      <div>
+        <p class="sub">Dos motores de datos con roles claros: el <b>lakehouse analitico</b> (crudos, IOCs, scoring, materializaciones) y el <b>estado operativo</b> (casos, workflow, respuestas). Todo corre en tu infraestructura; la IA tambien.</p>
+        <div class="tags" style="margin-top:18px">
+          <span class="chip cyan">Trino + Iceberg + MinIO</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">Airflow</span>
+          <span class="chip purple">Ollama local</span>
+          <span class="chip">Keycloak OIDC</span>
+          <span class="chip">Docker Compose</span>
+        </div>
+      </div>
+      <div class="layers">
+        <div class="layer"><b>Perimetro → Vector</b><p>Ingesta de firewall, SIEM, IDS y correo hacia el lake.</p></div>
+        <div class="layer hl"><b>Lakehouse · MinIO / Iceberg / Trino</b><p>Crudos, IOCs enriquecidos, vistas de scoring versionadas.</p></div>
+        <div class="layer"><b>Estado · PostgreSQL</b><p>Casos, workflow, campanas, tickets, aprobaciones.</p></div>
+        <div class="layer"><b>Orquestacion · Airflow</b><p>35 DAGs de extraccion, enriquecimiento y materializacion, con timeouts.</p></div>
+        <div class="layer hl"><b>API + Dashboard</b><p>Consultas nombradas validadas, RBAC por rol, tiempo real.</p></div>
+        <div class="layer"><b>IA local · ArletLLM</b><p>Veredicto, triage y narrativa sin sacar un dato a la nube.</p></div>
       </div>
     </div>
-    <svg class="arch rv" viewBox="0 0 460 340" role="img" aria-label="Diagrama: todos los componentes dentro de la red del cliente; de Internet solo entran feeds de inteligencia">
-      <rect x="8" y="8" width="304" height="324" rx="14" fill="none" stroke="#7CFF4D" stroke-dasharray="6 4"/>
-      <text x="24" y="34" font-size="11" fill="#7CFF4D" font-weight="bold">TU RED</text>
-      <rect x="24" y="48" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
-      <text x="36" y="70" font-size="11">Fuentes</text>
-      <text x="36" y="88" font-size="9" class="lbl">FortiGate · Wazuh · Correo · EDR · Syslog</text>
-      <line x1="160" y1="100" x2="160" y2="118" stroke="#14E9C8" marker-end="url(#ah)"/>
-      <rect x="24" y="120" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
-      <text x="36" y="142" font-size="11">Lake + Detección + Scoring</text>
-      <text x="36" y="160" font-size="9" class="lbl">retención en tu disco, caza 24/7</text>
-      <line x1="160" y1="172" x2="160" y2="190" stroke="#14E9C8" marker-end="url(#ah)"/>
-      <rect x="24" y="192" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#7CFF4D"/>
-      <text x="36" y="214" font-size="11">CLAUDIO — IA local (LLM)</text>
-      <text x="36" y="232" font-size="9" class="lbl">veredictos e informes en tu hardware</text>
-      <line x1="160" y1="244" x2="160" y2="262" stroke="#14E9C8" marker-end="url(#ah)"/>
-      <rect x="24" y="264" width="272" height="52" rx="9" fill="#0F1F3A" stroke="#1E2F52"/>
-      <text x="36" y="286" font-size="11">Plataforma SOC + Analista</text>
-      <text x="36" y="304" font-size="9" class="lbl">aprobaciones, tickets, informes</text>
-      <ellipse cx="396" cy="120" rx="54" ry="30" fill="none" stroke="#1E2F52"/>
-      <text x="396" y="118" font-size="10" text-anchor="middle" class="lbl">Internet</text>
-      <text x="396" y="132" font-size="8" text-anchor="middle" class="lbl">feeds de intel</text>
-      <line x1="344" y1="132" x2="300" y2="142" stroke="#14E9C8" marker-end="url(#ah)"/>
-      <text x="322" y="124" font-size="8" fill="#14E9C8" text-anchor="middle">entra</text>
-      <line x1="300" y1="220" x2="352" y2="180" stroke="#FF4D6E" stroke-dasharray="4 4"/>
-      <text x="336" y="212" font-size="13" fill="#FF4D6E" font-weight="bold">✕</text>
-      <text x="374" y="230" font-size="8" fill="#FF4D6E" text-anchor="middle">tus datos NO salen</text>
-      <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#14E9C8"/></marker></defs>
-    </svg>
   </div>
-</div></section>
+</section>
 
-<!-- ══ CTA ══ -->
-<section id="cta" style="text-align:center;background:
- radial-gradient(500px 240px at 50% 0,color-mix(in srgb,var(--lime) 8%,transparent),transparent)"><div class="wrap">
-  <h2 style="max-width:700px;margin:0 auto 14px">Tu SOC ya tiene los datos.<br>Le falta el cerebro que decide.</h2>
-  <p class="sub" style="margin:0 auto 30px">Demo con tus propias fuentes en modo sombra: mirá a la plataforma proponer durante una semana antes de dejarle ejecutar nada.</p>
-  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-    <a class="btn primary" href="mailto:info@legacy-roots.net?subject=Demo%20LegacyHunt">Agendar demo</a>
-    <a class="btn ghost" href="mailto:info@legacy-roots.net?subject=Consulta%20LegacyHunt">Hablar con el equipo</a>
-    <a class="btn ghost" href="informe-muestra.html" target="_blank" rel="noopener">Ver informe de muestra</a>
+<!-- ═══ GOBERNANZA / IA ═══ -->
+<section style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="gov reveal">
+      <span class="kicker">Automatizacion gobernada</span>
+      <h2 style="margin-bottom:6px">La IA propone. El humano decide. Todo queda auditado.</h2>
+      <p class="sub">Automatizacion con freno de mano: cada capacidad arranca apagada, hay un maestro global, y las acciones sensibles piden doble llave. El aprendizaje es determinista para que un score sea defendible en una auditoria.</p>
+      <div class="gov-grid">
+        <div class="g"><h3>Apagado por defecto</h3><p>Toda automatizacion nueva nace en OFF y se enciende desde Ajustes, con gate y maestro global.</p></div>
+        <div class="g"><h3>Determinista y trazable</h3><p>Mismo historico → mismos pesos → mismo score. Versionado y reproducible para el replay forense.</p></div>
+        <div class="g"><h3>Human-on-the-loop</h3><p>La IA sugiere veredicto y contencion; el analista aprueba. La etiqueta que entrena al sistema es siempre humana.</p></div>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<footer><div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
-  <div>Legacy<b style="color:var(--lime)">Hunt</b> — plataforma MDR · Legacy Roots</div>
-  <div class="mono" style="font-size:.75rem">MITRE ATT&amp;CK · NIST SP 800-61 · IA on-premise · Human-on-the-loop</div>
-</div></footer>
+<!-- ═══ CTA FINAL ═══ -->
+<section class="final">
+  <div class="wrap">
+    <span class="kicker" style="justify-content:center">Empeza</span>
+    <h2>Detecta lo obvio, escala lo critico, aprende de cada caso.</h2>
+    <p class="sub" style="margin:0 auto 30px">LegacyHunt te da un SOC on-premise que caza sobre tu propio dato, prioriza con un motor que se afina solo y responde con el humano en el lazo.</p>
+    <div class="cta">
+      <a href="informe-muestra.html" class="btn primary">Ver informe de muestra →</a>
+      <a href="#top" class="btn ghost">Volver arriba</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div style="max-width:360px">
+        <a href="#top" class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="7" fill="none" stroke="#14E9C8" stroke-width="1.4"/><path d="M16 1v7M16 24v7M1 16h7M24 16h7" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="2.6" fill="#7CFF4D"/></svg><span>Legacy<b>Hunt</b></span></a>
+        <p>Plataforma SOC/MDR on-premise sobre lakehouse propio. Deteccion, priorizacion que aprende, threat hunting con hipotesis y respuesta gobernada — con la IA corriendo local.</p>
+      </div>
+      <div class="fnav">
+        <div>
+          <b>Plataforma</b>
+          <a href="#plataforma">Que hace</a>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#capacidades">Capacidades</a>
+          <a href="#arquitectura">Arquitectura</a>
+        </div>
+        <div>
+          <b>Recursos</b>
+          <a href="informe-muestra.html">Informe de muestra</a>
+          <a href="#integraciones">Integraciones</a>
+          <a href="#capacidades">Threat hunting</a>
+          <a href="#capacidades">Calibrador</a>
+        </div>
+      </div>
+    </div>
+    <div class="base">
+      <span>© <span id="yr"></span> LegacyHunt · SOC on-premise</span>
+      <span class="mono">Detectar · Priorizar · Cazar · Responder · Aprender</span>
+    </div>
+  </div>
+</footer>
 
 <script>
-/* Barra de progreso + scrollspy del recorrido */
+// Barra de progreso del recorrido
 const jb=document.getElementById('journeybar');
-const secs=[...document.querySelectorAll('section[id]')];
-const navA=[...document.querySelectorAll('nav ul a')];
-addEventListener('scroll',()=>{
- const h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight);
- jb.style.width=(p*100).toFixed(1)+'%';
- let cur=null;for(const s of secs){if(s.offsetTop-120<=h.scrollTop)cur=s.id}
- navA.forEach(a=>a.classList.toggle('now',!!cur&&a.getAttribute('href')==='#'+cur));
-},{passive:true});
-/* Reveal on scroll */
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
-/* Contadores */
-const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);
- const el=e.target,n=+el.dataset.n,t0=performance.now();
- const step=t=>{const p=Math.min((t-t0)/1400,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3))).toLocaleString('es');if(p<1)requestAnimationFrame(step)};
- requestAnimationFrame(step)}),{threshold:.6});
-document.querySelectorAll('.cnt').forEach(el=>cio.observe(el));
-/* Accesibilidad: sin animación si el usuario lo pide; pausa con la pestaña oculta */
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-/* Pipeline: secuencia automática + detalle al click (queda fijado) */
-const nodes=[...document.querySelectorAll('#pipe .node')];let pi=0,pinned=-1;
-setInterval(()=>{if(RM||document.hidden||pinned>=0)return;nodes.forEach(n=>n.classList.remove('on'));nodes[pi%nodes.length].classList.add('on');pi++},1400);
-const PDET=[
- ['Detectar','13 patrones de caza + scoring multi-fuente sobre el lake: cada IOC se puntúa con geo, reputación, recurrencia y el contexto de tu red.','ciclo 30 min'],
- ['Correlacionar','Agrupación técnica × objetivo × ventana: cientos de IPs rotando contra el mismo activo se vuelven una sola campaña, con alerta si la oleada crece.','tiempo real'],
- ['Veredicto IA','CLAUDIO (LLM local) triage caso y campaña con la inteligencia del día, el riesgo UEBA de la entidad y el histórico de esa técnica en tu red.','~9 s por caso'],
- ['Proponer','Cierres y contenciones entran a la cola de Aprobaciones con narrativa y evidencia — nadie redacta la justificación a mano.','instantáneo'],
- ['Autopiloto','Solo lo de bajo riesgo, solo si el segundo modelo no refuta, y siempre tras la ventana de veto. El 20% de la cola queda para el Analista SOC.','ventana 24 h'],
- ['Informar','Informe ejecutivo por campaña redactado por la IA sobre la evidencia real; KPIs NIST (MTTD, MTTC, acuerdo) en vivo.','~40 s']];
-const pd=document.getElementById('pipedetail');
-nodes.forEach((n,i)=>n.addEventListener('click',()=>{
- if(pinned===i){pinned=-1;pd.style.display='none';n.classList.remove('on');return}
- pinned=i;nodes.forEach(m=>m.classList.remove('on'));n.classList.add('on');
- pd.style.display='block';pd.innerHTML='<b>'+PDET[i][0]+'</b><span class="lat">'+PDET[i][2]+'</span><br>'+PDET[i][1];
-}));
-/* Stages de la demo en secuencia */
-const stages=[...document.querySelectorAll('#stages .stage')];let si=0;
-setInterval(()=>{if(RM||document.hidden)return;stages.forEach(s=>s.classList.remove('on'));stages[si%stages.length].classList.add('on');si++},2600);
-/* Terminal CLAUDIO conducible: tres secuencias — loop por defecto, botones para dirigirla */
-const SEQS={
- benigna:[
-  ['c','$ claudio triage --campaña 226'],
-  ['','⟳ muestreando 8 de 150 casos…'],
-  ['','⟳ inteligencia del día: destino = Meta (social) · sin listar'],
-  ['','⟳ histórico T1566 en esta red: 94% cerró FP (n=1.2k)'],
-  ['g','{ "verdict": "benign", "confidence": 93,'],
-  ['g','  "narrative": "Navegación a infraestructura Meta,'],
-  ['g','   patrón idéntico en 8/8 de la muestra…" }'],
-  ['p','→ propuesta: FALSO_POSITIVO + cascada (150 casos)']],
- llave:[
-  ['c','$ claudio refute --segunda-opinión qwen3:8b'],
-  ['','⟳ el refutador busca la amenaza que el primer modelo no vio…'],
-  ['g','{ "refuted": false — sin señal de amenaza real }'],
-  ['o','⏲ ventana de veto del Analista SOC: 24h · cuota 20%'],
-  ['g','✔ autopiloto: 150 casos cerrados · flujo completo']],
- c2:[
-  ['c','$ claudio triage --campaña 396'],
-  ['','⟳ 97 IPs contra el mismo activo · beacon persistente'],
-  ['r','{ "verdict": "MALICIOUS", "confidence": 86 } · C2 T1071'],
-  ['r','⚠ contención propuesta: bloquear 97 IPs → 1 clic del Analista SOC']]
-};
-let LINES=['benigna','llave','c2'].flatMap(k=>SEQS[k]),loop=true;
-const out=document.getElementById('termout');let li=0,ci=0,buf='',tid=null;
-function type(){
- if(li>=LINES.length){
-  if(!loop){out.innerHTML=buf+'<span class="cursor"></span>';return}
-  tid=setTimeout(()=>{buf='';li=0;ci=0;out.innerHTML='<span class="cursor"></span>';type()},4200);return}
- const [cls,txt]=LINES[li];const plain=txt;
- if(ci<=plain.length){
-   out.innerHTML=buf+(cls?`<span class="${cls}">`:'')+plain.slice(0,ci)+(cls?'</span>':'')+'<span class="cursor"></span>';
-   ci++;tid=setTimeout(type,plain.startsWith('$')?34:12);
- } else {
-   buf+=(cls?`<span class="${cls}">`:'')+txt+(cls?'</span>':'')+'\n';
-   out.innerHTML=buf+'<span class="cursor"></span>';li++;ci=0;
-   tid=setTimeout(type,plain.startsWith('{')||plain.startsWith('⚠')?600:280);
- }
-}
-document.querySelectorAll('.termctl button').forEach(b=>b.addEventListener('click',()=>{
- document.querySelectorAll('.termctl button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
- clearTimeout(tid);LINES=SEQS[b.dataset.seq];loop=false;buf='';li=0;ci=0;type();
-}));
-if(RM){out.innerHTML=SEQS.benigna.map(([c,t])=>(c?`<span class="${c}">`:'')+t+(c?'</span>':'')).join('\n')}
-else{type()}
-/* Widget "decidí vos": revela la decisión del SOC real */
-const dout=document.getElementById('decideout');
-document.querySelectorAll('#decide [data-d]').forEach(b=>b.addEventListener('click',()=>{
- dout.style.display='block';
- dout.innerHTML=b.dataset.d==='apro'
-  ?'✅ <b>Coincidiste con el SOC real.</b> La contención se aprobó: el dominio entró al feed de bloqueo del firewall (TTL 7 días) y el host se aisló vía EDR. El análisis forense confirmó un infostealer con persistencia. El <b>74%</b> de los visitantes tomó la misma decisión.'
-  :'🔍 <b>Pedir más evidencia también es operar bien.</b> El SOC real aprobó la contención (el forense confirmó un infostealer), pero rechazar sin estar convencido es exactamente para lo que existe la cola: <b>nada irreversible ocurre sin un Analista SOC convencido</b>. El 26% de los visitantes eligió como vos.';
-}));
-/* Selector de audiencia: adapta el pitch y marca las secciones clave del rol */
-const AUD={
- analista:{pitch:'Menos ruido, más criterio: la cola te llega priorizada, con veredicto y evidencia — vos decidís lo que importa y la IA documenta el resto.',focus:['demo','modulos','undia']},
- ciso:{pitch:'Gobierno y números: autonomía medible, frenos de fábrica (doble llave, cuota, kill-switch) y KPIs NIST para responder por el riesgo ante el directorio.',focus:['control','comparativa','despliegue']},
- msp:{pitch:'Multi-cliente de fábrica: portal de tickets, vigilancia de marca, informes automáticos y una operación que escala sin sumar analistas por cliente.',focus:['tickets','defacement','despliegue']}
-};
-const audpitch=document.getElementById('audpitch');
-function setAud(k){
- const a=AUD[k];if(!a)return;
- audpitch.textContent=a.pitch;
- document.querySelectorAll('.termctl [data-aud]').forEach(b=>b.classList.toggle('on',b.dataset.aud===k));
- document.querySelectorAll('section[id]').forEach(s=>s.classList.toggle('audkey',a.focus.includes(s.id)));
- try{localStorage.setItem('lh_aud',k)}catch{}
-}
-document.querySelectorAll('.termctl [data-aud]').forEach(b=>b.addEventListener('click',()=>setAud(b.dataset.aud)));
-setAud((()=>{try{return localStorage.getItem('lh_aud')||'analista'}catch{return 'analista'}})());
-/* Tour guiado de 90 segundos: recorre el viaje con narración */
-const TOUR=[
- ['#ciclo','Todo empieza acá: millones de eventos entran y el ciclo decide solo lo obvio. Seis etapas, cada una alimenta la siguiente.',11],
- ['#demo','Una oleada real de phishing: 150 detecciones se vuelven una campaña, la IA la sentencia con evidencia y el autopiloto la cierra — con doble llave.',13],
- ['#modulos','Los seis motores: detección proactiva, correlación en campañas, triage IA local, respuesta a un clic, autonomía gobernada e informes automáticos.',12],
- ['#defacement','La vigilancia también mira hacia afuera: si una web pública del cliente cambia de forma inesperada, el caso crítico ya está abierto.',11],
- ['#control','Lo más importante: los frenos. Doble llave IA, cuota del analista garantizada, todo lo irreversible pasa por un humano y queda auditado.',12],
- ['#undia','Así se siente el día a día: la misma jornada con la cola priorizada, las decisiones listas y el ruido cerrándose solo.',11],
- ['#tickets','El ciclo llega hasta tu cliente: tickets clasificados por IA, SLA que corren solos y estado compartido por enlace firmado.',11],
- ['#cta','Autonomía graduada: la plataforma se gana tu confianza en modo sombra antes de ejecutar nada. ¿La vemos con tus fuentes?',9]];
-const tcap=document.getElementById('tourcap'),ttext=document.getElementById('tourtext'),tstep=document.getElementById('tourstep');
-let ttimer=null,ti=-1;
-function tourStop(){clearTimeout(ttimer);ttimer=null;ti=-1;tcap.style.display='none'}
-function tourNext(){
- ti++;if(ti>=TOUR.length){tourStop();return}
- const [sel,cap,secs]=TOUR[ti];
- document.querySelector(sel)?.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
- tcap.style.display='block';tstep.textContent=`Tour · ${ti+1}/${TOUR.length}`;ttext.textContent=cap;
- ttimer=setTimeout(tourNext,secs*1000);
-}
-document.getElementById('tourbtn')?.addEventListener('click',e=>{e.preventDefault();tourStop();tourNext()});
-document.getElementById('tourexit')?.addEventListener('click',tourStop);
-addEventListener('keydown',e=>{if(e.key==='Escape')tourStop()});
-/* KPIs vivos: si el repo publica kpis.json, el hero usa el dato del día */
-fetch('kpis.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(k=>{
- if(!k)return;document.querySelectorAll('.cnt[data-k]').forEach(el=>{
-  if(k[el.dataset.k]!=null)el.dataset.n=k[el.dataset.k]})
-}).catch(()=>{});
+addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);jb.style.width=(p*100)+'%';},{passive:true});
+// Ano
+document.getElementById('yr').textContent=new Date().getFullYear();
+// Reveal on scroll
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// Nav activo por seccion
+const links=[...document.querySelectorAll('nav ul a[href^="#"]')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(s.getBoundingClientRect().top<=120)cur='#'+s.id});links.forEach(a=>a.classList.toggle('now',a.getAttribute('href')===cur));},{passive:true});
+// Contadores
+const co=new IntersectionObserver((es)=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,t=+el.dataset.c,suf=el.textContent.includes('+')?'+':'';let n=0;const step=Math.max(1,Math.round(t/40));const iv=setInterval(()=>{n+=step;if(n>=t){n=t;clearInterval(iv);}el.textContent=n+suf;},22);co.unobserve(el);}),{threshold:.5});
+document.querySelectorAll('.n[data-c]').forEach(el=>co.observe(el));
+// Cerrar menu movil al navegar
+document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
 </script>
 </body>
 </html>
