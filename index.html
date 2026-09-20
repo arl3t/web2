@@ -3,352 +3,364 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LegacyHunt — SOC que caza, decide y aprende</title>
-<meta name="description" content="Plataforma SOC on-premise sobre lakehouse: deteccion multi-fuente, priorizacion con un motor de scoring que se calibra solo, threat hunting con hipotesis, memoria de casos en grafo, analistas IA locales y respuesta gobernada. Human-on-the-loop.">
+<title>LegacyHunt — Tu SOC ya tiene la respuesta</title>
+<meta name="description" content="LegacyHunt: SOC on-premise sobre lakehouse. Detecta en todas tus fuentes, prioriza con un motor que se calibra solo y caza sobre tu propio dato. Preguntale a Arlet, tu asistente SOC. IA local, human-on-the-loop.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LegacyHunt — SOC que caza, decide y aprende">
-<meta property="og:description" content="Deteccion, priorizacion que se auto-calibra, threat hunting con hipotesis, memoria de casos en grafo, IA local y respuesta gobernada. 100% on-premise, human-on-the-loop.">
+<meta property="og:title" content="LegacyHunt — Tu SOC ya tiene la respuesta. Preguntale a Arlet.">
+<meta property="og:description" content="SOC on-premise sobre lakehouse: deteccion multi-fuente, priorizacion que se auto-calibra, threat hunting con hipotesis e IA local. Human-on-the-loop.">
 <meta property="og:url" content="https://arl3t.github.io/web2/">
 <meta property="og:locale" content="es_ES">
-<meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#0A1428">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A1428'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%231E2F52' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%2314E9C8' stroke-width='1.4'/%3E%3Cpath d='M16 3v6M16 23v6M3 16h6M23 16h6' stroke='%231E2F52' stroke-width='1.4'/%3E%3Ccircle cx='16' cy='16' r='2.1' fill='%237CFF4D'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000000'/%3E%3Cpath d='M16 7 L25 24 L7 24 Z' fill='none' stroke='%238052ff' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18' r='2' fill='%23ffb829'/%3E%3C/svg%3E">
 <style>
-/* ═══ Fuentes self-hosted (sin llamadas externas) ═══ */
+/* ═══ Fuente self-hosted (sustituto de PPNeueMontreal, sin llamadas externas) ═══ */
 @font-face{font-family:'DM Sans';font-style:normal;font-weight:100 1000;font-display:swap;src:url(fonts/dmsans.woff2) format('woff2')}
-@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(fonts/jetbrainsmono.woff2) format('woff2')}
 
-/* ═══ MARCA CORPORATIVA LegacyHunt — tema nexus-dark (paleta de la plataforma) ═══ */
+/* ═══ MARCA — sistema "void" (negro absoluto + Electric Iris + Saffron Spark) ═══ */
 :root{
-  --bg:#0A1428; --bg2:#07101F; --card:#0F1F3A; --card2:#0B1830; --border:#1E2F52;
-  --text:#FFFFFF; --dim:#A3B8D9;
-  --lime:#7CFF4D;   /* primario — caza / confirmado */
-  --cyan:#14E9C8;   /* analisis / hunting */
-  --blue:#6FA8FF;   /* datos / enlaces */
-  --purple:#BFA3FF; /* IA */
-  --red:#FF4D6E;    /* amenaza / critico */
-  --orange:#FFB74D; /* atencion */
-  --sans:"DM Sans",ui-sans-serif,system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --void:#000000; --white:#ffffff; --ash:#9a9a9a; --silver:#bdbdbd;
+  --iris:#8052ff; --saffron:#ffb829; --verdant:#15846e;
+  --font:'DM Sans',Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --max:1280px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{color:var(--blue);text-decoration:none}
-.mono{font-family:var(--mono)}
-.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
-section{padding:92px 0;position:relative}
-h2{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:900;line-height:1.14;letter-spacing:-.02em;margin-bottom:14px}
-h3{font-size:1.06rem;font-weight:800;letter-spacing:-.01em}
-.kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.kicker::before{content:"";width:22px;height:1px;background:var(--lime);display:inline-block}
-.sub{color:var(--dim);font-size:1.06rem;max-width:740px}
-.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:26px;transition:.22s}
-.card:hover{border-color:color-mix(in srgb,var(--cyan) 45%,var(--border));transform:translateY(-3px)}
-.card .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;margin-bottom:16px;font-size:1.2rem;background:color-mix(in srgb,var(--cyan) 12%,transparent);border:1px solid color-mix(in srgb,var(--cyan) 30%,transparent)}
-.card p{color:var(--dim);margin-top:9px;font-size:.96rem}
-.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;padding:4px 11px;border-radius:99px;border:1px solid var(--border);color:var(--dim)}
-.chip.lime{color:var(--lime);border-color:color-mix(in srgb,var(--lime) 40%,transparent);background:color-mix(in srgb,var(--lime) 9%,transparent)}
-.chip.cyan{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 40%,transparent);background:color-mix(in srgb,var(--cyan) 9%,transparent)}
-.chip.purple{color:var(--purple);border-color:color-mix(in srgb,var(--purple) 40%,transparent);background:color-mix(in srgb,var(--purple) 9%,transparent)}
-.btn{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:.95rem;padding:13px 26px;border-radius:11px;transition:.2s;cursor:pointer;border:1px solid transparent}
-.btn.primary{background:var(--lime);color:#06210A}
-.btn.primary:hover{background:#8DFF66;transform:translateY(-2px);box-shadow:0 10px 30px -12px var(--lime)}
-.btn.ghost{border-color:var(--border);color:var(--text)}
-.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
-#journeybar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:60;transition:width .12s linear}
+body{background:var(--void);color:var(--white);font-family:var(--font);font-weight:200;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--iris);color:#fff}
 
-/* ── Nav ── */
-nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
-.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:1.16rem;letter-spacing:-.02em;color:var(--text)}
-.brand svg{width:30px;height:30px;flex:none}
-.brand b{color:var(--lime)}
-nav ul{display:flex;gap:28px;list-style:none;align-items:center}
-nav ul a{color:var(--dim);font-size:.9rem;font-weight:600}
-nav ul a:hover,nav ul a.now{color:var(--lime)}
-.navcta{padding:9px 18px!important;font-size:.86rem!important}
-.menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:9px;color:var(--text);width:40px;height:38px;font-size:1.2rem;cursor:pointer}
+/* Campo de particulas ambiente (profundidad de fondo, toda la pagina) */
+#amb{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+section{padding:clamp(72px,11vw,120px) 0;position:relative}
 
-/* ── Hero ── */
-.hero{padding:118px 0 78px;position:relative;overflow:hidden}
-.gridbg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:46px 46px;opacity:.13;-webkit-mask-image:radial-gradient(ellipse 78% 62% at 50% 26%,#000,transparent);mask-image:radial-gradient(ellipse 78% 62% at 50% 26%,#000,transparent);pointer-events:none}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:
- radial-gradient(620px 320px at 78% 6%,color-mix(in srgb,var(--lime) 8%,transparent),transparent),
- radial-gradient(520px 280px at 12% 82%,color-mix(in srgb,var(--cyan) 9%,transparent),transparent)}
-.hero .in{position:relative;z-index:2;max-width:900px}
-.hero .tag{margin-bottom:22px}
-.hero h1{font-size:clamp(2.3rem,5.4vw,4.1rem);font-weight:900;line-height:1.06;letter-spacing:-.025em}
-.hero h1 em{font-style:normal;color:var(--lime)}
-.hero h1 u{text-decoration:none;color:var(--cyan)}
-.hero .sub{margin:24px 0 32px;font-size:1.16rem}
-.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
-.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+/* Tipografia — jerarquia por ESCALA, no por peso (todo headline en 400) */
+.display{font-size:clamp(3rem,8.4vw,113px);font-weight:400;line-height:1.02;letter-spacing:-.045em}
+.h-lg{font-size:clamp(2.5rem,6.6vw,78px);font-weight:400;line-height:1.06;letter-spacing:-.04em}
+.h{font-size:clamp(2rem,4.6vw,48px);font-weight:400;line-height:1.08;letter-spacing:-.035em}
+.h-sm{font-size:clamp(1.6rem,3.4vw,42px);font-weight:400;line-height:1.12;letter-spacing:-.03em}
+.h-xs{font-size:clamp(1.35rem,2.6vw,27px);font-weight:400;line-height:1.18;letter-spacing:-.02em}
+.iris{color:var(--iris)} .amber{color:var(--saffron)}
+.eyebrow{color:var(--saffron);font-size:14px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.body{font-size:clamp(16px,1.4vw,18px);font-weight:200;line-height:1.6;color:var(--white)}
+.body.dim{color:var(--silver)}
+.lead{max-width:520px}
 
-/* ── Contadores ── */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:56px}
-.stats .s{background:var(--card2);padding:26px 20px;text-align:center}
-.stats .n{font-family:var(--mono);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:var(--lime)}
-.stats .l{color:var(--dim);font-size:.82rem;margin-top:4px}
+/* Boton violeta (unica CTA rellena) + enlaces fantasma */
+.pill{display:inline-flex;align-items:center;gap:9px;background:var(--iris);color:#fff;font-weight:600;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:14px 22px;border-radius:9999px;cursor:pointer;border:none;transition:.22s}
+.pill:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px var(--iris),0 0 40px -20px var(--iris)}
+.ghost{display:inline-flex;align-items:center;gap:8px;color:var(--white);font-weight:400;font-size:14px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;background:none;border:none;transition:.2s}
+.ghost:hover{color:var(--saffron)}
+.actions{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:36px}
 
-/* ── Pilares ── */
-.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.pillar{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden}
-.pillar .step{font-family:var(--mono);font-size:.72rem;color:var(--cyan);letter-spacing:.1em}
-.pillar h3{margin:10px 0 8px}
-.pillar p{color:var(--dim);font-size:.92rem}
-.pillar .bar{position:absolute;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));opacity:.7}
+/* Composicion de dos columnas (ritmo zigzag) */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,80px);align-items:center}
+.two.rev .col-a{order:2} .two.rev .col-b{order:1}
 
-/* ── Pipeline ── */
-.flow{display:flex;align-items:stretch;flex-wrap:wrap;margin:0 -6px}
-.flow .node{flex:1;min-width:150px;background:var(--card2);border:1px solid var(--border);border-radius:13px;padding:18px 16px;margin:6px;position:relative}
-.flow .node .num{font-family:var(--mono);font-size:.7rem;color:var(--lime)}
-.flow .node b{display:block;margin:6px 0 4px;font-size:.98rem}
-.flow .node span{color:var(--dim);font-size:.82rem}
+/* Nav transparente sobre el vacio */
+nav{position:sticky;top:0;z-index:40;background:transparent}
+nav .row{max-width:var(--max);margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-size:18px;font-weight:500;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px;flex:none}
+.navlinks{display:flex;gap:30px;align-items:center}
+.navlinks a{color:var(--ash);font-size:14px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:.2s}
+.navlinks a:hover,.navlinks a.now{color:var(--white)}
+.menu-toggle{display:none;background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
 
-/* ── Capacidades ── */
-.caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-.caps .card h3 .t{font-family:var(--mono);font-size:.64rem;color:var(--cyan);display:block;letter-spacing:.12em;margin-bottom:3px}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+/* Hero */
+.hero{padding-top:clamp(28px,5vw,64px);padding-bottom:clamp(60px,9vw,110px)}
+.hero-canvas{width:100%;height:clamp(340px,46vw,560px);display:block}
 
-/* ── Integraciones ── */
-.integ{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.integ .i{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600;transition:.2s}
-.integ .i:hover{border-color:color-mix(in srgb,var(--lime) 40%,transparent)}
-.integ .i .d{width:8px;height:8px;border-radius:99px;flex:none}
-.integ .i small{color:var(--dim);font-weight:400;font-size:.72rem;display:block}
+/* Disciplinas — filas tipograficas espaciosas (sin tarjetas) */
+.disc{display:grid;gap:clamp(44px,7vw,84px);margin-top:clamp(48px,7vw,80px)}
+.disc .row{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,52px);align-items:start}
+.disc .idx{font-size:clamp(2.4rem,6vw,78px);font-weight:200;line-height:.9;color:var(--iris);letter-spacing:-.04em}
+.disc .row .body{max-width:560px;margin-top:14px}
 
-/* ── Arquitectura ── */
-.arch{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:center}
-.arch .layers{display:grid;gap:10px}
-.arch .layer{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
-.arch .layer b{font-size:.95rem}
-.arch .layer p{color:var(--dim);font-size:.85rem;margin-top:3px}
-.arch .layer.hl{border-color:color-mix(in srgb,var(--lime) 45%,transparent);background:color-mix(in srgb,var(--lime) 6%,var(--card2))}
+/* Pipeline — secuencia tipografica */
+.flow{display:flex;flex-wrap:wrap;gap:14px 10px;margin-top:44px;align-items:baseline}
+.flow .step{font-size:clamp(1.3rem,2.6vw,27px);font-weight:400;letter-spacing:-.02em}
+.flow .arw{color:var(--iris);font-size:1.4rem}
+.flow .lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);margin-bottom:4px}
 
-/* ── Callout / gobernanza ── */
-.gov{background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 8%,var(--card2)),var(--card2));border:1px solid var(--border);border-radius:20px;padding:44px}
-.gov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
-.gov-grid .g h3{color:var(--lime);font-size:.98rem;margin-bottom:6px}
-.gov-grid .g p{color:var(--dim);font-size:.9rem}
+/* Detalle ligero (listas sin bordes) */
+.detail{display:grid;gap:26px}
+.detail .d .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron);margin-bottom:6px}
+.detail .d .v{font-size:clamp(1.05rem,1.8vw,20px);font-weight:400;letter-spacing:-.01em}
+.detail .d p{color:var(--silver);font-weight:200;margin-top:4px;font-size:16px}
 
-/* ── CTA final ── */
-.final{text-align:center;background:radial-gradient(700px 300px at 50% 0%,color-mix(in srgb,var(--lime) 8%,transparent),transparent)}
-.final h2{max-width:760px;margin:0 auto 16px}
-.final .cta{justify-content:center;display:flex;gap:14px;flex-wrap:wrap}
+/* Capacidades completas — rejilla espaciosa sin tarjetas */
+.caplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(30px,4vw,52px);margin-top:56px}
+.capitem .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron);margin-bottom:9px}
+.capitem .n{font-size:24px;font-weight:400;letter-spacing:-.02em}
+.capitem p{color:var(--silver);font-weight:200;margin-top:8px;font-size:16px;line-height:1.55}
 
-/* ── Footer ── */
-footer{border-top:1px solid var(--border);padding:44px 0 30px;background:var(--bg2)}
-footer .cols{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
-footer .brand{margin-bottom:12px}
-footer p{color:var(--dim);font-size:.86rem;max-width:340px}
-footer .fnav{display:flex;gap:40px;flex-wrap:wrap}
-footer .fnav div b{display:block;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-footer .fnav div a{display:block;color:var(--text);font-size:.9rem;margin-bottom:7px;opacity:.85}
-footer .fnav div a:hover{color:var(--lime);opacity:1}
-footer .base{margin-top:34px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--dim);font-size:.82rem}
+/* Integraciones — texto que fluye, sin cajas */
+.integ{margin-top:40px;font-size:clamp(1.2rem,2.4vw,24px);font-weight:200;line-height:1.9;color:var(--silver);max-width:1000px}
+.integ b{color:var(--white);font-weight:400}
+.integ .sep{color:var(--iris);padding:0 4px}
 
-/* ── reveal ── */
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
-.reveal.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+/* Arquitectura — capas separadas por aire */
+.layers{display:grid;gap:26px;margin-top:8px}
+.layer .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--iris);margin-bottom:5px}
+.layer .n{font-size:clamp(1.1rem,2vw,22px);font-weight:400;letter-spacing:-.01em}
+.layer p{color:var(--silver);font-weight:200;font-size:15px;margin-top:3px}
 
-@media(max-width:900px){
-  .stats,.pillars,.gov-grid{grid-template-columns:repeat(2,1fr)}
-  .arch{grid-template-columns:1fr}
-  nav ul{display:none;position:absolute;top:66px;left:0;right:0;flex-direction:column;background:var(--card);border-bottom:1px solid var(--border);padding:16px 24px;gap:16px}
-  nav ul.open{display:flex}
+/* Gobernanza */
+.gov3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,52px);margin-top:52px}
+.gov3 .g .k{color:var(--saffron);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.gov3 .g .n{font-size:20px;font-weight:400;letter-spacing:-.01em}
+.gov3 .g p{color:var(--silver);font-weight:200;font-size:16px;margin-top:6px}
+
+/* CTA final */
+.final{text-align:center}
+.final .display{max-width:15ch;margin:0 auto}
+.final .actions{justify-content:center}
+
+/* Footer */
+footer{padding:64px 0 44px}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;align-items:flex-end}
+footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+
+/* ═══ Arlet — asistente SOC ═══ */
+#arlet-fab{position:fixed;right:24px;bottom:24px;z-index:60}
+#arlet-panel{position:fixed;right:24px;bottom:88px;z-index:61;width:min(380px,calc(100vw - 32px));max-height:min(620px,calc(100vh - 120px));background:#000;border-radius:24px;
+  box-shadow:0 0 0 1px rgba(128,82,255,.35),0 30px 90px rgba(0,0,0,.7),0 0 70px -30px var(--iris);
+  display:none;flex-direction:column;overflow:hidden}
+#arlet-panel.open{display:flex}
+.ah{padding:18px 20px;display:flex;align-items:center;gap:11px}
+.ah svg{width:26px;height:26px;flex:none}
+.ah .t{font-size:15px;font-weight:500}
+.ah .t small{display:block;color:var(--ash);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-top:1px}
+.ah .x{margin-left:auto;background:none;border:none;color:var(--ash);cursor:pointer;font-size:1.2rem;line-height:1}
+.ah .x:hover{color:#fff}
+#arlet-log{flex:1;overflow-y:auto;padding:6px 20px 12px;display:flex;flex-direction:column;gap:14px}
+.msg{font-size:15px;font-weight:200;line-height:1.5;max-width:88%}
+.msg.a{color:#fff} .msg.a .who{color:var(--saffron);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+.msg.u{align-self:flex-end;background:rgba(255,255,255,.06);padding:9px 13px;border-radius:16px 16px 4px 16px}
+.msg .go{margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:4px 20px 8px}
+.chips button{background:none;border:1px solid rgba(128,82,255,.4);color:#fff;font-family:inherit;font-size:12.5px;font-weight:400;padding:7px 12px;border-radius:9999px;cursor:pointer;transition:.18s}
+.chips button:hover{border-color:var(--iris);background:rgba(128,82,255,.12)}
+.ainput{display:flex;gap:8px;padding:12px 16px 16px}
+.ainput input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9999px;color:#fff;font-family:inherit;font-size:14px;font-weight:300;padding:11px 15px;outline:none}
+.ainput input:focus{border-color:var(--iris)}
+.ainput input::placeholder{color:var(--ash)}
+.ainput .send{background:var(--iris);border:none;color:#fff;width:42px;height:42px;border-radius:9999px;cursor:pointer;font-size:1.1rem;flex:none;transition:.2s}
+.ainput .send:hover{transform:scale(1.06)}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+@media(max-width:860px){
+  .navlinks{display:none;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;align-items:flex-start;gap:18px;background:#000;box-shadow:0 0 0 1px rgba(128,82,255,.3);border-radius:24px;padding:22px 24px}
+  .navlinks.open{display:flex}
   .menu-toggle{display:block}
+  .two{grid-template-columns:1fr;gap:36px}
+  .two.rev .col-a,.two.rev .col-b{order:0}
+  .gov3{grid-template-columns:1fr}
+  .disc .row{grid-template-columns:1fr}
 }
-@media(max-width:560px){ .stats,.pillars,.gov-grid{grid-template-columns:1fr} section{padding:66px 0} }
 </style>
 </head>
 <body>
-<div id="journeybar"></div>
+<canvas id="amb" aria-hidden="true"></canvas>
 
 <!-- ═══ NAV ═══ -->
 <nav>
-  <div class="wrap">
+  <div class="row">
     <a href="#top" class="brand" aria-label="LegacyHunt">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="7" fill="none" stroke="#14E9C8" stroke-width="1.4"/><path d="M16 1v7M16 24v7M1 16h7M24 16h7" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="2.6" fill="#7CFF4D"/></svg>
-      <span>Legacy<b>Hunt</b></span>
+      <svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8052ff"/><stop offset="1" stop-color="#15846e"/></linearGradient></defs><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg>
+      <span>LegacyHunt</span>
     </a>
-    <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
-    <ul id="nav">
-      <li><a href="#plataforma">Plataforma</a></li>
-      <li><a href="#pipeline">Pipeline</a></li>
-      <li><a href="#capacidades">Capacidades</a></li>
-      <li><a href="#integraciones">Integraciones</a></li>
-      <li><a href="#arquitectura">Arquitectura</a></li>
-      <li><a href="informe-muestra.html" class="btn primary navcta">Ver informe ↗</a></li>
-    </ul>
+    <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('nl').classList.toggle('open')">☰</button>
+    <div class="navlinks" id="nl">
+      <a href="#plataforma">Plataforma</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#capacidades">Capacidades</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
+    </div>
   </div>
 </nav>
 
 <!-- ═══ HERO ═══ -->
 <header class="hero" id="top">
-  <div class="gridbg"></div>
-  <div class="wrap in">
-    <div class="tag"><span class="chip lime">● SOC · MDR · on-premise</span></div>
-    <h1>El SOC que <em>caza</em>, <u>decide</u> y <em>aprende</em> de cada caso.</h1>
-    <p class="sub">LegacyHunt detecta a traves de todas tus fuentes, prioriza con un motor de scoring que <b>se calibra solo</b>, caza amenazas sobre tu propio lakehouse y propone la respuesta — con la IA corriendo local y el humano siempre en el lazo.</p>
-    <div class="cta">
-      <a href="#plataforma" class="btn primary">Ver la plataforma →</a>
-      <a href="informe-muestra.html" class="btn ghost">Informe de muestra</a>
+  <div class="wrap two">
+    <div class="col-a">
+      <p class="eyebrow">SOC · MDR · on-premise</p>
+      <h1 class="display" style="margin-top:22px">Tu SOC ya tiene la respuesta. Preguntale a <span class="amber">Arlet</span>.</h1>
+      <p class="body lead" style="margin-top:28px">LegacyHunt detecta en todas tus fuentes, prioriza con un motor que <span style="color:#fff;font-weight:400">se calibra solo</span> y caza sobre tu propio lakehouse. Arlet, tu asistente SOC, te lleva directo a lo que buscas.</p>
+      <div class="actions">
+        <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
+        <button class="ghost" onclick="Arlet.open()">Preguntar a Arlet →</button>
+      </div>
     </div>
-    <div class="pill-row">
-      <span class="chip">100% on-premise</span>
-      <span class="chip cyan">Lakehouse propio</span>
-      <span class="chip purple">IA local (sin nube)</span>
-      <span class="chip">Human-on-the-loop</span>
-      <span class="chip">Gobernanza CSF 2.0</span>
-    </div>
-
-    <div class="stats">
-      <div class="s"><div class="n" data-c="360">360+</div><div class="l">tests de deriva y paridad en verde</div></div>
-      <div class="s"><div class="n" data-c="35">35</div><div class="l">DAGs de ingesta y enriquecimiento</div></div>
-      <div class="s"><div class="n">v4</div><div class="l">motor de scoring multiplicativo versionado</div></div>
-      <div class="s"><div class="n">24/7</div><div class="l">deteccion → caso → respuesta</div></div>
+    <div class="col-b">
+      <canvas id="brain" class="hero-canvas" aria-hidden="true"></canvas>
     </div>
   </div>
 </header>
 
-<!-- ═══ PLATAFORMA / PILARES ═══ -->
+<!-- ═══ PLATAFORMA / MANIFIESTO ═══ -->
 <section id="plataforma">
+  <div class="wrap two">
+    <div class="col-a">
+      <p class="eyebrow">Que hace</p>
+      <h2 class="h-lg" style="margin-top:20px">Del log crudo al caso cerrado.</h2>
+    </div>
+    <div class="col-b">
+      <p class="body dim">Un SOC completo sobre una sola plataforma: correlaciona tus fuentes, extrae y enriquece indicadores, decide con un motor de scoring versionado, caza sobre tu propio dato y propone la respuesta. Y un lazo de aprendizaje que lo hace mejor con cada caso que un humano etiqueta. Todo corriendo en tu casa — la IA tambien.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DISCIPLINAS ═══ -->
+<section>
   <div class="wrap">
-    <span class="kicker">Que hace</span>
-    <h2>Un SOC completo, del log crudo al caso cerrado.</h2>
-    <p class="sub" style="margin-bottom:38px">Cuatro disciplinas sobre una sola plataforma — y un lazo de aprendizaje que las hace mejores con cada caso etiquetado.</p>
-    <div class="pillars reveal">
-      <div class="pillar"><div class="bar"></div><div class="step">01 · SENSAR</div><h3>Deteccion</h3><p>Correlacion multi-fuente (firewall, EDR, SIEM, IDS, correo) con extraccion de IOCs y enriquecimiento automatico.</p></div>
-      <div class="pillar"><div class="bar"></div><div class="step">02 · DECIDIR</div><h3>Priorizacion</h3><p>Motor de scoring multiplicativo que pondera evidencia, MITRE, contexto e intel — y se auto-calibra con los veredictos del analista.</p></div>
-      <div class="pillar"><div class="bar"></div><div class="step">03 · CAZAR</div><h3>Threat Hunting</h3><p>Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y grafo de investigacion.</p></div>
-      <div class="pillar"><div class="bar"></div><div class="step">04 · RESPONDER</div><h3>Respuesta</h3><p>Contencion propuesta sobre el host real (EDR/red), cierre automatico de lo obvio con doble llave, y todo auditado.</p></div>
+    <div class="disc">
+      <div class="row"><div class="idx">01</div><div><h3 class="h-sm">Detectar</h3><p class="body dim">Correlacion multi-fuente — cortafuegos, EDR, SIEM, IDS, correo — con extraccion de IOCs y enriquecimiento automatico contra inteligencia de amenazas.</p></div></div>
+      <div class="row"><div class="idx">02</div><div><h3 class="h-sm">Priorizar</h3><p class="body dim">Un motor de scoring que pondera evidencia, MITRE, contexto e intel — y se auto-calibra leyendo los veredictos del analista. Deja subir lo critico y calla el ruido.</p></div></div>
+      <div class="row"><div class="idx">03</div><div><h3 class="h-sm">Cazar</h3><p class="body dim">Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y un grafo de investigacion que recuerda al mismo actor.</p></div></div>
+      <div class="row"><div class="idx">04</div><div><h3 class="h-sm">Responder</h3><p class="body dim">Contencion propuesta sobre el host real, cierre automatico de lo obvio con doble llave, y cada accion auditada. La IA propone; el humano decide.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- ═══ PIPELINE ═══ -->
-<section id="pipeline" style="background:var(--bg2)">
+<section id="pipeline">
   <div class="wrap">
-    <span class="kicker">De punta a punta</span>
-    <h2>El pipeline de deteccion.</h2>
-    <p class="sub" style="margin-bottom:34px">Del perimetro al caso priorizado, sobre un lakehouse propio. Cada eslabon es observable y versionado.</p>
-    <div class="flow reveal">
-      <div class="node"><div class="num">01</div><b>Perimetro</b><span>OPNsense · FortiGate · Wazuh · Suricata · PMG → Vector</span></div>
-      <div class="node"><div class="num">02</div><b>Lake</b><span>S3/MinIO · Iceberg · Trino — crudos e IOCs</span></div>
-      <div class="node"><div class="num">03</div><b>Enriquecer</b><span>VirusTotal · Shodan · AbuseIPDB · MISP · Tor · NVD/KEV</span></div>
-      <div class="node"><div class="num">04</div><b>Scoring</b><span>vistas v2→v4, multiplicativo por dimensiones</span></div>
-      <div class="node"><div class="num">05</div><b>Casos</b><span>dedup por SHA-256 · apertura gobernada</span></div>
-      <div class="node"><div class="num">06</div><b>Respuesta</b><span>veredicto IA · contencion · cierre auditado</span></div>
+    <p class="eyebrow">De punta a punta</p>
+    <h2 class="h" style="margin-top:20px;max-width:16ch">El pipeline de deteccion, sobre un lakehouse propio.</h2>
+    <div class="flow">
+      <span class="step"><span class="lbl">01 Perimetro</span>cortafuegos · SIEM · IDS/IPS · correo</span>
+      <span class="arw">→</span>
+      <span class="step"><span class="lbl">02 Lake</span>object storage · lakehouse · motor SQL</span>
+      <span class="arw">→</span>
+      <span class="step"><span class="lbl">03 Enriquecer</span>reputacion · exposicion · feeds de intel</span>
+      <span class="arw">→</span>
+      <span class="step"><span class="lbl">04 Scoring</span>vistas v2 → v4</span>
+      <span class="arw">→</span>
+      <span class="step"><span class="lbl">05 Casos</span>dedup SHA-256</span>
+      <span class="arw">→</span>
+      <span class="step"><span class="lbl">06 Respuesta</span>veredicto · contencion</span>
     </div>
   </div>
 </section>
 
-<!-- ═══ CAPACIDADES ═══ -->
+<!-- ═══ CAP 1 · CALIBRADOR ═══ -->
+<section id="calibrador">
+  <div class="wrap two">
+    <div class="col-a">
+      <p class="eyebrow">Priorizacion que aprende</p>
+      <h2 class="h-lg" style="margin-top:20px">Un motor que se afina solo.</h2>
+      <p class="body dim lead" style="margin-top:26px">El calibrador lee los veredictos humanos por fuente y por regla, premia lo que confirma incidentes reales y explora lo que apenas viste. Propone recalibrar los pesos — determinista, en modo sombra, hasta que un humano aprueba.</p>
+    </div>
+    <div class="col-b">
+      <div class="detail">
+        <div class="d"><div class="k">Recompensa por valor</div><div class="v">TP x severidad, el falso positivo penaliza</div></div>
+        <div class="d"><div class="k">Exploracion UCB</div><div class="v">te dice que etiquetar para reducir la duda</div></div>
+        <div class="d"><div class="k">Publicacion segura</div><div class="v">draft normalizado, validado y hasheado; el apply exige doble llave</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAP 2 · HUNTING ═══ -->
+<section id="hunting">
+  <div class="wrap two rev">
+    <div class="col-a">
+      <div class="detail">
+        <div class="d"><div class="k">Patron LOCK</div><div class="v">aprender · observar · comprobar · guardar</div></div>
+        <div class="d"><div class="k">Puntos ciegos</div><div class="v">las reglas ruidosas o poco cubiertas se vuelven hipotesis</div></div>
+        <div class="d"><div class="k">Sobre el lakehouse</div><div class="v">baseline de novedad, pivotes y kill-chain MITRE ATT&CK</div></div>
+      </div>
+    </div>
+    <div class="col-b">
+      <p class="eyebrow">Threat hunting + hipotesis</p>
+      <h2 class="h-lg" style="margin-top:20px">Caza dirigida a lo que no ves.</h2>
+      <p class="body dim lead" style="margin-top:26px">El generador de hipotesis convierte los puntos ciegos del calibrador en cazas accionables sobre tu propio dato. Cierra el circulo: calibrador → hipotesis → caza → etiqueta → recalibra.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAP 3 · IA LOCAL ═══ -->
+<section id="arlet">
+  <div class="wrap two">
+    <div class="col-a">
+      <p class="eyebrow">IA local · ArletLLM</p>
+      <h2 class="h-lg" style="margin-top:20px">Analistas que corren en tu casa.</h2>
+      <p class="body dim lead" style="margin-top:26px">Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local, elegible desde Ajustes. Ni un dato sale a la nube. La misma inteligencia que responde a Arlet en esta pagina.</p>
+    </div>
+    <div class="col-b">
+      <div class="detail">
+        <div class="d"><div class="k">Sin nube</div><div class="v">servidor de modelos local, on-premise</div></div>
+        <div class="d"><div class="k">Selector de modelo</div><div class="v">se cambia en caliente desde la UI</div></div>
+        <div class="d"><div class="k">Nunca cierra sola</div><div class="v">la IA propone, la etiqueta es siempre humana</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAPACIDADES COMPLETAS ═══ -->
 <section id="capacidades">
   <div class="wrap">
-    <span class="kicker">Capacidades</span>
-    <h2>Todo lo que hace la plataforma.</h2>
-    <p class="sub" style="margin-bottom:38px">Cada capacidad esta gobernada: apagada por defecto, medible, y con el humano decidiendo lo que importa.</p>
-    <div class="caps reveal">
-
-      <div class="card"><div class="ic">🎯</div><h3><span class="t">PRIORIZACION</span>Motor de scoring versionado</h3><p>Combinacion ponderada por fuente (Wazuh, evidencia, MITRE, contexto, MISP, Tor) con bonos y umbrales de severidad. Versionado (v2→v4) y publicable con doble llave de attestation.</p><div class="tags"><span class="chip">multiplicativo</span><span class="chip">por fuente</span></div></div>
-
-      <div class="card"><div class="ic">🧠</div><h3><span class="t">APRENDIZAJE</span>Calibrador que aprende</h3><p>Lee los veredictos humanos por fuente y regla, premia lo que confirma incidentes reales (recompensa por valor), explora reglas poco cubiertas (UCB) y propone recalibrar los pesos. Determinista y en modo sombra hasta que un humano aprueba.</p><div class="tags"><span class="chip lime">nuevo</span><span class="chip">human-in-the-loop</span></div></div>
-
-      <div class="card"><div class="ic">🔭</div><h3><span class="t">CAZA</span>Threat hunting + hipotesis</h3><p>Cazas sobre Trino con baseline de novedad, pivotes y kill-chain. El generador de hipotesis convierte los puntos ciegos del calibrador en cazas accionables (patron LOCK: aprender, observar, comprobar, guardar).</p><div class="tags"><span class="chip cyan">Trino/Iceberg</span><span class="chip">MITRE ATT&CK</span></div></div>
-
-      <div class="card"><div class="ic">🕸️</div><h3><span class="t">CONTEXTO</span>Memoria de casos en grafo</h3><p>Grafo Neo4j de casos, IOCs, activos, actores y campanas con relaciones idempotentes. Cada investigacion se dibuja y reconoce cuando dos casos son el mismo equipo.</p><div class="tags"><span class="chip">Neo4j</span><span class="chip">grafo de investigacion</span></div></div>
-
-      <div class="card"><div class="ic">🧩</div><h3><span class="t">CORRELACION</span>Campanas</h3><p>Agrupa cientos de casos sueltos en pocas campanas: la bandeja por la que entra el analista. Veredicto automatico de campana y acciones de contencion coordinadas.</p><div class="tags"><span class="chip">dedup</span><span class="chip">bandeja unica</span></div></div>
-
-      <div class="card"><div class="ic">🤖</div><h3><span class="t">IA LOCAL</span>Analistas ArletLLM</h3><p>Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local (Ollama y compatibles), elegible desde Ajustes. La IA propone; nunca cierra sola.</p><div class="tags"><span class="chip purple">sin nube</span><span class="chip">selector de modelo</span></div></div>
-
-      <div class="card"><div class="ic">🛡️</div><h3><span class="t">RESPUESTA</span>Contencion gobernada</h3><p>Aisla, escanea y contiene en el host real via EDR (Bitdefender, Falcon, Vicarius) y red (CrowdSec). Playbooks automaticos con doble llave; nada se ejecuta sin autorizacion y sin traza.</p><div class="tags"><span class="chip">EDR + red</span><span class="chip">doble llave</span></div></div>
-
-      <div class="card"><div class="ic">🏛️</div><h3><span class="t">GOBERNANZA</span>CSF 2.0 + auditoria</h3><p>Interruptores de automatizacion por capacidad (apagados por defecto, maestro global), badge de actor (autonomo · analista · IA), y auditoria de fuente unica. Cada accion queda registrada.</p><div class="tags"><span class="chip">NIST CSF</span><span class="chip">RBAC</span></div></div>
-
-      <div class="card"><div class="ic">🌐</div><h3><span class="t">EXPOSICION</span>Vigilancia digital</h3><p>Monitoreo continuo de terceros, credenciales filtradas, typosquatting y defacement (.gov y activos propios) con connectors, persistencia y alertas accionables.</p><div class="tags"><span class="chip">OSINT</span><span class="chip">defacement</span></div></div>
-
-      <div class="card"><div class="ic">🎫</div><h3><span class="t">OPERACION</span>Tickets + portal de cliente</h3><p>Ciclo de tickets, base de conocimiento y un portal donde el administrador del cliente asigna casos a su organizacion — sin exponer la consola del SOC.</p><div class="tags"><span class="chip">multi-tenant</span><span class="chip">KB</span></div></div>
-
-      <div class="card"><div class="ic">💽</div><h3><span class="t">DFIR</span>Activos & respuesta</h3><p>Collector de inventario por agente, registro de activos y canal de comandos a los endpoints (parar/suspender procesos) — la respuesta que si toca el host, no un feed muerto.</p><div class="tags"><span class="chip">inventario</span><span class="chip">collector</span></div></div>
-
-      <div class="card"><div class="ic">🛰️</div><h3><span class="t">ESCALA</span>Multi-cluster</h3><p>Federacion de varios clusteres bajo un gateway, con la caza, el scoring y la memoria compartidos y calibracion por cluster + global.</p><div class="tags"><span class="chip">gateway</span><span class="chip">federado</span></div></div>
-
+    <p class="eyebrow">Todo lo que hace</p>
+    <h2 class="h" style="margin-top:20px;max-width:18ch">Un SOC entero, cada pieza gobernada y medible.</h2>
+    <div class="caplist">
+      <div class="capitem"><div class="k">Priorizacion</div><div class="n">Scoring versionado</div><p>Combinacion ponderada por fuente, con umbrales de severidad. Publicable con doble llave.</p></div>
+      <div class="capitem"><div class="k">Aprendizaje</div><div class="n">Calibrador en sombra</div><p>Recalibra los pesos desde los veredictos humanos. Determinista y reproducible.</p></div>
+      <div class="capitem"><div class="k">Caza</div><div class="n">Hunting + hipotesis</div><p>Cazas sobre el lakehouse y un generador de hipotesis atado a los puntos ciegos.</p></div>
+      <div class="capitem"><div class="k">Contexto</div><div class="n">Memoria en grafo</div><p>Grafo de casos, IOCs, activos y actores. Reconoce cuando dos casos son el mismo equipo.</p></div>
+      <div class="capitem"><div class="k">Correlacion</div><div class="n">Campanas</div><p>Agrupa cientos de casos sueltos en pocas campanas: la bandeja por la que entra el analista.</p></div>
+      <div class="capitem"><div class="k">IA local</div><div class="n">Analistas ArletLLM</div><p>Veredicto, triage, lecciones y narrativa con el modelo servido en tu propia infraestructura.</p></div>
+      <div class="capitem"><div class="k">Respuesta</div><div class="n">Contencion gobernada</div><p>Aisla y contiene por EDR y control de red, con doble llave.</p></div>
+      <div class="capitem"><div class="k">Gobernanza</div><div class="n">CSF 2.0 + auditoria</div><p>Interruptores por capacidad, badge de actor y auditoria de fuente unica.</p></div>
+      <div class="capitem"><div class="k">Exposicion</div><div class="n">Vigilancia digital</div><p>Credenciales filtradas, typosquatting y defacement con connectors y persistencia.</p></div>
+      <div class="capitem"><div class="k">Operacion</div><div class="n">Tickets + portal</div><p>Ciclo de tickets, base de conocimiento y portal de cliente sin exponer la consola del SOC.</p></div>
+      <div class="capitem"><div class="k">DFIR</div><div class="n">Activos & respuesta</div><p>Collector de inventario por agente y canal de comandos que si toca el host.</p></div>
+      <div class="capitem"><div class="k">Escala</div><div class="n">Multi-cluster</div><p>Federacion bajo un gateway, con caza, scoring y memoria compartidos.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ═══ INTEGRACIONES ═══ -->
-<section id="integraciones" style="background:var(--bg2)">
+<section id="integraciones">
   <div class="wrap">
-    <span class="kicker">Integraciones</span>
-    <h2>Habla con tu stack tal cual esta.</h2>
-    <p class="sub" style="margin-bottom:34px">Fuentes de perimetro y endpoint, feeds de inteligencia y EDR — con un catalogo de fuentes canonico y agnostico.</p>
-    <div class="integ reveal">
-      <div class="i"><span class="d" style="background:var(--red)"></span><span>FortiGate<small>firewall</small></span></div>
-      <div class="i"><span class="d" style="background:var(--orange)"></span><span>OPNsense<small>firewall/IDS</small></span></div>
-      <div class="i"><span class="d" style="background:var(--lime)"></span><span>Wazuh<small>SIEM</small></span></div>
-      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>Suricata<small>IDS/IPS</small></span></div>
-      <div class="i"><span class="d" style="background:var(--blue)"></span><span>Proxmox Mail<small>correo</small></span></div>
-      <div class="i"><span class="d" style="background:var(--purple)"></span><span>CrowdStrike Falcon<small>EDR</small></span></div>
-      <div class="i"><span class="d" style="background:var(--red)"></span><span>Bitdefender GZ<small>EDR</small></span></div>
-      <div class="i"><span class="d" style="background:var(--orange)"></span><span>Vicarius<small>EDR/patch</small></span></div>
-      <div class="i"><span class="d" style="background:var(--lime)"></span><span>CrowdSec<small>respuesta red</small></span></div>
-      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>MISP<small>intel</small></span></div>
-      <div class="i"><span class="d" style="background:var(--blue)"></span><span>VirusTotal<small>intel</small></span></div>
-      <div class="i"><span class="d" style="background:var(--purple)"></span><span>Shodan<small>exposicion</small></span></div>
-      <div class="i"><span class="d" style="background:var(--red)"></span><span>AbuseIPDB<small>reputacion</small></span></div>
-      <div class="i"><span class="d" style="background:var(--orange)"></span><span>NVD / KEV<small>CVE</small></span></div>
-      <div class="i"><span class="d" style="background:var(--lime)"></span><span>Tor exit nodes<small>anonimato</small></span></div>
-      <div class="i"><span class="d" style="background:var(--cyan)"></span><span>Keycloak<small>OIDC/SSO</small></span></div>
-    </div>
+    <p class="eyebrow">Integraciones</p>
+    <h2 class="h" style="margin-top:20px;max-width:16ch">Habla con tu stack tal cual esta.</h2>
+    <p class="body dim" style="max-width:640px;margin-top:22px">Conectores agnosticos por categoria, sobre un catalogo de fuentes canonico. Se integra con tus herramientas actuales sin atarte a ningun proveedor.</p>
+    <p class="integ"><b>Cortafuegos</b><span class="sep">·</span><b>SIEM</b><span class="sep">·</span><b>IDS / IPS</b><span class="sep">·</span><b>Gateway de correo</b><span class="sep">·</span><b>EDR</b><span class="sep">·</span><b>Control de red</b><span class="sep">·</span><b>Plataforma de IOCs</b><span class="sep">·</span><b>Reputacion de IP y dominio</b><span class="sep">·</span><b>Exposicion en internet</b><span class="sep">·</span><b>Feeds de intel</b><span class="sep">·</span><b>Vulnerabilidades y CVE</b><span class="sep">·</span><b>Nodos de anonimato</b><span class="sep">·</span><b>SSO / OIDC</b></p>
   </div>
 </section>
 
 <!-- ═══ ARQUITECTURA ═══ -->
 <section id="arquitectura">
-  <div class="wrap">
-    <span class="kicker">Arquitectura</span>
-    <h2>Un lakehouse propio, no una caja negra en la nube.</h2>
-    <div class="arch reveal" style="margin-top:30px">
-      <div>
-        <p class="sub">Dos motores de datos con roles claros: el <b>lakehouse analitico</b> (crudos, IOCs, scoring, materializaciones) y el <b>estado operativo</b> (casos, workflow, respuestas). Todo corre en tu infraestructura; la IA tambien.</p>
-        <div class="tags" style="margin-top:18px">
-          <span class="chip cyan">Trino + Iceberg + MinIO</span>
-          <span class="chip">PostgreSQL</span>
-          <span class="chip">Airflow</span>
-          <span class="chip purple">Ollama local</span>
-          <span class="chip">Keycloak OIDC</span>
-          <span class="chip">Docker Compose</span>
-        </div>
-      </div>
+  <div class="wrap two">
+    <div class="col-a">
+      <p class="eyebrow">Arquitectura</p>
+      <h2 class="h-lg" style="margin-top:20px">Un lakehouse propio, no una caja negra en la nube.</h2>
+      <p class="body dim lead" style="margin-top:26px">Dos motores con roles claros: el lakehouse analitico y el estado operativo. Consultas nombradas y validadas, RBAC por rol, y la IA sirviendose local. Se levanta en contenedores, sobre tu propia infraestructura.</p>
+    </div>
+    <div class="col-b">
       <div class="layers">
-        <div class="layer"><b>Perimetro → Vector</b><p>Ingesta de firewall, SIEM, IDS y correo hacia el lake.</p></div>
-        <div class="layer hl"><b>Lakehouse · MinIO / Iceberg / Trino</b><p>Crudos, IOCs enriquecidos, vistas de scoring versionadas.</p></div>
-        <div class="layer"><b>Estado · PostgreSQL</b><p>Casos, workflow, campanas, tickets, aprobaciones.</p></div>
-        <div class="layer"><b>Orquestacion · Airflow</b><p>35 DAGs de extraccion, enriquecimiento y materializacion, con timeouts.</p></div>
-        <div class="layer hl"><b>API + Dashboard</b><p>Consultas nombradas validadas, RBAC por rol, tiempo real.</p></div>
-        <div class="layer"><b>IA local · ArletLLM</b><p>Veredicto, triage y narrativa sin sacar un dato a la nube.</p></div>
+        <div class="layer"><div class="k">Ingesta</div><div class="n">Perimetro → recoleccion</div><p>cortafuegos, SIEM, IDS y correo hacia el lake.</p></div>
+        <div class="layer"><div class="k">Lakehouse</div><div class="n">Object storage + motor SQL</div><p>crudos, IOCs enriquecidos, vistas de scoring versionadas.</p></div>
+        <div class="layer"><div class="k">Estado</div><div class="n">Base relacional</div><p>casos, workflow, campanas, tickets, aprobaciones.</p></div>
+        <div class="layer"><div class="k">Orquestacion</div><div class="n">Flujos programados · 35 DAGs</div><p>extraccion, enriquecimiento y materializacion.</p></div>
+        <div class="layer"><div class="k">Inteligencia</div><div class="n">ArletLLM local</div><p>veredicto, triage y narrativa sin sacar un dato.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ GOBERNANZA / IA ═══ -->
-<section style="background:var(--bg2)">
+<!-- ═══ GOBERNANZA ═══ -->
+<section>
   <div class="wrap">
-    <div class="gov reveal">
-      <span class="kicker">Automatizacion gobernada</span>
-      <h2 style="margin-bottom:6px">La IA propone. El humano decide. Todo queda auditado.</h2>
-      <p class="sub">Automatizacion con freno de mano: cada capacidad arranca apagada, hay un maestro global, y las acciones sensibles piden doble llave. El aprendizaje es determinista para que un score sea defendible en una auditoria.</p>
-      <div class="gov-grid">
-        <div class="g"><h3>Apagado por defecto</h3><p>Toda automatizacion nueva nace en OFF y se enciende desde Ajustes, con gate y maestro global.</p></div>
-        <div class="g"><h3>Determinista y trazable</h3><p>Mismo historico → mismos pesos → mismo score. Versionado y reproducible para el replay forense.</p></div>
-        <div class="g"><h3>Human-on-the-loop</h3><p>La IA sugiere veredicto y contencion; el analista aprueba. La etiqueta que entrena al sistema es siempre humana.</p></div>
-      </div>
+    <p class="eyebrow">Automatizacion gobernada</p>
+    <h2 class="h" style="margin-top:20px;max-width:20ch">La IA propone. El humano decide. Todo queda auditado.</h2>
+    <div class="gov3">
+      <div class="g"><div class="k">Apagado por defecto</div><div class="n">Cada capacidad nace en OFF</div><p>Se enciende desde Ajustes, con gate y un maestro global.</p></div>
+      <div class="g"><div class="k">Determinista</div><div class="n">Mismo historico, mismo score</div><p>Versionado y reproducible para el replay forense.</p></div>
+      <div class="g"><div class="k">Human-on-the-loop</div><div class="n">La etiqueta es humana</div><p>La IA sugiere veredicto y contencion; el analista aprueba.</p></div>
     </div>
   </div>
 </section>
@@ -356,66 +368,143 @@ footer .base{margin-top:34px;padding-top:20px;border-top:1px solid var(--border)
 <!-- ═══ CTA FINAL ═══ -->
 <section class="final">
   <div class="wrap">
-    <span class="kicker" style="justify-content:center">Empeza</span>
-    <h2>Detecta lo obvio, escala lo critico, aprende de cada caso.</h2>
-    <p class="sub" style="margin:0 auto 30px">LegacyHunt te da un SOC on-premise que caza sobre tu propio dato, prioriza con un motor que se afina solo y responde con el humano en el lazo.</p>
-    <div class="cta">
-      <a href="informe-muestra.html" class="btn primary">Ver informe de muestra →</a>
-      <a href="#top" class="btn ghost">Volver arriba</a>
+    <p class="eyebrow">Empeza</p>
+    <h2 class="display" style="margin-top:22px">Detecta lo obvio. Escala lo critico.</h2>
+    <div class="actions">
+      <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
+      <button class="ghost" onclick="Arlet.open()">Preguntar a Arlet →</button>
+      <a class="ghost" href="informe-muestra.html">Ver informe de muestra →</a>
     </div>
   </div>
 </section>
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
-  <div class="wrap">
-    <div class="cols">
-      <div style="max-width:360px">
-        <a href="#top" class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="7" fill="none" stroke="#14E9C8" stroke-width="1.4"/><path d="M16 1v7M16 24v7M1 16h7M24 16h7" stroke="#1E2F52" stroke-width="1.4"/><circle cx="16" cy="16" r="2.6" fill="#7CFF4D"/></svg><span>Legacy<b>Hunt</b></span></a>
-        <p>Plataforma SOC/MDR on-premise sobre lakehouse propio. Deteccion, priorizacion que aprende, threat hunting con hipotesis y respuesta gobernada — con la IA corriendo local.</p>
-      </div>
-      <div class="fnav">
-        <div>
-          <b>Plataforma</b>
-          <a href="#plataforma">Que hace</a>
-          <a href="#pipeline">Pipeline</a>
-          <a href="#capacidades">Capacidades</a>
-          <a href="#arquitectura">Arquitectura</a>
-        </div>
-        <div>
-          <b>Recursos</b>
-          <a href="informe-muestra.html">Informe de muestra</a>
-          <a href="#integraciones">Integraciones</a>
-          <a href="#capacidades">Threat hunting</a>
-          <a href="#capacidades">Calibrador</a>
-        </div>
-      </div>
-    </div>
-    <div class="base">
-      <span>© <span id="yr"></span> LegacyHunt · SOC on-premise</span>
-      <span class="mono">Detectar · Priorizar · Cazar · Responder · Aprender</span>
-    </div>
+  <div class="wrap row">
+    <a href="#top" class="brand"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="#8052ff" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg><span>LegacyHunt</span></a>
+    <span class="fl">SOC on-premise · © <span id="yr"></span></span>
+    <span class="fl">Detectar · Priorizar · Cazar · Responder · Aprender</span>
   </div>
 </footer>
 
+<!-- ═══ ARLET — ASISTENTE SOC ═══ -->
+<button id="arlet-fab" class="pill" onclick="Arlet.toggle()" aria-label="Abrir asistente Arlet">
+  <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true"><path d="M10 3 L17 16 L3 16 Z" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="12" r="1.4" fill="#ffb829"/></svg>
+  Asistente SOC
+</button>
+<div id="arlet-panel" role="dialog" aria-label="Arlet, asistente SOC">
+  <div class="ah">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8052ff"/><stop offset="1" stop-color="#15846e"/></linearGradient></defs><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="url(#lg2)" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg>
+    <div class="t">Arlet<small>Asistente SOC</small></div>
+    <button class="x" onclick="Arlet.close()" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="arlet-log"></div>
+  <div class="chips" id="arlet-chips"></div>
+  <form class="ainput" onsubmit="return Arlet.submit(event)">
+    <input id="arlet-in" type="text" autocomplete="off" placeholder="¿Que buscas? p. ej. priorizar casos">
+    <button class="send" type="submit" aria-label="Enviar">→</button>
+  </form>
+</div>
+
 <script>
-// Barra de progreso del recorrido
-const jb=document.getElementById('journeybar');
-addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);jb.style.width=(p*100)+'%';},{passive:true});
-// Ano
 document.getElementById('yr').textContent=new Date().getFullYear();
-// Reveal on scroll
-const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-// Nav activo por seccion
-const links=[...document.querySelectorAll('nav ul a[href^="#"]')];
-const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(s.getBoundingClientRect().top<=120)cur='#'+s.id});links.forEach(a=>a.classList.toggle('now',a.getAttribute('href')===cur));},{passive:true});
-// Contadores
-const co=new IntersectionObserver((es)=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,t=+el.dataset.c,suf=el.textContent.includes('+')?'+':'';let n=0;const step=Math.max(1,Math.round(t/40));const iv=setInterval(()=>{n+=step;if(n>=t){n=t;clearInterval(iv);}el.textContent=n+suf;},22);co.unobserve(el);}),{threshold:.5});
-document.querySelectorAll('.n[data-c]').forEach(el=>co.observe(el));
-// Cerrar menu movil al navegar
-document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+
+/* ══ Campo de particulas: triangulos multicolor (constelacion + ambiente) ══ */
+(function(){
+  var COLS=['#8052ff','#ffb829','#15846e','#c96cff','#6fa8ff','#ff5db1','#14e9c8'];
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function part(x,y){return{x:x,y:y,r:1.1+Math.random()*1.7,rot:Math.random()*6.28,c:COLS[(Math.random()*COLS.length)|0],
+    tw:0.6+Math.random()*1.6,ph:Math.random()*6.28,ds:0.2+Math.random()*0.5,dr:1+Math.random()*3,rs:(Math.random()-0.5)*0.6,base:0.55+Math.random()*0.45};}
+  function tri(ctx,x,y,r,rot,c,a){ctx.globalAlpha=a;ctx.strokeStyle=c;ctx.lineWidth=1;ctx.beginPath();
+    for(var k=0;k<3;k++){var ang=rot+k*2.094,px=x+Math.cos(ang)*r,py=y+Math.sin(ang)*r;k?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+    ctx.closePath();ctx.stroke();}
+  function brain(W,H){
+    var lobes=[[0.5,0.5,0.42],[0.34,0.45,0.26],[0.66,0.45,0.26],[0.5,0.64,0.3],[0.4,0.61,0.22],[0.6,0.61,0.22],[0.5,0.37,0.2]];
+    var neg=[0.5,0.34,0.14];
+    function inside(nx,ny){var f=0,i,dx,dy;for(i=0;i<lobes.length;i++){dx=nx-lobes[i][0];dy=ny-lobes[i][1];f+=Math.exp(-(dx*dx+dy*dy)/(2*lobes[i][2]*lobes[i][2]*0.25));}
+      dx=nx-neg[0];dy=ny-neg[1];f-=1.1*Math.exp(-(dx*dx+dy*dy)/(2*neg[2]*neg[2]*0.25));return f>0.9;}
+    var out=[],tries=0,N=Math.round(Math.min(1400,W*2.6));
+    while(out.length<N&&tries<N*40){tries++;var nx=Math.random(),ny=0.18+Math.random()*0.74;if(!inside(nx,ny))continue;out.push(part(nx*W,ny*H));}
+    return out;
+  }
+  function ambient(W,H){var N=Math.round(Math.min(150,W*H/9000)),out=[],i;for(i=0;i<N;i++){var p=part(Math.random()*W,Math.random()*H);p.base*=0.5;p.dr*=2;out.push(p);}return out;}
+  function field(canvas,make,ampAlpha){
+    var ctx=canvas.getContext('2d'),parts=[],W=0,H=0,dpr=Math.min(devicePixelRatio||1,2),t=0;
+    function size(){var r=canvas.getBoundingClientRect();W=r.width;H=r.height;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);parts=make(W,H);}
+    function frame(){t+=0.016;ctx.clearRect(0,0,W,H);for(var i=0;i<parts.length;i++){var p=parts[i];
+      var a=(0.3+0.45*(0.5+0.5*Math.sin(t*p.tw+p.ph)))*p.base*ampAlpha;
+      var dx=Math.cos(t*p.ds+p.ph)*p.dr,dy=Math.sin(t*p.ds*1.3+p.ph)*p.dr;
+      tri(ctx,p.x+dx,p.y+dy,p.r,p.rot+t*p.rs,p.c,a);}requestAnimationFrame(frame);}
+    size();var to;addEventListener('resize',function(){clearTimeout(to);to=setTimeout(size,180);});
+    if(reduce){ctx.clearRect(0,0,W,H);for(var i=0;i<parts.length;i++){var p=parts[i];tri(ctx,p.x,p.y,p.r,p.rot,p.c,0.6*p.base*ampAlpha);}}
+    else frame();
+  }
+  var b=document.getElementById('brain'); if(b) field(b,brain,1);
+  var a=document.getElementById('amb'); if(a) field(a,ambient,0.5);
+})();
+
+/* ══ Nav activo por seccion ══ */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.navlinks a[href^="#"]'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  addEventListener('scroll',function(){var cur='';secs.forEach(function(s){if(s.getBoundingClientRect().top<=120)cur='#'+s.id;});
+    links.forEach(function(a){a.classList.toggle('now',a.getAttribute('href')===cur);});},{passive:true});
+  document.querySelectorAll('.navlinks a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('nl').classList.remove('open');});});
+})();
+
+/* ══ Arlet — asistente SOC (guia al visitante, sin backend) ══ */
+var Arlet=(function(){
+  var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');};
+  var INTENTS=[
+    {k:['detect','detecc','fuente','correo','cortafuego','firewall','siem','ids','ips','ioc','indicador','alerta','log'],
+     t:'Deteccion',a:'Correlacionamos cortafuegos, EDR, SIEM, IDS y correo, extraemos IOCs y los enriquecemos con inteligencia. Mira el pipeline y las 4 disciplinas.',go:'#pipeline',lbl:'Ver el pipeline'},
+    {k:['prior','scoring','score','calibr','peso','umbral','ruido','aprend','learning','sombra','falso positivo','fp'],
+     t:'Priorizacion',a:'El motor de scoring pondera evidencia, MITRE, contexto e intel — y el calibrador lo afina solo leyendo los veredictos del analista.',go:'#calibrador',lbl:'Ver el calibrador'},
+    {k:['caza','hunt','hunting','hipotesis','hipotes','lock','punto ciego','pivote','lakehouse','mitre','att'],
+     t:'Threat hunting',a:'Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos del calibrador. Cierra el circulo caza→etiqueta→recalibra.',go:'#hunting',lbl:'Ver threat hunting'},
+    {k:['ia','llm','arlet','modelo','veredicto','triage','narrativa','local','inteligencia artificial'],
+     t:'IA local',a:'Los analistas ArletLLM dan veredicto, triage y narrativa con el modelo servido en tu propia infraestructura. Ni un dato sale a la nube.',go:'#arlet',lbl:'Ver la IA local'},
+    {k:['respuesta','conten','edr','red','aisl','bloque','playbook','host','endpoint'],
+     t:'Respuesta',a:'Aislamos y contenemos por EDR y control de red, con playbooks de doble llave. Nada se ejecuta sin autorizacion ni traza.',go:'#capacidades',lbl:'Ver capacidades'},
+    {k:['grafo','memoria','campana','campania','correlacion','actor','dedup','vigilan','defacement','osint','ticket','portal','dfir','activo','collector','cluster','gateway'],
+     t:'Capacidades',a:'Grafo de casos, campanas, vigilancia digital, tickets y portal, DFIR, multi-cluster... aqui esta el mapa completo.',go:'#capacidades',lbl:'Ver todas las capacidades'},
+    {k:['gobern','csf','auditor','rbac','rol','automatiz','interruptor','apagad','doble llave','compliance','cumplim'],
+     t:'Gobernanza',a:'Cada automatizacion nace apagada, es determinista y auditada. La IA propone; el humano decide.',go:'#capacidades',lbl:'Ver gobernanza'},
+    {k:['arquitect','lakehouse','infra','on premise','onpremise','contenedor','oidc','sso','base de dato'],
+     t:'Arquitectura',a:'Dos motores de datos con roles claros — lakehouse analitico y estado operativo — sobre tu propia infraestructura, en contenedores.',go:'#arquitectura',lbl:'Ver la arquitectura'},
+    {k:['integr','stack','conector','reputacion','exposicion','feed','cve','vulnerab','anonimato','intel'],
+     t:'Integraciones',a:'Hablamos con tu stack tal cual esta, por categoria y sin atarte a ningun proveedor. Aqui la lista.',go:'#integraciones',lbl:'Ver integraciones'},
+    {k:['informe','reporte','ejemplo','muestra','pdf','como se ve','sample'],
+     t:'Informe de muestra',a:'Mira un informe de incidente de ejemplo, tal como lo entrega la plataforma.',go:'informe-muestra.html',lbl:'Abrir informe de muestra'},
+    {k:['acceso','contact','contacto','demo','precio','coste','costo','comprar','contrat','hablar','vender','prueba'],
+     t:'Solicitar acceso',a:'Escribinos y coordinamos una demo del SOC. Podemos desplegar una instancia limpia para tu equipo.',go:'mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt',lbl:'Solicitar acceso'}
+  ];
+  var CHIPS=[['Deteccion','detectar'],['Priorizacion','priorizar casos'],['Threat hunting','caza'],['IA local','ia local'],['Arquitectura','arquitectura'],['Ver informe','informe'],['Solicitar acceso','acceso']];
+  var panel,log,input,chipbox,greeted=false;
+  function el(){panel=document.getElementById('arlet-panel');log=document.getElementById('arlet-log');input=document.getElementById('arlet-in');chipbox=document.getElementById('arlet-chips');}
+  function scroll(){log.scrollTop=log.scrollHeight;}
+  function say(html){var d=document.createElement('div');d.className='msg a';d.innerHTML='<span class="who">Arlet</span>'+html;log.appendChild(d);scroll();return d;}
+  function user(txt){var d=document.createElement('div');d.className='msg u';d.textContent=txt;log.appendChild(d);scroll();}
+  function goBtn(intent){
+    if(/^(mailto:|https?:|.*\.html)/.test(intent.go)){return '<a class="pill go" href="'+intent.go+'">'+intent.lbl+'</a>';}
+    return '<button class="pill go" onclick="Arlet.goto(\''+intent.go+'\')">'+intent.lbl+' →</button>';
+  }
+  function match(q){var n=norm(q),best=null,bs=0;INTENTS.forEach(function(it){var s=0;it.k.forEach(function(w){if(n.indexOf(w)>=0)s++;});if(s>bs){bs=s;best=it;}});return bs>0?best:null;}
+  function answer(q){var it=match(q);
+    if(it){say(it.a+'<div>'+goBtn(it)+'</div>');}
+    else{say('No estoy segura de eso, pero puedo llevarte a lo principal. Elegi una pista o probá con: <span class="amber">detectar, priorizar, cazar, arquitectura</span>.');renderChips();}
+  }
+  function renderChips(){chipbox.innerHTML='';CHIPS.forEach(function(c){var b=document.createElement('button');b.textContent=c[0];b.onclick=function(){user(c[0]);answer(c[1]);};chipbox.appendChild(b);});}
+  function greet(){if(greeted)return;greeted=true;say('Hola, soy <b>Arlet</b>. Te ayudo a encontrar lo que buscas en LegacyHunt. Contame que necesitas — o toca una pista.');renderChips();}
+  return {
+    toggle:function(){el();panel.classList.contains('open')?this.close():this.open();},
+    open:function(){el();panel.classList.add('open');greet();setTimeout(function(){input.focus();},60);},
+    close:function(){el();panel.classList.remove('open');},
+    submit:function(e){e.preventDefault();var v=input.value.trim();if(!v)return false;user(v);input.value='';answer(v);return false;},
+    goto:function(id){var t=document.querySelector(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});this.close();}
+  };
+})();
+addEventListener('keydown',function(e){if(e.key==='Escape')Arlet.close();});
 </script>
 </body>
 </html>
