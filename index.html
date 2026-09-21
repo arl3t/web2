@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LegacyHunt — Threat Monitoring & Response</title>
-<meta name="description" content="LegacyHunt: SOC on-premise sobre lakehouse. Detecta en todas tus fuentes, prioriza con un motor que se calibra solo y caza sobre tu propio dato. Preguntale a Arlet, tu asistente SOC. IA local, human-on-the-loop.">
+<meta name="description" content="LegacyHunt: SOC on-premise. Detecta en todas tus fuentes, prioriza con un motor que se calibra solo y caza sobre tu propio dato. Preguntale a Arlet, tu asistente SOC. IA local, human-on-the-loop.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LegacyHunt — Threat Monitoring & Response">
-<meta property="og:description" content="SOC on-premise sobre lakehouse: deteccion multi-fuente, priorizacion que se auto-calibra, threat hunting con hipotesis e IA local. Human-on-the-loop.">
+<meta property="og:description" content="SOC on-premise: deteccion multi-fuente, priorizacion que se auto-calibra, threat hunting con hipotesis e IA local. Human-on-the-loop.">
 <meta property="og:url" content="https://arl3t.github.io/web2/">
 <meta property="og:locale" content="es_ES">
 <meta name="theme-color" content="#0a0e14">
@@ -191,7 +191,7 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
     <div class="col-a">
       <p class="eyebrow">Threat Monitoring &amp; Response · on-premise</p>
       <h1 class="display mt">Tu SOC ya tiene la respuesta. Preguntale a <span class="green">Arlet</span>.</h1>
-      <p class="body dim lead mt">LegacyHunt detecta en todas tus fuentes, prioriza con un motor que <span style="color:#fff;font-weight:600">se calibra solo</span> y caza sobre tu propio lakehouse. Arlet, tu asistente SOC, te lleva directo a lo que buscas.</p>
+      <p class="body dim lead mt">LegacyHunt detecta en todas tus fuentes, prioriza con un motor que <span style="color:#fff;font-weight:600">se calibra solo</span> y caza sobre tu propio dato. Arlet, tu asistente SOC, te lleva directo a lo que buscas.</p>
       <div class="actions">
         <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
         <button class="ghost" onclick="Arlet.open()">Preguntar a Arlet →</button>
@@ -221,9 +221,9 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
   <div class="wrap">
     <p class="eyebrow">Cuatro disciplinas, una plataforma</p>
     <div class="disc">
-      <div class="row"><div class="idx">01</div><div><h3 class="h-sm">Detectar</h3><p class="body">Correlacion multi-fuente — cortafuegos, EDR, SIEM, IDS, correo — con extraccion de IOCs y enriquecimiento automatico contra inteligencia de amenazas.</p></div></div>
-      <div class="row"><div class="idx">02</div><div><h3 class="h-sm">Priorizar</h3><p class="body">Un motor de scoring que pondera evidencia, MITRE, contexto e intel — y se auto-calibra leyendo los veredictos del analista. Deja subir lo critico y calla el ruido.</p></div></div>
-      <div class="row"><div class="idx">03</div><div><h3 class="h-sm">Cazar</h3><p class="body">Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y un grafo de investigacion que recuerda al mismo actor.</p></div></div>
+      <div class="row"><div class="idx">01</div><div><h3 class="h-sm">Detectar</h3><p class="body">Correlacion de todas tus fuentes de seguridad, con extraccion de indicadores y enriquecimiento automatico contra inteligencia de amenazas.</p></div></div>
+      <div class="row"><div class="idx">02</div><div><h3 class="h-sm">Priorizar</h3><p class="body">Un motor de scoring que pondera evidencia, tecnicas, contexto e inteligencia — y se afina solo con los veredictos del analista. Deja subir lo critico y calla el ruido.</p></div></div>
+      <div class="row"><div class="idx">03</div><div><h3 class="h-sm">Cazar</h3><p class="body">Busqueda proactiva sobre tu propio dato con hipotesis dirigidas a los puntos ciegos, baseline de novedad y una memoria que recuerda al mismo actor.</p></div></div>
       <div class="row"><div class="idx">04</div><div><h3 class="h-sm">Responder</h3><p class="body">Contencion propuesta sobre el host real, cierre automatico de lo obvio con doble llave, y cada accion auditada. La IA propone; el humano decide.</p></div></div>
     </div>
   </div>
@@ -233,19 +233,19 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
 <section id="pipeline">
   <div class="wrap">
     <p class="eyebrow">De punta a punta</p>
-    <h2 class="h mt">El pipeline de deteccion, sobre un lakehouse propio.</h2>
+    <h2 class="h mt">El pipeline de deteccion, de punta a punta.</h2>
     <div class="flow">
-      <span class="step"><span class="lbl">01 Perimetro</span>cortafuegos · SIEM · IDS/IPS · correo</span>
+      <span class="step"><span class="lbl">01 Ingesta</span>todas tus fuentes de seguridad</span>
       <span class="arw">→</span>
-      <span class="step"><span class="lbl">02 Lake</span>object storage · lakehouse · motor SQL</span>
+      <span class="step"><span class="lbl">02 Consolidacion</span>un unico repositorio de datos</span>
       <span class="arw">→</span>
-      <span class="step"><span class="lbl">03 Enriquecer</span>reputacion · exposicion · feeds de intel</span>
+      <span class="step"><span class="lbl">03 Enriquecimiento</span>contexto de inteligencia de amenazas</span>
       <span class="arw">→</span>
-      <span class="step"><span class="lbl">04 Scoring</span>vistas v2 → v4</span>
+      <span class="step"><span class="lbl">04 Priorizacion</span>scoring por riesgo</span>
       <span class="arw">→</span>
-      <span class="step"><span class="lbl">05 Casos</span>dedup SHA-256</span>
+      <span class="step"><span class="lbl">05 Casos</span>agrupacion y deduplicacion</span>
       <span class="arw">→</span>
-      <span class="step"><span class="lbl">06 Respuesta</span>veredicto · contencion</span>
+      <span class="step"><span class="lbl">06 Respuesta</span>veredicto y contencion</span>
     </div>
   </div>
 </section>
@@ -256,13 +256,13 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
     <div class="col-a">
       <p class="eyebrow">Priorizacion que aprende</p>
       <h2 class="h-lg mt">Un motor que se afina solo.</h2>
-      <p class="body dim lead mt">El calibrador lee los veredictos humanos por fuente y por regla, premia lo que confirma incidentes reales y explora lo que apenas viste. Propone recalibrar los pesos — determinista, en modo sombra, hasta que un humano aprueba.</p>
+      <p class="body dim lead mt">Aprende de los veredictos de tus analistas: premia lo que confirma incidentes reales y explora lo que apenas viste. Propone ajustes trazables — sin cambiar nada hasta que un humano aprueba.</p>
     </div>
     <div class="col-b">
       <div class="detail">
-        <div class="d"><div class="k">Recompensa por valor</div><div class="v">TP x severidad, el falso positivo penaliza</div></div>
-        <div class="d"><div class="k">Exploracion UCB</div><div class="v">te dice que etiquetar para reducir la duda</div></div>
-        <div class="d"><div class="k">Publicacion segura</div><div class="v">draft normalizado, validado y hasheado; el apply exige doble llave</div></div>
+        <div class="d"><div class="k">Aprende del valor</div><div class="v">premia lo que confirma incidentes, penaliza el falso positivo</div></div>
+        <div class="d"><div class="k">Te guia</div><div class="v">te dice que revisar para reducir la incertidumbre</div></div>
+        <div class="d"><div class="k">Publicacion segura</div><div class="v">cada cambio se valida y exige doble aprobacion</div></div>
       </div>
     </div>
   </div>
@@ -273,9 +273,9 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
   <div class="wrap two rev">
     <div class="col-a">
       <div class="detail">
-        <div class="d"><div class="k">Patron LOCK</div><div class="v">aprender · observar · comprobar · guardar</div></div>
-        <div class="d"><div class="k">Puntos ciegos</div><div class="v">las reglas ruidosas o poco cubiertas se vuelven hipotesis</div></div>
-        <div class="d"><div class="k">Sobre el lakehouse</div><div class="v">baseline de novedad, pivotes y kill-chain MITRE ATT&CK</div></div>
+        <div class="d"><div class="k">Ciclo de caza</div><div class="v">aprender, observar, comprobar y guardar el hallazgo</div></div>
+        <div class="d"><div class="k">Puntos ciegos</div><div class="v">lo ruidoso o poco cubierto se vuelve hipotesis de caza</div></div>
+        <div class="d"><div class="k">Sobre tu propio dato</div><div class="v">baseline de novedad, pivotes y tecnicas de adversario</div></div>
       </div>
     </div>
     <div class="col-b">
@@ -290,15 +290,15 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
 <section id="arlet">
   <div class="wrap two">
     <div class="col-a">
-      <p class="eyebrow">IA local · ArletLLM</p>
+      <p class="eyebrow">IA local</p>
       <h2 class="h-lg mt">Analistas que corren en tu casa.</h2>
-      <p class="body dim lead mt">Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local, elegible desde Ajustes. Ni un dato sale a la nube. La misma inteligencia que responde a Arlet en esta pagina.</p>
+      <p class="body dim lead mt">Veredicto continuo, triage, sugerencia de lecciones y narrativa ejecutiva — con la IA corriendo en tu propia infraestructura. Ni un dato sale a la nube. La misma inteligencia que responde a Arlet en esta pagina.</p>
     </div>
     <div class="col-b">
       <div class="detail">
-        <div class="d"><div class="k">Sin nube</div><div class="v">servidor de modelos local, on-premise</div></div>
-        <div class="d"><div class="k">Selector de modelo</div><div class="v">se cambia en caliente desde la UI</div></div>
-        <div class="d"><div class="k">Nunca cierra sola</div><div class="v">la IA propone, la etiqueta es siempre humana</div></div>
+        <div class="d"><div class="k">Sin nube</div><div class="v">la IA corre en tu propia infraestructura</div></div>
+        <div class="d"><div class="k">Bajo tu control</div><div class="v">eliges el modelo y cuando actua</div></div>
+        <div class="d"><div class="k">Nunca cierra sola</div><div class="v">la IA propone, la decision es siempre humana</div></div>
       </div>
     </div>
   </div>
@@ -310,18 +310,18 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
     <p class="eyebrow">Todo lo que hace</p>
     <h2 class="h mt">Un SOC entero, cada pieza gobernada y medible.</h2>
     <div class="caplist">
-      <div class="capitem"><div class="k">Priorizacion</div><div class="n">Scoring versionado</div><p>Combinacion ponderada por fuente, con umbrales de severidad. Publicable con doble llave.</p></div>
-      <div class="capitem"><div class="k">Aprendizaje</div><div class="n">Calibrador en sombra</div><p>Recalibra los pesos desde los veredictos humanos. Determinista y reproducible.</p></div>
-      <div class="capitem"><div class="k">Caza</div><div class="n">Hunting + hipotesis</div><p>Cazas sobre el lakehouse y un generador de hipotesis atado a los puntos ciegos.</p></div>
-      <div class="capitem"><div class="k">Contexto</div><div class="n">Memoria en grafo</div><p>Grafo de casos, IOCs, activos y actores. Reconoce cuando dos casos son el mismo equipo.</p></div>
-      <div class="capitem"><div class="k">Correlacion</div><div class="n">Campanas</div><p>Agrupa cientos de casos sueltos en pocas campanas: la bandeja por la que entra el analista.</p></div>
-      <div class="capitem"><div class="k">IA local</div><div class="n">Analistas ArletLLM</div><p>Veredicto, triage, lecciones y narrativa con el modelo servido en tu propia infraestructura.</p></div>
-      <div class="capitem"><div class="k">Respuesta</div><div class="n">Contencion gobernada</div><p>Aisla y contiene por EDR y control de red, con doble llave.</p></div>
-      <div class="capitem"><div class="k">Gobernanza</div><div class="n">CSF 2.0 + auditoria</div><p>Interruptores por capacidad, badge de actor y auditoria de fuente unica.</p></div>
-      <div class="capitem"><div class="k">Exposicion</div><div class="n">Vigilancia digital</div><p>Credenciales filtradas, typosquatting y defacement con connectors y persistencia.</p></div>
-      <div class="capitem"><div class="k">Operacion</div><div class="n">Tickets + portal</div><p>Ciclo de tickets, base de conocimiento y portal de cliente sin exponer la consola del SOC.</p></div>
-      <div class="capitem"><div class="k">DFIR</div><div class="n">Activos &amp; respuesta</div><p>Collector de inventario por agente y canal de comandos que si toca el host.</p></div>
-      <div class="capitem"><div class="k">Escala</div><div class="n">Multi-cluster</div><p>Federacion bajo un gateway, con caza, scoring y memoria compartidos.</p></div>
+      <div class="capitem"><div class="k">Priorizacion</div><div class="n">Scoring de riesgo</div><p>Puntua cada alerta por su riesgo real y deja subir solo lo critico. Cambios revisables con doble aprobacion.</p></div>
+      <div class="capitem"><div class="k">Aprendizaje</div><div class="n">Mejora continua</div><p>La priorizacion se afina sola con las decisiones de tus analistas. Trazable y sin sorpresas.</p></div>
+      <div class="capitem"><div class="k">Caza</div><div class="n">Threat hunting guiado</div><p>Busqueda proactiva de amenazas con hipotesis que apuntan a tus puntos ciegos.</p></div>
+      <div class="capitem"><div class="k">Contexto</div><div class="n">Memoria de investigacion</div><p>Conecta casos, indicadores, activos y actores, y reconoce cuando dos incidentes son el mismo adversario.</p></div>
+      <div class="capitem"><div class="k">Correlacion</div><div class="n">Campanas</div><p>Agrupa cientos de alertas sueltas en pocas campanas accionables: la bandeja por la que entra el analista.</p></div>
+      <div class="capitem"><div class="k">IA local</div><div class="n">Analista con IA</div><p>Veredicto, triage y narrativa del incidente, con la IA corriendo en tu propia infraestructura.</p></div>
+      <div class="capitem"><div class="k">Respuesta</div><div class="n">Contencion gobernada</div><p>Aisla y contiene el host afectado con doble aprobacion; nada se ejecuta sin autorizacion ni traza.</p></div>
+      <div class="capitem"><div class="k">Gobernanza</div><div class="n">Control y auditoria</div><p>Cada automatizacion se activa por separado, con registro completo de quien hizo que.</p></div>
+      <div class="capitem"><div class="k">Exposicion</div><div class="n">Vigilancia digital</div><p>Vigila credenciales filtradas, dominios que te suplantan y alteraciones de tus sitios.</p></div>
+      <div class="capitem"><div class="k">Operacion</div><div class="n">Tickets y portal</div><p>Gestion de tickets, base de conocimiento y un portal para el cliente sin exponer la consola del SOC.</p></div>
+      <div class="capitem"><div class="k">DFIR</div><div class="n">Activos y respuesta</div><p>Inventario de tus activos y acciones que llegan al endpoint de verdad, no solo alertas.</p></div>
+      <div class="capitem"><div class="k">Escala</div><div class="n">Multi-entorno</div><p>Opera varios entornos como uno solo, con la deteccion, la priorizacion y el contexto compartidos.</p></div>
     </div>
   </div>
 </section>
@@ -333,7 +333,7 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
     <h2 class="h mt">Habla con tu stack tal cual esta.</h2>
     <p class="body dim mt-s" style="max-width:600px">Conectores agnosticos por categoria, sobre un catalogo de fuentes canonico. Sin atarte a ningun proveedor.</p>
     <div class="integ">
-      <span>Cortafuegos</span><span>SIEM</span><span>IDS / IPS</span><span>Gateway de correo</span><span>EDR</span><span>Control de red</span><span>Plataforma de IOCs</span><span>Reputacion de IP y dominio</span><span>Exposicion en internet</span><span>Feeds de intel</span><span>Vulnerabilidades y CVE</span><span>Nodos de anonimato</span><span>SSO / OIDC</span>
+      <span>Cortafuegos</span><span>SIEM</span><span>IDS / IPS</span><span>Seguridad de correo</span><span>EDR</span><span>Control de red</span><span>Gestion de indicadores</span><span>Reputacion de IP y dominio</span><span>Exposicion en internet</span><span>Feeds de intel</span><span>Vulnerabilidades y CVE</span><span>Nodos de anonimato</span><span>SSO / OIDC</span>
     </div>
   </div>
 </section>
@@ -343,16 +343,16 @@ footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
   <div class="wrap two">
     <div class="col-a">
       <p class="eyebrow">Arquitectura</p>
-      <h2 class="h-lg mt">Un lakehouse propio, no una caja negra en la nube.</h2>
-      <p class="body dim lead mt">Dos motores con roles claros: el lakehouse analitico y el estado operativo. Consultas nombradas y validadas, RBAC por rol, y la IA sirviendose local. Se levanta en contenedores, sobre tu propia infraestructura.</p>
+      <h2 class="h-lg mt">Tu propio motor de datos, no una caja negra en la nube.</h2>
+      <p class="body dim lead mt">Dos motores con roles claros: el repositorio analitico y el estado operativo. Accesos controlados por rol y la IA sirviendose local — todo sobre tu propia infraestructura.</p>
     </div>
     <div class="col-b">
       <div class="layers">
-        <div class="layer"><div class="k">Ingesta</div><div class="n">Perimetro → recoleccion</div><p>cortafuegos, SIEM, IDS y correo hacia el lake.</p></div>
-        <div class="layer"><div class="k">Lakehouse</div><div class="n">Object storage + motor SQL</div><p>crudos, IOCs enriquecidos, vistas de scoring versionadas.</p></div>
-        <div class="layer"><div class="k">Estado</div><div class="n">Base relacional</div><p>casos, workflow, campanas, tickets, aprobaciones.</p></div>
-        <div class="layer"><div class="k">Orquestacion</div><div class="n">Flujos programados · 35 DAGs</div><p>extraccion, enriquecimiento y materializacion.</p></div>
-        <div class="layer"><div class="k">Inteligencia</div><div class="n">ArletLLM local</div><p>veredicto, triage y narrativa sin sacar un dato.</p></div>
+        <div class="layer"><div class="k">Recoleccion</div><div class="n">Ingesta continua</div><p>todas tus fuentes de seguridad, unificadas.</p></div>
+        <div class="layer"><div class="k">Almacenamiento</div><div class="n">Repositorio analitico</div><p>datos crudos y enriquecidos, consultables a escala.</p></div>
+        <div class="layer"><div class="k">Estado operativo</div><div class="n">Casos y flujo de trabajo</div><p>casos, campanas, tickets y aprobaciones.</p></div>
+        <div class="layer"><div class="k">Orquestacion</div><div class="n">Procesos automatizados</div><p>extraccion, enriquecimiento y consolidacion, programados.</p></div>
+        <div class="layer"><div class="k">Inteligencia</div><div class="n">IA local</div><p>veredicto, triage y narrativa sin sacar un dato.</p></div>
       </div>
     </div>
   </div>
@@ -462,22 +462,22 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 var Arlet=(function(){
   var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');};
   var INTENTS=[
-    {k:['detect','detecc','fuente','correo','cortafuego','firewall','siem','ids','ips','ioc','indicador','alerta','log'],
-     t:'Deteccion',a:'Correlacionamos cortafuegos, EDR, SIEM, IDS y correo, extraemos IOCs y los enriquecemos con inteligencia. Mira el pipeline y las 4 disciplinas.',go:'#pipeline',lbl:'Ver el pipeline'},
+    {k:['detect','detecc','fuente','correo','cortafuego','firewall','siem','ids','ips','indicador','alerta','log'],
+     t:'Deteccion',a:'Correlacionamos todas tus fuentes de seguridad, extraemos indicadores y los enriquecemos con inteligencia. Mira el pipeline y las 4 disciplinas.',go:'#pipeline',lbl:'Ver el pipeline'},
     {k:['prior','scoring','score','calibr','peso','umbral','ruido','aprend','learning','sombra','falso positivo','fp'],
-     t:'Priorizacion',a:'El motor de scoring pondera evidencia, MITRE, contexto e intel — y el calibrador lo afina solo leyendo los veredictos del analista.',go:'#calibrador',lbl:'Ver el calibrador'},
-    {k:['caza','hunt','hunting','hipotesis','hipotes','lock','punto ciego','pivote','lakehouse','mitre','att'],
-     t:'Threat hunting',a:'Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos del calibrador. Cierra el circulo caza→etiqueta→recalibra.',go:'#hunting',lbl:'Ver threat hunting'},
+     t:'Priorizacion',a:'El motor de scoring pondera evidencia, tecnicas, contexto e inteligencia — y se afina solo leyendo los veredictos del analista.',go:'#calibrador',lbl:'Ver el calibrador'},
+    {k:['caza','hunt','hunting','hipotesis','hipotes','punto ciego','pivote','dato','tecnica','adversario'],
+     t:'Threat hunting',a:'Busqueda proactiva sobre tu propio dato con hipotesis dirigidas a los puntos ciegos. Cierra el circulo caza→etiqueta→recalibra.',go:'#hunting',lbl:'Ver threat hunting'},
     {k:['ia','llm','arlet','modelo','veredicto','triage','narrativa','local','inteligencia artificial'],
-     t:'IA local',a:'Los analistas ArletLLM dan veredicto, triage y narrativa con el modelo servido en tu propia infraestructura. Ni un dato sale a la nube.',go:'#arlet',lbl:'Ver la IA local'},
+     t:'IA local',a:'La IA local da veredicto, triage y narrativa con el modelo corriendo en tu propia infraestructura. Ni un dato sale a la nube.',go:'#arlet',lbl:'Ver la IA local'},
     {k:['respuesta','conten','edr','red','aisl','bloque','playbook','host','endpoint'],
-     t:'Respuesta',a:'Aislamos y contenemos por EDR y control de red, con playbooks de doble llave. Nada se ejecuta sin autorizacion ni traza.',go:'#capacidades',lbl:'Ver capacidades'},
-    {k:['grafo','memoria','campana','campania','correlacion','actor','dedup','vigilan','defacement','osint','ticket','portal','dfir','activo','collector','cluster','gateway'],
-     t:'Capacidades',a:'Grafo de casos, campanas, vigilancia digital, tickets y portal, DFIR, multi-cluster... aqui esta el mapa completo.',go:'#capacidades',lbl:'Ver todas las capacidades'},
+     t:'Respuesta',a:'Aislamos y contenemos el host afectado, con doble aprobacion. Nada se ejecuta sin autorizacion ni traza.',go:'#capacidades',lbl:'Ver capacidades'},
+    {k:['memoria','campana','campania','correlacion','actor','dedup','vigilan','suplant','sitio','osint','ticket','portal','dfir','activo','inventario','entorno','escala'],
+     t:'Capacidades',a:'Memoria de investigacion, campanas, vigilancia digital, tickets y portal, DFIR, multi-entorno... aqui esta el mapa completo.',go:'#capacidades',lbl:'Ver todas las capacidades'},
     {k:['gobern','csf','auditor','rbac','rol','automatiz','interruptor','apagad','doble llave','compliance','cumplim'],
      t:'Gobernanza',a:'Cada automatizacion nace apagada, es determinista y auditada. La IA propone; el humano decide.',go:'#capacidades',lbl:'Ver gobernanza'},
-    {k:['arquitect','lakehouse','infra','on premise','onpremise','contenedor','oidc','sso','base de dato'],
-     t:'Arquitectura',a:'Dos motores de datos con roles claros — lakehouse analitico y estado operativo — sobre tu propia infraestructura, en contenedores.',go:'#arquitectura',lbl:'Ver la arquitectura'},
+    {k:['arquitect','repositorio','infra','on premise','onpremise','oidc','sso','base de dato','motor de dato'],
+     t:'Arquitectura',a:'Dos motores de datos con roles claros — repositorio analitico y estado operativo — sobre tu propia infraestructura.',go:'#arquitectura',lbl:'Ver la arquitectura'},
     {k:['integr','stack','conector','reputacion','exposicion','feed','cve','vulnerab','anonimato','intel'],
      t:'Integraciones',a:'Hablamos con tu stack tal cual esta, por categoria y sin atarte a ningun proveedor. Aqui la lista.',go:'#integraciones',lbl:'Ver integraciones'},
     {k:['informe','reporte','ejemplo','muestra','pdf','como se ve','sample'],
