@@ -3,161 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LegacyHunt — Tu SOC ya tiene la respuesta</title>
+<title>LegacyHunt — Threat Monitoring & Response</title>
 <meta name="description" content="LegacyHunt: SOC on-premise sobre lakehouse. Detecta en todas tus fuentes, prioriza con un motor que se calibra solo y caza sobre tu propio dato. Preguntale a Arlet, tu asistente SOC. IA local, human-on-the-loop.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LegacyHunt — Tu SOC ya tiene la respuesta. Preguntale a Arlet.">
+<meta property="og:title" content="LegacyHunt — Threat Monitoring & Response">
 <meta property="og:description" content="SOC on-premise sobre lakehouse: deteccion multi-fuente, priorizacion que se auto-calibra, threat hunting con hipotesis e IA local. Human-on-the-loop.">
 <meta property="og:url" content="https://arl3t.github.io/web2/">
 <meta property="og:locale" content="es_ES">
-<meta name="theme-color" content="#000000">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000000'/%3E%3Cpath d='M16 7 L25 24 L7 24 Z' fill='none' stroke='%238052ff' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18' r='2' fill='%23ffb829'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0a0e14">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
-/* ═══ Fuente self-hosted (sustituto de PPNeueMontreal, sin llamadas externas) ═══ */
+/* ═══ Fuente self-hosted ═══ */
 @font-face{font-family:'DM Sans';font-style:normal;font-weight:100 1000;font-display:swap;src:url(fonts/dmsans.woff2) format('woff2')}
 
-/* ═══ MARCA — sistema "void" (negro absoluto + Electric Iris + Saffron Spark) ═══ */
+/* ═══ MARCA LegacyHunt — slate oscuro + verde neon + teal ═══ */
 :root{
-  --void:#000000; --white:#ffffff; --ash:#9a9a9a; --silver:#bdbdbd;
-  --iris:#8052ff; --saffron:#ffb829; --verdant:#15846e;
+  --bg:#0a0e14; --bg2:#070a10; --white:#ffffff;
+  --dim:#9fb0c3; --silver:#c4d0dd; --faint:#6b7a8d;
+  --green:#4ade80;   /* primario — marca, CTA, escudo */
+  --teal:#5eead4;    /* secundario — etiquetas, isotipo */
+  --line:rgba(255,255,255,.09);
   --font:'DM Sans',Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
-  --max:1280px;
+  --max:1200px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--void);color:var(--white);font-family:var(--font);font-weight:200;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--white);font-family:var(--font);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-::selection{background:var(--iris);color:#fff}
+::selection{background:var(--green);color:#06210a}
 
-/* Campo de particulas ambiente (profundidad de fondo, toda la pagina) */
-#amb{position:fixed;inset:0;z-index:0;pointer-events:none}
+#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:1}
-section{padding:clamp(72px,11vw,120px) 0;position:relative}
+section{padding:clamp(56px,8vw,96px) 0;position:relative}
 
-/* Tipografia — jerarquia por ESCALA, no por peso (todo headline en 400) */
-.display{font-size:clamp(3rem,8.4vw,113px);font-weight:400;line-height:1.02;letter-spacing:-.045em}
-.h-lg{font-size:clamp(2.5rem,6.6vw,78px);font-weight:400;line-height:1.06;letter-spacing:-.04em}
-.h{font-size:clamp(2rem,4.6vw,48px);font-weight:400;line-height:1.08;letter-spacing:-.035em}
-.h-sm{font-size:clamp(1.6rem,3.4vw,42px);font-weight:400;line-height:1.12;letter-spacing:-.03em}
-.h-xs{font-size:clamp(1.35rem,2.6vw,27px);font-weight:400;line-height:1.18;letter-spacing:-.02em}
-.iris{color:var(--iris)} .amber{color:var(--saffron)}
-.eyebrow{color:var(--saffron);font-size:14px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
-.body{font-size:clamp(16px,1.4vw,18px);font-weight:200;line-height:1.6;color:var(--white)}
-.body.dim{color:var(--silver)}
-.lead{max-width:520px}
+/* Tipografia — CONTENIDA */
+.eyebrow{color:var(--teal);font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.display{font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.12}
+.h-lg{font-size:clamp(1.6rem,3.2vw,2.25rem)}
+.h{font-size:clamp(1.4rem,2.6vw,1.9rem)}
+.h-sm{font-size:clamp(1.2rem,2vw,1.5rem);font-weight:600}
+.green{color:var(--green)} .teal{color:var(--teal)}
+.body{font-size:16.5px;font-weight:400;line-height:1.62;color:var(--silver)}
+.body.dim{color:var(--dim)}
+.lead{max-width:480px}
+.mt{margin-top:18px} .mt-s{margin-top:12px}
 
-/* Boton violeta (unica CTA rellena) + enlaces fantasma */
-.pill{display:inline-flex;align-items:center;gap:9px;background:var(--iris);color:#fff;font-weight:600;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:14px 22px;border-radius:9999px;cursor:pointer;border:none;transition:.22s}
-.pill:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px var(--iris),0 0 40px -20px var(--iris)}
-.ghost{display:inline-flex;align-items:center;gap:8px;color:var(--white);font-weight:400;font-size:14px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;background:none;border:none;transition:.2s}
-.ghost:hover{color:var(--saffron)}
-.actions{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:36px}
+/* Botones */
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#06210a;font-weight:700;font-size:13.5px;letter-spacing:.02em;padding:12px 20px;border-radius:10px;cursor:pointer;border:none;transition:.2s}
+.pill:hover{transform:translateY(-2px);box-shadow:0 12px 30px -14px var(--green)}
+.ghost{display:inline-flex;align-items:center;gap:7px;color:var(--white);font-weight:600;font-size:13.5px;cursor:pointer;background:none;border:none;transition:.2s}
+.ghost:hover{color:var(--green)}
+.actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:28px}
 
-/* Composicion de dos columnas (ritmo zigzag) */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,80px);align-items:center}
+/* Dos columnas */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:center}
 .two.rev .col-a{order:2} .two.rev .col-b{order:1}
 
-/* Nav transparente sobre el vacio */
-nav{position:sticky;top:0;z-index:40;background:transparent}
-nav .row{max-width:var(--max);margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;gap:11px;font-size:18px;font-weight:500;letter-spacing:-.01em}
-.brand svg{width:26px;height:26px;flex:none}
-.navlinks{display:flex;gap:30px;align-items:center}
-.navlinks a{color:var(--ash);font-size:14px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:.2s}
+/* Nav */
+nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .row{max-width:var(--max);margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px;flex:none}
+.navlinks{display:flex;gap:26px;align-items:center}
+.navlinks a{color:var(--dim);font-size:13.5px;font-weight:600;transition:.2s}
 .navlinks a:hover,.navlinks a.now{color:var(--white)}
-.menu-toggle{display:none;background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
+.menu-toggle{display:none;background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer}
 
 /* Hero */
-.hero{padding-top:clamp(28px,5vw,64px);padding-bottom:clamp(60px,9vw,110px)}
-.hero-canvas{width:100%;height:clamp(340px,46vw,560px);display:block}
+.hero{padding-top:clamp(32px,5vw,56px);padding-bottom:clamp(48px,7vw,84px)}
+.hero-canvas{width:100%;height:clamp(280px,34vw,420px);display:block}
 
-/* Disciplinas — filas tipograficas espaciosas (sin tarjetas) */
-.disc{display:grid;gap:clamp(44px,7vw,84px);margin-top:clamp(48px,7vw,80px)}
-.disc .row{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,52px);align-items:start}
-.disc .idx{font-size:clamp(2.4rem,6vw,78px);font-weight:200;line-height:.9;color:var(--iris);letter-spacing:-.04em}
-.disc .row .body{max-width:560px;margin-top:14px}
+/* Disciplinas */
+.disc{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(28px,4vw,44px);margin-top:clamp(36px,5vw,52px)}
+.disc .row{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+.disc .idx{font-size:26px;font-weight:700;line-height:1;color:var(--teal);letter-spacing:-.02em}
+.disc .row .body{margin-top:8px;max-width:420px}
 
-/* Pipeline — secuencia tipografica */
-.flow{display:flex;flex-wrap:wrap;gap:14px 10px;margin-top:44px;align-items:baseline}
-.flow .step{font-size:clamp(1.3rem,2.6vw,27px);font-weight:400;letter-spacing:-.02em}
-.flow .arw{color:var(--iris);font-size:1.4rem}
-.flow .lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);margin-bottom:4px}
+/* Pipeline */
+.flow{display:flex;flex-wrap:wrap;gap:12px 10px;margin-top:32px;align-items:baseline}
+.flow .step{font-size:15px;font-weight:600}
+.flow .arw{color:var(--green);font-size:1.05rem}
+.flow .lbl{display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:3px}
 
-/* Detalle ligero (listas sin bordes) */
-.detail{display:grid;gap:26px}
-.detail .d .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron);margin-bottom:6px}
-.detail .d .v{font-size:clamp(1.05rem,1.8vw,20px);font-weight:400;letter-spacing:-.01em}
-.detail .d p{color:var(--silver);font-weight:200;margin-top:4px;font-size:16px}
+/* Detalle */
+.detail{display:grid;gap:20px}
+.detail .d .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+.detail .d .v{font-size:16px;font-weight:600}
+.detail .d p{color:var(--dim);margin-top:3px;font-size:14.5px}
 
-/* Capacidades completas — rejilla espaciosa sin tarjetas */
-.caplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(30px,4vw,52px);margin-top:56px}
-.capitem .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron);margin-bottom:9px}
-.capitem .n{font-size:24px;font-weight:400;letter-spacing:-.02em}
-.capitem p{color:var(--silver);font-weight:200;margin-top:8px;font-size:16px;line-height:1.55}
+/* Capacidades */
+.caplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(24px,3vw,36px);margin-top:44px}
+.capitem{border-top:1px solid var(--line);padding-top:16px}
+.capitem .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}
+.capitem .n{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.capitem p{color:var(--dim);margin-top:6px;font-size:14.5px;line-height:1.5}
 
-/* Integraciones — texto que fluye, sin cajas */
-.integ{margin-top:40px;font-size:clamp(1.2rem,2.4vw,24px);font-weight:200;line-height:1.9;color:var(--silver);max-width:1000px}
-.integ b{color:var(--white);font-weight:400}
-.integ .sep{color:var(--iris);padding:0 4px}
+/* Integraciones */
+.integ{margin-top:22px;display:flex;flex-wrap:wrap;gap:9px}
+.integ span{font-size:13.5px;font-weight:500;color:var(--silver);border:1px solid var(--line);border-radius:8px;padding:7px 12px}
 
-/* Arquitectura — capas separadas por aire */
-.layers{display:grid;gap:26px;margin-top:8px}
-.layer .k{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--iris);margin-bottom:5px}
-.layer .n{font-size:clamp(1.1rem,2vw,22px);font-weight:400;letter-spacing:-.01em}
-.layer p{color:var(--silver);font-weight:200;font-size:15px;margin-top:3px}
+/* Arquitectura */
+.layers{display:grid;gap:2px;margin-top:6px}
+.layer{padding:14px 0;border-bottom:1px solid var(--line)}
+.layer:last-child{border-bottom:none}
+.layer .k{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:3px}
+.layer .n{font-size:16px;font-weight:600}
+.layer p{color:var(--dim);font-size:13.5px;margin-top:2px}
 
 /* Gobernanza */
-.gov3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,52px);margin-top:52px}
-.gov3 .g .k{color:var(--saffron);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
-.gov3 .g .n{font-size:20px;font-weight:400;letter-spacing:-.01em}
-.gov3 .g p{color:var(--silver);font-weight:200;font-size:16px;margin-top:6px}
+.gov3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,40px);margin-top:40px}
+.gov3 .g .k{color:var(--teal);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}
+.gov3 .g .n{font-size:16px;font-weight:700}
+.gov3 .g p{color:var(--dim);font-size:14.5px;margin-top:5px}
 
 /* CTA final */
 .final{text-align:center}
-.final .display{max-width:15ch;margin:0 auto}
 .final .actions{justify-content:center}
 
 /* Footer */
-footer{padding:64px 0 44px}
-footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;align-items:flex-end}
-footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+footer{padding:48px 0 40px;border-top:1px solid var(--line)}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:center}
+footer img{height:44px;width:auto;opacity:.95}
+footer .fl{color:var(--faint);font-size:12.5px;font-weight:500}
 
-/* ═══ Arlet — asistente SOC ═══ */
-#arlet-fab{position:fixed;right:24px;bottom:24px;z-index:60}
-#arlet-panel{position:fixed;right:24px;bottom:88px;z-index:61;width:min(380px,calc(100vw - 32px));max-height:min(620px,calc(100vh - 120px));background:#000;border-radius:24px;
-  box-shadow:0 0 0 1px rgba(128,82,255,.35),0 30px 90px rgba(0,0,0,.7),0 0 70px -30px var(--iris);
+/* Arlet */
+#arlet-fab{position:fixed;right:22px;bottom:22px;z-index:60}
+#arlet-panel{position:fixed;right:22px;bottom:82px;z-index:61;width:min(370px,calc(100vw - 28px));max-height:min(600px,calc(100vh - 120px));background:var(--bg2);border-radius:18px;
+  box-shadow:0 0 0 1px rgba(94,234,212,.28),0 24px 70px rgba(0,0,0,.6),0 0 60px -34px var(--teal);
   display:none;flex-direction:column;overflow:hidden}
 #arlet-panel.open{display:flex}
-.ah{padding:18px 20px;display:flex;align-items:center;gap:11px}
-.ah svg{width:26px;height:26px;flex:none}
-.ah .t{font-size:15px;font-weight:500}
-.ah .t small{display:block;color:var(--ash);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-top:1px}
-.ah .x{margin-left:auto;background:none;border:none;color:var(--ash);cursor:pointer;font-size:1.2rem;line-height:1}
+.ah{padding:15px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+.ah svg{width:24px;height:24px;flex:none}
+.ah .t{font-size:14.5px;font-weight:700}
+.ah .t small{display:block;color:var(--dim);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
+.ah .x{margin-left:auto;background:none;border:none;color:var(--dim);cursor:pointer;font-size:1.1rem;line-height:1}
 .ah .x:hover{color:#fff}
-#arlet-log{flex:1;overflow-y:auto;padding:6px 20px 12px;display:flex;flex-direction:column;gap:14px}
-.msg{font-size:15px;font-weight:200;line-height:1.5;max-width:88%}
-.msg.a{color:#fff} .msg.a .who{color:var(--saffron);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
-.msg.u{align-self:flex-end;background:rgba(255,255,255,.06);padding:9px 13px;border-radius:16px 16px 4px 16px}
-.msg .go{margin-top:10px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;padding:4px 20px 8px}
-.chips button{background:none;border:1px solid rgba(128,82,255,.4);color:#fff;font-family:inherit;font-size:12.5px;font-weight:400;padding:7px 12px;border-radius:9999px;cursor:pointer;transition:.18s}
-.chips button:hover{border-color:var(--iris);background:rgba(128,82,255,.12)}
-.ainput{display:flex;gap:8px;padding:12px 16px 16px}
-.ainput input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9999px;color:#fff;font-family:inherit;font-size:14px;font-weight:300;padding:11px 15px;outline:none}
-.ainput input:focus{border-color:var(--iris)}
-.ainput input::placeholder{color:var(--ash)}
-.ainput .send{background:var(--iris);border:none;color:#fff;width:42px;height:42px;border-radius:9999px;cursor:pointer;font-size:1.1rem;flex:none;transition:.2s}
+#arlet-log{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
+.msg{font-size:14px;line-height:1.5;max-width:90%}
+.msg.a .who{color:var(--teal);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px}
+.msg.u{align-self:flex-end;background:rgba(255,255,255,.06);padding:8px 12px;border-radius:14px 14px 4px 14px}
+.msg .go{margin-top:9px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 18px 8px}
+.chips button{background:none;border:1px solid rgba(94,234,212,.35);color:#fff;font-family:inherit;font-size:12px;font-weight:500;padding:6px 11px;border-radius:9999px;cursor:pointer;transition:.18s}
+.chips button:hover{border-color:var(--teal);background:rgba(94,234,212,.1)}
+.ainput{display:flex;gap:8px;padding:10px 14px 14px;border-top:1px solid var(--line)}
+.ainput input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:9999px;color:#fff;font-family:inherit;font-size:13.5px;padding:10px 14px;outline:none}
+.ainput input:focus{border-color:var(--teal)}
+.ainput input::placeholder{color:var(--faint)}
+.ainput .send{background:var(--green);border:none;color:#06210a;width:40px;height:40px;border-radius:9999px;cursor:pointer;font-size:1rem;flex:none;transition:.2s}
 .ainput .send:hover{transform:scale(1.06)}
 
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
-@media(max-width:860px){
-  .navlinks{display:none;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;align-items:flex-start;gap:18px;background:#000;box-shadow:0 0 0 1px rgba(128,82,255,.3);border-radius:24px;padding:22px 24px}
+@media(max-width:840px){
+  .navlinks{display:none;position:absolute;top:60px;left:16px;right:16px;flex-direction:column;align-items:flex-start;gap:16px;background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
   .navlinks.open{display:flex}
   .menu-toggle{display:block}
-  .two{grid-template-columns:1fr;gap:36px}
+  .two,.disc,.gov3{grid-template-columns:1fr;gap:28px}
   .two.rev .col-a,.two.rev .col-b{order:0}
-  .gov3{grid-template-columns:1fr}
-  .disc .row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -168,7 +171,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <nav>
   <div class="row">
     <a href="#top" class="brand" aria-label="LegacyHunt">
-      <svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8052ff"/><stop offset="1" stop-color="#15846e"/></linearGradient></defs><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg>
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0a0e14"/><path d="M8 20 L16 8 L24 20 Z" stroke="#5eead4" stroke-width="2" fill="none"/><circle cx="16" cy="18" r="2" fill="#5eead4"/></svg>
       <span>LegacyHunt</span>
     </a>
     <button class="menu-toggle" aria-label="Menu" onclick="document.getElementById('nl').classList.toggle('open')">☰</button>
@@ -186,9 +189,9 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <header class="hero" id="top">
   <div class="wrap two">
     <div class="col-a">
-      <p class="eyebrow">SOC · MDR · on-premise</p>
-      <h1 class="display" style="margin-top:22px">Tu SOC ya tiene la respuesta. Preguntale a <span class="amber">Arlet</span>.</h1>
-      <p class="body lead" style="margin-top:28px">LegacyHunt detecta en todas tus fuentes, prioriza con un motor que <span style="color:#fff;font-weight:400">se calibra solo</span> y caza sobre tu propio lakehouse. Arlet, tu asistente SOC, te lleva directo a lo que buscas.</p>
+      <p class="eyebrow">Threat Monitoring &amp; Response · on-premise</p>
+      <h1 class="display mt">Tu SOC ya tiene la respuesta. Preguntale a <span class="green">Arlet</span>.</h1>
+      <p class="body dim lead mt">LegacyHunt detecta en todas tus fuentes, prioriza con un motor que <span style="color:#fff;font-weight:600">se calibra solo</span> y caza sobre tu propio lakehouse. Arlet, tu asistente SOC, te lleva directo a lo que buscas.</p>
       <div class="actions">
         <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
         <button class="ghost" onclick="Arlet.open()">Preguntar a Arlet →</button>
@@ -200,12 +203,12 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
   </div>
 </header>
 
-<!-- ═══ PLATAFORMA / MANIFIESTO ═══ -->
+<!-- ═══ PLATAFORMA ═══ -->
 <section id="plataforma">
   <div class="wrap two">
     <div class="col-a">
       <p class="eyebrow">Que hace</p>
-      <h2 class="h-lg" style="margin-top:20px">Del log crudo al caso cerrado.</h2>
+      <h2 class="h-lg mt">Del log crudo al caso cerrado.</h2>
     </div>
     <div class="col-b">
       <p class="body dim">Un SOC completo sobre una sola plataforma: correlaciona tus fuentes, extrae y enriquece indicadores, decide con un motor de scoring versionado, caza sobre tu propio dato y propone la respuesta. Y un lazo de aprendizaje que lo hace mejor con cada caso que un humano etiqueta. Todo corriendo en tu casa — la IA tambien.</p>
@@ -216,11 +219,12 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <!-- ═══ DISCIPLINAS ═══ -->
 <section>
   <div class="wrap">
+    <p class="eyebrow">Cuatro disciplinas, una plataforma</p>
     <div class="disc">
-      <div class="row"><div class="idx">01</div><div><h3 class="h-sm">Detectar</h3><p class="body dim">Correlacion multi-fuente — cortafuegos, EDR, SIEM, IDS, correo — con extraccion de IOCs y enriquecimiento automatico contra inteligencia de amenazas.</p></div></div>
-      <div class="row"><div class="idx">02</div><div><h3 class="h-sm">Priorizar</h3><p class="body dim">Un motor de scoring que pondera evidencia, MITRE, contexto e intel — y se auto-calibra leyendo los veredictos del analista. Deja subir lo critico y calla el ruido.</p></div></div>
-      <div class="row"><div class="idx">03</div><div><h3 class="h-sm">Cazar</h3><p class="body dim">Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y un grafo de investigacion que recuerda al mismo actor.</p></div></div>
-      <div class="row"><div class="idx">04</div><div><h3 class="h-sm">Responder</h3><p class="body dim">Contencion propuesta sobre el host real, cierre automatico de lo obvio con doble llave, y cada accion auditada. La IA propone; el humano decide.</p></div></div>
+      <div class="row"><div class="idx">01</div><div><h3 class="h-sm">Detectar</h3><p class="body">Correlacion multi-fuente — cortafuegos, EDR, SIEM, IDS, correo — con extraccion de IOCs y enriquecimiento automatico contra inteligencia de amenazas.</p></div></div>
+      <div class="row"><div class="idx">02</div><div><h3 class="h-sm">Priorizar</h3><p class="body">Un motor de scoring que pondera evidencia, MITRE, contexto e intel — y se auto-calibra leyendo los veredictos del analista. Deja subir lo critico y calla el ruido.</p></div></div>
+      <div class="row"><div class="idx">03</div><div><h3 class="h-sm">Cazar</h3><p class="body">Cazas sobre el lakehouse con hipotesis dirigidas a los puntos ciegos, baseline de novedad y un grafo de investigacion que recuerda al mismo actor.</p></div></div>
+      <div class="row"><div class="idx">04</div><div><h3 class="h-sm">Responder</h3><p class="body">Contencion propuesta sobre el host real, cierre automatico de lo obvio con doble llave, y cada accion auditada. La IA propone; el humano decide.</p></div></div>
     </div>
   </div>
 </section>
@@ -229,7 +233,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <section id="pipeline">
   <div class="wrap">
     <p class="eyebrow">De punta a punta</p>
-    <h2 class="h" style="margin-top:20px;max-width:16ch">El pipeline de deteccion, sobre un lakehouse propio.</h2>
+    <h2 class="h mt">El pipeline de deteccion, sobre un lakehouse propio.</h2>
     <div class="flow">
       <span class="step"><span class="lbl">01 Perimetro</span>cortafuegos · SIEM · IDS/IPS · correo</span>
       <span class="arw">→</span>
@@ -246,13 +250,13 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
   </div>
 </section>
 
-<!-- ═══ CAP 1 · CALIBRADOR ═══ -->
+<!-- ═══ CALIBRADOR ═══ -->
 <section id="calibrador">
   <div class="wrap two">
     <div class="col-a">
       <p class="eyebrow">Priorizacion que aprende</p>
-      <h2 class="h-lg" style="margin-top:20px">Un motor que se afina solo.</h2>
-      <p class="body dim lead" style="margin-top:26px">El calibrador lee los veredictos humanos por fuente y por regla, premia lo que confirma incidentes reales y explora lo que apenas viste. Propone recalibrar los pesos — determinista, en modo sombra, hasta que un humano aprueba.</p>
+      <h2 class="h-lg mt">Un motor que se afina solo.</h2>
+      <p class="body dim lead mt">El calibrador lee los veredictos humanos por fuente y por regla, premia lo que confirma incidentes reales y explora lo que apenas viste. Propone recalibrar los pesos — determinista, en modo sombra, hasta que un humano aprueba.</p>
     </div>
     <div class="col-b">
       <div class="detail">
@@ -264,7 +268,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
   </div>
 </section>
 
-<!-- ═══ CAP 2 · HUNTING ═══ -->
+<!-- ═══ HUNTING ═══ -->
 <section id="hunting">
   <div class="wrap two rev">
     <div class="col-a">
@@ -276,19 +280,19 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
     </div>
     <div class="col-b">
       <p class="eyebrow">Threat hunting + hipotesis</p>
-      <h2 class="h-lg" style="margin-top:20px">Caza dirigida a lo que no ves.</h2>
-      <p class="body dim lead" style="margin-top:26px">El generador de hipotesis convierte los puntos ciegos del calibrador en cazas accionables sobre tu propio dato. Cierra el circulo: calibrador → hipotesis → caza → etiqueta → recalibra.</p>
+      <h2 class="h-lg mt">Caza dirigida a lo que no ves.</h2>
+      <p class="body dim lead mt">El generador de hipotesis convierte los puntos ciegos del calibrador en cazas accionables sobre tu propio dato. Cierra el circulo: calibrador → hipotesis → caza → etiqueta → recalibra.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ CAP 3 · IA LOCAL ═══ -->
+<!-- ═══ IA LOCAL ═══ -->
 <section id="arlet">
   <div class="wrap two">
     <div class="col-a">
       <p class="eyebrow">IA local · ArletLLM</p>
-      <h2 class="h-lg" style="margin-top:20px">Analistas que corren en tu casa.</h2>
-      <p class="body dim lead" style="margin-top:26px">Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local, elegible desde Ajustes. Ni un dato sale a la nube. La misma inteligencia que responde a Arlet en esta pagina.</p>
+      <h2 class="h-lg mt">Analistas que corren en tu casa.</h2>
+      <p class="body dim lead mt">Veredicto continuo gobernado por SLA, triage, sugerencia de lecciones y narrativa ejecutiva — con el modelo servido local, elegible desde Ajustes. Ni un dato sale a la nube. La misma inteligencia que responde a Arlet en esta pagina.</p>
     </div>
     <div class="col-b">
       <div class="detail">
@@ -300,11 +304,11 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
   </div>
 </section>
 
-<!-- ═══ CAPACIDADES COMPLETAS ═══ -->
+<!-- ═══ CAPACIDADES ═══ -->
 <section id="capacidades">
   <div class="wrap">
     <p class="eyebrow">Todo lo que hace</p>
-    <h2 class="h" style="margin-top:20px;max-width:18ch">Un SOC entero, cada pieza gobernada y medible.</h2>
+    <h2 class="h mt">Un SOC entero, cada pieza gobernada y medible.</h2>
     <div class="caplist">
       <div class="capitem"><div class="k">Priorizacion</div><div class="n">Scoring versionado</div><p>Combinacion ponderada por fuente, con umbrales de severidad. Publicable con doble llave.</p></div>
       <div class="capitem"><div class="k">Aprendizaje</div><div class="n">Calibrador en sombra</div><p>Recalibra los pesos desde los veredictos humanos. Determinista y reproducible.</p></div>
@@ -316,7 +320,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
       <div class="capitem"><div class="k">Gobernanza</div><div class="n">CSF 2.0 + auditoria</div><p>Interruptores por capacidad, badge de actor y auditoria de fuente unica.</p></div>
       <div class="capitem"><div class="k">Exposicion</div><div class="n">Vigilancia digital</div><p>Credenciales filtradas, typosquatting y defacement con connectors y persistencia.</p></div>
       <div class="capitem"><div class="k">Operacion</div><div class="n">Tickets + portal</div><p>Ciclo de tickets, base de conocimiento y portal de cliente sin exponer la consola del SOC.</p></div>
-      <div class="capitem"><div class="k">DFIR</div><div class="n">Activos & respuesta</div><p>Collector de inventario por agente y canal de comandos que si toca el host.</p></div>
+      <div class="capitem"><div class="k">DFIR</div><div class="n">Activos &amp; respuesta</div><p>Collector de inventario por agente y canal de comandos que si toca el host.</p></div>
       <div class="capitem"><div class="k">Escala</div><div class="n">Multi-cluster</div><p>Federacion bajo un gateway, con caza, scoring y memoria compartidos.</p></div>
     </div>
   </div>
@@ -326,9 +330,11 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <section id="integraciones">
   <div class="wrap">
     <p class="eyebrow">Integraciones</p>
-    <h2 class="h" style="margin-top:20px;max-width:16ch">Habla con tu stack tal cual esta.</h2>
-    <p class="body dim" style="max-width:640px;margin-top:22px">Conectores agnosticos por categoria, sobre un catalogo de fuentes canonico. Se integra con tus herramientas actuales sin atarte a ningun proveedor.</p>
-    <p class="integ"><b>Cortafuegos</b><span class="sep">·</span><b>SIEM</b><span class="sep">·</span><b>IDS / IPS</b><span class="sep">·</span><b>Gateway de correo</b><span class="sep">·</span><b>EDR</b><span class="sep">·</span><b>Control de red</b><span class="sep">·</span><b>Plataforma de IOCs</b><span class="sep">·</span><b>Reputacion de IP y dominio</b><span class="sep">·</span><b>Exposicion en internet</b><span class="sep">·</span><b>Feeds de intel</b><span class="sep">·</span><b>Vulnerabilidades y CVE</b><span class="sep">·</span><b>Nodos de anonimato</b><span class="sep">·</span><b>SSO / OIDC</b></p>
+    <h2 class="h mt">Habla con tu stack tal cual esta.</h2>
+    <p class="body dim mt-s" style="max-width:600px">Conectores agnosticos por categoria, sobre un catalogo de fuentes canonico. Sin atarte a ningun proveedor.</p>
+    <div class="integ">
+      <span>Cortafuegos</span><span>SIEM</span><span>IDS / IPS</span><span>Gateway de correo</span><span>EDR</span><span>Control de red</span><span>Plataforma de IOCs</span><span>Reputacion de IP y dominio</span><span>Exposicion en internet</span><span>Feeds de intel</span><span>Vulnerabilidades y CVE</span><span>Nodos de anonimato</span><span>SSO / OIDC</span>
+    </div>
   </div>
 </section>
 
@@ -337,8 +343,8 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
   <div class="wrap two">
     <div class="col-a">
       <p class="eyebrow">Arquitectura</p>
-      <h2 class="h-lg" style="margin-top:20px">Un lakehouse propio, no una caja negra en la nube.</h2>
-      <p class="body dim lead" style="margin-top:26px">Dos motores con roles claros: el lakehouse analitico y el estado operativo. Consultas nombradas y validadas, RBAC por rol, y la IA sirviendose local. Se levanta en contenedores, sobre tu propia infraestructura.</p>
+      <h2 class="h-lg mt">Un lakehouse propio, no una caja negra en la nube.</h2>
+      <p class="body dim lead mt">Dos motores con roles claros: el lakehouse analitico y el estado operativo. Consultas nombradas y validadas, RBAC por rol, y la IA sirviendose local. Se levanta en contenedores, sobre tu propia infraestructura.</p>
     </div>
     <div class="col-b">
       <div class="layers">
@@ -356,7 +362,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <section>
   <div class="wrap">
     <p class="eyebrow">Automatizacion gobernada</p>
-    <h2 class="h" style="margin-top:20px;max-width:20ch">La IA propone. El humano decide. Todo queda auditado.</h2>
+    <h2 class="h mt">La IA propone. El humano decide. Todo queda auditado.</h2>
     <div class="gov3">
       <div class="g"><div class="k">Apagado por defecto</div><div class="n">Cada capacidad nace en OFF</div><p>Se enciende desde Ajustes, con gate y un maestro global.</p></div>
       <div class="g"><div class="k">Determinista</div><div class="n">Mismo historico, mismo score</div><p>Versionado y reproducible para el replay forense.</p></div>
@@ -369,7 +375,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <section class="final">
   <div class="wrap">
     <p class="eyebrow">Empeza</p>
-    <h2 class="display" style="margin-top:22px">Detecta lo obvio. Escala lo critico.</h2>
+    <h2 class="h-lg mt">Detecta lo obvio. Escala lo critico.</h2>
     <div class="actions">
       <a class="pill" href="mailto:info@legacy-roots.net?subject=Solicitar%20acceso%20a%20LegacyHunt">Solicitar acceso</a>
       <button class="ghost" onclick="Arlet.open()">Preguntar a Arlet →</button>
@@ -381,7 +387,7 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="wrap row">
-    <a href="#top" class="brand"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="#8052ff" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg><span>LegacyHunt</span></a>
+    <img src="logo-legacyhunt.png" alt="LegacyHunt — Threat Monitoring & Response">
     <span class="fl">SOC on-premise · © <span id="yr"></span></span>
     <span class="fl">Detectar · Priorizar · Cazar · Responder · Aprender</span>
   </div>
@@ -389,12 +395,12 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 
 <!-- ═══ ARLET — ASISTENTE SOC ═══ -->
 <button id="arlet-fab" class="pill" onclick="Arlet.toggle()" aria-label="Abrir asistente Arlet">
-  <svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true"><path d="M10 3 L17 16 L3 16 Z" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="12" r="1.4" fill="#ffb829"/></svg>
+  <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 14 L10 5 L16 14 Z" fill="none" stroke="#06210a" stroke-width="1.7" stroke-linejoin="round"/></svg>
   Asistente SOC
 </button>
 <div id="arlet-panel" role="dialog" aria-label="Arlet, asistente SOC">
   <div class="ah">
-    <svg viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8052ff"/><stop offset="1" stop-color="#15846e"/></linearGradient></defs><path d="M14 4 L24 22 L4 22 Z" fill="none" stroke="url(#lg2)" stroke-width="2.2" stroke-linejoin="round"/><circle cx="14" cy="16" r="1.8" fill="#ffb829"/></svg>
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0a0e14"/><path d="M8 20 L16 8 L24 20 Z" stroke="#5eead4" stroke-width="2" fill="none"/><circle cx="16" cy="18" r="2" fill="#5eead4"/></svg>
     <div class="t">Arlet<small>Asistente SOC</small></div>
     <button class="x" onclick="Arlet.close()" aria-label="Cerrar">✕</button>
   </div>
@@ -409,12 +415,12 @@ footer .fl{color:var(--ash);font-size:14px;font-weight:400;letter-spacing:.04em;
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
 
-/* ══ Campo de particulas: triangulos multicolor (constelacion + ambiente) ══ */
+/* ══ Constelacion de particulas (tonos de marca: verde / teal) ══ */
 (function(){
-  var COLS=['#8052ff','#ffb829','#15846e','#c96cff','#6fa8ff','#ff5db1','#14e9c8'];
+  var COLS=['#4ade80','#5eead4','#7cffa8','#6fe9d0','#a3ffd0','#bfe8ff'];
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function part(x,y){return{x:x,y:y,r:1.1+Math.random()*1.7,rot:Math.random()*6.28,c:COLS[(Math.random()*COLS.length)|0],
-    tw:0.6+Math.random()*1.6,ph:Math.random()*6.28,ds:0.2+Math.random()*0.5,dr:1+Math.random()*3,rs:(Math.random()-0.5)*0.6,base:0.55+Math.random()*0.45};}
+  function part(x,y){return{x:x,y:y,r:1+Math.random()*1.5,rot:Math.random()*6.28,c:COLS[(Math.random()*COLS.length)|0],
+    tw:0.6+Math.random()*1.6,ph:Math.random()*6.28,ds:0.2+Math.random()*0.5,dr:1+Math.random()*2.4,rs:(Math.random()-0.5)*0.6,base:0.5+Math.random()*0.45};}
   function tri(ctx,x,y,r,rot,c,a){ctx.globalAlpha=a;ctx.strokeStyle=c;ctx.lineWidth=1;ctx.beginPath();
     for(var k=0;k<3;k++){var ang=rot+k*2.094,px=x+Math.cos(ang)*r,py=y+Math.sin(ang)*r;k?ctx.lineTo(px,py):ctx.moveTo(px,py);}
     ctx.closePath();ctx.stroke();}
@@ -423,11 +429,11 @@ document.getElementById('yr').textContent=new Date().getFullYear();
     var neg=[0.5,0.34,0.14];
     function inside(nx,ny){var f=0,i,dx,dy;for(i=0;i<lobes.length;i++){dx=nx-lobes[i][0];dy=ny-lobes[i][1];f+=Math.exp(-(dx*dx+dy*dy)/(2*lobes[i][2]*lobes[i][2]*0.25));}
       dx=nx-neg[0];dy=ny-neg[1];f-=1.1*Math.exp(-(dx*dx+dy*dy)/(2*neg[2]*neg[2]*0.25));return f>0.9;}
-    var out=[],tries=0,N=Math.round(Math.min(1400,W*2.6));
+    var out=[],tries=0,N=Math.round(Math.min(1100,W*2.4));
     while(out.length<N&&tries<N*40){tries++;var nx=Math.random(),ny=0.18+Math.random()*0.74;if(!inside(nx,ny))continue;out.push(part(nx*W,ny*H));}
     return out;
   }
-  function ambient(W,H){var N=Math.round(Math.min(150,W*H/9000)),out=[],i;for(i=0;i<N;i++){var p=part(Math.random()*W,Math.random()*H);p.base*=0.5;p.dr*=2;out.push(p);}return out;}
+  function ambient(W,H){var N=Math.round(Math.min(120,W*H/11000)),out=[],i;for(i=0;i<N;i++){var p=part(Math.random()*W,Math.random()*H);p.base*=0.42;p.dr*=2;out.push(p);}return out;}
   function field(canvas,make,ampAlpha){
     var ctx=canvas.getContext('2d'),parts=[],W=0,H=0,dpr=Math.min(devicePixelRatio||1,2),t=0;
     function size(){var r=canvas.getBoundingClientRect();W=r.width;H=r.height;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);parts=make(W,H);}
@@ -436,7 +442,7 @@ document.getElementById('yr').textContent=new Date().getFullYear();
       var dx=Math.cos(t*p.ds+p.ph)*p.dr,dy=Math.sin(t*p.ds*1.3+p.ph)*p.dr;
       tri(ctx,p.x+dx,p.y+dy,p.r,p.rot+t*p.rs,p.c,a);}requestAnimationFrame(frame);}
     size();var to;addEventListener('resize',function(){clearTimeout(to);to=setTimeout(size,180);});
-    if(reduce){ctx.clearRect(0,0,W,H);for(var i=0;i<parts.length;i++){var p=parts[i];tri(ctx,p.x,p.y,p.r,p.rot,p.c,0.6*p.base*ampAlpha);}}
+    if(reduce){ctx.clearRect(0,0,W,H);for(var i=0;i<parts.length;i++){var p=parts[i];tri(ctx,p.x,p.y,p.r,p.rot,p.c,0.55*p.base*ampAlpha);}}
     else frame();
   }
   var b=document.getElementById('brain'); if(b) field(b,brain,1);
@@ -447,12 +453,12 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 (function(){
   var links=[].slice.call(document.querySelectorAll('.navlinks a[href^="#"]'));
   var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
-  addEventListener('scroll',function(){var cur='';secs.forEach(function(s){if(s.getBoundingClientRect().top<=120)cur='#'+s.id;});
+  addEventListener('scroll',function(){var cur='';secs.forEach(function(s){if(s.getBoundingClientRect().top<=110)cur='#'+s.id;});
     links.forEach(function(a){a.classList.toggle('now',a.getAttribute('href')===cur);});},{passive:true});
   document.querySelectorAll('.navlinks a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('nl').classList.remove('open');});});
 })();
 
-/* ══ Arlet — asistente SOC (guia al visitante, sin backend) ══ */
+/* ══ Arlet — asistente SOC ══ */
 var Arlet=(function(){
   var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');};
   var INTENTS=[
@@ -492,7 +498,7 @@ var Arlet=(function(){
   function match(q){var n=norm(q),best=null,bs=0;INTENTS.forEach(function(it){var s=0;it.k.forEach(function(w){if(n.indexOf(w)>=0)s++;});if(s>bs){bs=s;best=it;}});return bs>0?best:null;}
   function answer(q){var it=match(q);
     if(it){say(it.a+'<div>'+goBtn(it)+'</div>');}
-    else{say('No estoy segura de eso, pero puedo llevarte a lo principal. Elegi una pista o probá con: <span class="amber">detectar, priorizar, cazar, arquitectura</span>.');renderChips();}
+    else{say('No estoy segura de eso, pero puedo llevarte a lo principal. Elegi una pista o proba con: <span class="teal">detectar, priorizar, cazar, arquitectura</span>.');renderChips();}
   }
   function renderChips(){chipbox.innerHTML='';CHIPS.forEach(function(c){var b=document.createElement('button');b.textContent=c[0];b.onclick=function(){user(c[0]);answer(c[1]);};chipbox.appendChild(b);});}
   function greet(){if(greeted)return;greeted=true;say('Hola, soy <b>Arlet</b>. Te ayudo a encontrar lo que buscas en LegacyHunt. Contame que necesitas — o toca una pista.');renderChips();}

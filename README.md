@@ -6,18 +6,19 @@ Publicado en GitHub Pages: https://arl3t.github.io/web2/
 `index.html` es autocontenido: CSS y JS inline, fuente self-hosted en `fonts/`
 (sin Google Fonts ni terceros). Sin build ni backend.
 
-## Marca corporativa — sistema "void"
+## Marca corporativa — identidad real de LegacyHunt
 
-- **Fondo:** `#000000` negro absoluto (el vacio es el diseno; sin tarjetas, bordes ni sombras)
-- **Texto:** `#ffffff` · `#9a9a9a` (atenuado) · `#bdbdbd` (terciario)
-- **Accion:** `#8052ff` Electric Iris — unico boton relleno y color de marca
-- **Enfasis:** `#ffb829` Saffron Spark — etiquetas y resaltados
-- **Gradiente de logo:** `#8052ff` → `#15846e`
-- **Tipografia:** DM Sans (self-hosted, sustituto de PPNeueMontreal). Jerarquia por
-  ESCALA, no por peso: titulares en peso 400 a gran tamano; cuerpo en peso 200 (ultra-light)
-- **Logotipo:** marca triangular (gradiente violeta→teal + chispa ambar) + wordmark "LegacyHunt"
-- **Imagen de marca:** constelacion de particulas triangulares multicolor (forma organica
-  de cerebro) renderizada en canvas + campo ambiente de fondo
+- **Fondo:** `#0a0e14` slate oscuro (el del isotipo oficial)
+- **Texto:** `#ffffff` · `#c4d0dd` · `#9fb0c3` (atenuado) · `#6b7a8d` (faint)
+- **Primario:** `#4ade80` verde neon (marca, CTA, escudo del logo)
+- **Secundario:** `#5eead4` teal (etiquetas, isotipo, detalles)
+- **Tipografia:** DM Sans (self-hosted). Titulares peso 700 a tamano CONTENIDO
+  (hero ~48px max, secciones 30-38px); cuerpo peso 400 a 16.5px, legible
+- **Logotipo oficial:** `logo-legacyhunt.png` (escudo tech + wordmark + tagline
+  "Threat Monitoring & Response"), usado en el footer
+- **Isotipo:** `favicon.svg` real (triangulo teal sobre slate) en nav y favicon
+- **Imagen de marca:** constelacion de particulas triangulares en tonos verde/teal
+  (forma organica de cerebro) en canvas + campo ambiente sutil de fondo
 
 ## Arlet — asistente SOC
 
@@ -35,6 +36,8 @@ proveedores ni productos concretos — ni en el texto ni en las palabras clave d
 
 - `index.html` — landing: hero + constelacion, disciplinas, pipeline, capacidades, arquitectura, gobernanza, Arlet
 - `informe-muestra.html` — informe de incidente de ejemplo
+- `logo-legacyhunt.png` — logotipo horizontal oficial
+- `favicon.svg` — isotipo oficial (triangulo teal)
 - `fonts/` — DM Sans (woff2)
 
 ## Montaje
